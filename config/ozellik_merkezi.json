@@ -1,0 +1,23 @@
+{
+ "surum": "v145",
+ "guncel": 1794420452.1461718,
+ "kayitlar": {},
+ "testler": {},
+ "merkez_surumleri": {
+  "sistem": "1.0",
+  "uygulama": "1.0",
+  "dosya": "1.0",
+  "internet": "1.0",
+  "belge": "1.0",
+  "kod": "1.0",
+  "medya": "1.0",
+  "ses": "1.0",
+  "takvim": "1.0",
+  "iletisim": "1.0",
+  "akilli-ev": "1.0",
+  "robot": "1.0",
+  "veri": "1.0",
+  "proje": "1.0",
+  "teknoloji": "1.0"
+ }
+}

@@ -1,0 +1,7 @@
+2026-11-10 23:33:24  SYS: Klasorler hazir: JARVIS_Filmler
+2026-11-10 23:33:24  SYS: 📋 Log kopyalama hazir — pencereye SAG TIK (Tumunu kopyala) veya Ctrl+Alt+L.
+2026-11-10 23:33:24  SYS: Giris cubugu hazir - GONDER | ONL | F | K(ozellikler) | M(map) | MM | B(karsilastirma)  ||  UST SIRA: L(liste) | T(telegram) | H(hile/offline) | OYUN | FILM
+2026-11-10 23:33:24  SYS: ONL butonu = ONLINE (cevaplari AI verir) | OFF butonu = OFFLINE (internet gerekmez)
+2026-11-10 23:33:28  BEKCI | gece ozeti: Gun ozeti: 7 olay notladim. Iyi geceler Abdulkadir Bey, ben gozlerim acik uyurum
+2026-11-10 23:33:28  BEKCI | RAM % 92 — cok yuklu; kapatilacak seyler var gibime bakiyor
+2026-11-10 23:33:29  SYS: SONSUZ v2 hazir | sohbet, hatirlatici, ekran, AFK, fiyat, oyun, 3D, medya.

@@ -1,0 +1,20 @@
+# JARVIS MASTER V1 — PYTHON BAĞIMLILIK LISTESI
+# Python Dependency List
+
+# Zorunlu (stdlib - zaten yüklü):
+# - json, os, sys, time, threading, traceback, pathlib, typing
+# - subprocess, shutil, glob, uuid, re, datetime
+
+# Opsiyonel (pip ile yüklenebilir):
+# - psutil (sureç ve uygulama listesi icin)
+# - tkinter (GUI icin - Python ile birlikte gelir)
+# - ctypes (Windows API erisimi icin - stdlib)
+
+# Pipeline araclari (build icin):
+# - pyinstaller (EXE paketleme icin)
+
+# Not: JARVIS MASTER V1, tum temel islevlerini Python stdlib ile saglar.
+# Harici kutuphane gereksinimi yoktur (psutil haric; opsiyoneldir).
+
+# Kurulum komutu (opsiyonel):
+# pip install psutil pyinstaller

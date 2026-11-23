@@ -1,0 +1,114 @@
+[Çar 09.09.2026 21:40:45,35] JARVIS basladi 
+Warning: there are non-data parts in the response: ['text', 'thought'], returning concatenated data result from data parts, check out the non data parts for full response from model.
+  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 12, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 94, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+Traceback (most recent call last):
+  File "patch.py", line 12, in run
+  File "contextlib.py", line 210, in __aenter__
+  File "google\genai\live.py", line 1091, in connect
+  File "websockets\asyncio\client.py", line 601, in __aenter__
+  File "websockets\asyncio\client.py", line 555, in __await_impl__
+  File "websockets\asyncio\client.py", line 470, in create_connection
+  File "asyncio\base_events.py", line 1159, in create_connection
+  File "asyncio\base_events.py", line 1192, in _create_connection_transport
+  File "asyncio\sslproto.py", line 581, in _on_handshake_complete
+  File "asyncio\sslproto.py", line 563, in _do_handshake
+  File "ssl.py", line 916, in do_handshake
+ssl.SSLError: [SSL: INVALID_SESSION_ID] invalid session id (_ssl.c:1010)
+Traceback (most recent call last):
+  File "patch.py", line 12, in run
+  File "contextlib.py", line 210, in __aenter__
+  File "google\genai\live.py", line 1091, in connect
+  File "websockets\asyncio\client.py", line 601, in __aenter__
+  File "websockets\asyncio\client.py", line 555, in __await_impl__
+  File "websockets\asyncio\client.py", line 470, in create_connection
+  File "asyncio\base_events.py", line 1159, in create_connection
+  File "asyncio\base_events.py", line 1192, in _create_connection_transport
+  File "asyncio\sslproto.py", line 581, in _on_handshake_complete
+  File "asyncio\sslproto.py", line 563, in _do_handshake
+  File "ssl.py", line 916, in do_handshake
+ssl.SSLError: [SSL: INVALID_SESSION_ID] invalid session id (_ssl.c:1010)
+Traceback (most recent call last):
+  File "patch.py", line 12, in run
+  File "contextlib.py", line 210, in __aenter__
+  File "google\genai\live.py", line 1091, in connect
+  File "websockets\asyncio\client.py", line 601, in __aenter__
+  File "websockets\asyncio\client.py", line 555, in __await_impl__
+  File "websockets\asyncio\client.py", line 470, in create_connection
+  File "asyncio\base_events.py", line 1159, in create_connection
+  File "asyncio\base_events.py", line 1192, in _create_connection_transport
+  File "asyncio\sslproto.py", line 581, in _on_handshake_complete
+  File "asyncio\sslproto.py", line 563, in _do_handshake
+  File "ssl.py", line 916, in do_handshake
+ssl.SSLError: [SSL: INVALID_SESSION_ID] invalid session id (_ssl.c:1010)
+Traceback (most recent call last):
+  File "patch.py", line 12, in run
+  File "contextlib.py", line 210, in __aenter__
+  File "google\genai\live.py", line 1091, in connect
+  File "websockets\asyncio\client.py", line 601, in __aenter__
+  File "websockets\asyncio\client.py", line 555, in __await_impl__
+  File "websockets\asyncio\client.py", line 470, in create_connection
+  File "asyncio\base_events.py", line 1159, in create_connection
+  File "asyncio\base_events.py", line 1192, in _create_connection_transport
+  File "asyncio\sslproto.py", line 581, in _on_handshake_complete
+  File "asyncio\sslproto.py", line 563, in _do_handshake
+  File "ssl.py", line 916, in do_handshake
+ssl.SSLError: [SSL: INVALID_SESSION_ID] invalid session id (_ssl.c:1010)
+Traceback (most recent call last):
+  File "patch.py", line 12, in run
+  File "contextlib.py", line 210, in __aenter__
+  File "google\genai\live.py", line 1091, in connect
+  File "websockets\asyncio\client.py", line 601, in __aenter__
+  File "websockets\asyncio\client.py", line 555, in __await_impl__
+  File "websockets\asyncio\client.py", line 470, in create_connection
+  File "asyncio\base_events.py", line 1159, in create_connection
+  File "asyncio\base_events.py", line 1192, in _create_connection_transport
+  File "asyncio\sslproto.py", line 581, in _on_handshake_complete
+  File "asyncio\sslproto.py", line 563, in _do_handshake
+  File "ssl.py", line 916, in do_handshake
+ssl.SSLError: [SSL: INVALID_SESSION_ID] invalid session id (_ssl.c:1010)
+Traceback (most recent call last):
+  File "patch.py", line 12, in run
+  File "contextlib.py", line 210, in __aenter__
+  File "google\genai\live.py", line 1091, in connect
+  File "websockets\asyncio\client.py", line 601, in __aenter__
+  File "websockets\asyncio\client.py", line 555, in __await_impl__
+  File "websockets\asyncio\client.py", line 470, in create_connection
+  File "asyncio\base_events.py", line 1159, in create_connection
+  File "asyncio\base_events.py", line 1192, in _create_connection_transport
+  File "asyncio\sslproto.py", line 581, in _on_handshake_complete
+  File "asyncio\sslproto.py", line 563, in _do_handshake
+  File "ssl.py", line 916, in do_handshake
+ssl.SSLError: [SSL: INVALID_SESSION_ID] invalid session id (_ssl.c:1010)
+  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 12, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 94, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+Traceback (most recent call last):
+  File "patch.py", line 12, in run
+  File "contextlib.py", line 210, in __aenter__
+  File "google\genai\live.py", line 1091, in connect
+  File "websockets\asyncio\client.py", line 601, in __aenter__
+  File "websockets\asyncio\client.py", line 555, in __await_impl__
+  File "websockets\asyncio\client.py", line 470, in create_connection
+  File "asyncio\base_events.py", line 1159, in create_connection
+  File "asyncio\base_events.py", line 1192, in _create_connection_transport
+  File "asyncio\sslproto.py", line 581, in _on_handshake_complete
+  File "asyncio\sslproto.py", line 563, in _do_handshake
+  File "ssl.py", line 916, in do_handshake
+ssl.SSLError: [SSL: INVALID_SESSION_ID] invalid session id (_ssl.c:1010)
+[Çar 09.09.2026 21:41:29,15] JARVIS kapandi. Cikis kodu: 0 

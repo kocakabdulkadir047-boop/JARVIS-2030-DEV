@@ -1,0 +1,150 @@
+[Çar 09.09.2026 23:34:07,43] JARVIS basladi 
+patch.py:131: DeprecationWarning: mss.mss is deprecated and will be removed in a future release; use mss.MSS instead
+Warning: there are non-data parts in the response: ['text', 'thought'], returning concatenated data result from data parts, check out the non data parts for full response from model.
+  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 60, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 102, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 60, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 102, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 60, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 102, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+[JARVIS] 🌐 IPv4 oncelikli DNS acildi (IPv6 TLS arizasina karsi korunma)
+[JARVIS] 🔌 Bağlanıyor...
+[JARVIS] ✅ Bağlandı.
+[JARVIS] 🎤 Mikrofon başladı
+[JARVIS] 👂 Alım başladı
+[JARVIS] 🔊 Ses çalma başladı
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[JARVIS] 📞 analyze_screen
+[JARVIS] 🔧 analyze_screen {'target': 'active_window', 'query': 'sol tarafta ne var?'}
+[JARVIS] 📤 analyze_screen → Ekran goruntusu alindi (JARVIS / J.A.R.V.I.S) ama analiz tamamlanamadi: Gemini v
+[JARVIS] ⚠️ unhandled errors in a TaskGroup (1 sub-exception)
+[JARVIS] 🔄 Bağlanmayı tekrar deniyor (1/12)...
+[JARVIS] 🔌 Bağlanıyor...
+[JARVIS] ✅ Bağlandı.
+[JARVIS] 🎤 Mikrofon başladı
+[JARVIS] 👂 Alım başladı
+[JARVIS] 🔊 Ses çalma başladı
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[JARVIS] 📞 analyze_screen
+[JARVIS] 🔧 analyze_screen {'query': 'Ekranda ne olduğuna bak', 'target': 'active_window'}
+[JARVIS] 📤 analyze_screen → Ekran goruntusu alindi (JARVIS / J.A.R.V.I.S) ama analiz tamamlanamadi: Gemini v
+[JARVIS] ⚠️ unhandled errors in a TaskGroup (1 sub-exception)
+[JARVIS] 🔄 Bağlanmayı tekrar deniyor (1/12)...
+[JARVIS] 🔌 Bağlanıyor...
+[JARVIS] ✅ Bağlandı.
+[JARVIS] 🎤 Mikrofon başladı
+[JARVIS] 👂 Alım başladı
+[JARVIS] 🔊 Ses çalma başladı
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[JARVIS] ⚠️ unhandled errors in a TaskGroup (1 sub-exception)
+[JARVIS] 🔄 Bağlanmayı tekrar deniyor (1/12)...
+[JARVIS] 🔌 Bağlanıyor...
+[JARVIS] ✅ Bağlandı.
+[JARVIS] 🎤 Mikrofon başladı
+[JARVIS] 👂 Alım başladı
+[JARVIS] 🔊 Ses çalma başladı
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Watcher] hata: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements. We recommend you to use the Interactions API.', 'status': 'NOT_FOUND'}}
+[Watcher] tik hatasi: object NoneType can't be used in 'await' expression
+[Webcam] ekran akisi bitti.
+[JARVIS] 📞 sys_info
+[JARVIS] 🔧 sys_info {'query': 'date'}
+[JARVIS] 📤 sys_info → Tarih: 09 September 2026, Wednesday  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 60, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 102, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 60, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 102, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 60, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 102, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 60, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 102, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+[Çar 09.09.2026 23:55:26,71] JARVIS kapandi. Cikis kodu: 0 

@@ -1,0 +1,53 @@
+[Çar 09.09.2026 22:39:10,93] JARVIS basladi 
+Warning: there are non-data parts in the response: ['text', 'thought'], returning concatenated data result from data parts, check out the non data parts for full response from model.
+  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 55, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 94, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 55, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 94, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 55, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 94, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 55, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 94, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 55, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 94, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+[Çar 09.09.2026 22:45:04,18] JARVIS kapandi. Cikis kodu: 0 

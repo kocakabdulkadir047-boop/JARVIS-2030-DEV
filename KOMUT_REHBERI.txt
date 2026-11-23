@@ -1,0 +1,776 @@
+JARVIS KOMUT REHBERI (v51) — "yardim" yazinca da bunu soyler
+================================================================================
+V51 SISTEM PAKETI (YENI!)
+  robot musun / testleri o yapsin -> JARVIS KENDI sistem testlerini
+                                   calistirir, raporu sohbet + kart gelir
+  iyi geceler                   -> durum snapshot'i (video, blender, sohbet)
+  gunaydin                      -> KALDIGIN YERDEN devam: videoyu acar,
+                                   blender dosyasini acar, ozet verir
+  borsa yatirim yapmak istiyorum -> canli grafik + EKRAN GORUNTUSU
+                                   (config/borsa/) + sanal portfoy rehberi
+  portfoy ekle dolar 100        -> sanal portfoye ekler (gercek para DEGIL)
+  portfoy durum | portfoy sifirla
+  vpn var mi / vpn olsun        -> durust VPN raporu (kuramaz, dogrular)
+  yerel mod sesi kapat/ac/durum -> offline modda sessiz/yazili calisir
+  telefon video kaydet          -> PC kamerasi 7/24 mp4 kaydeder (4K istenir)
+  telefon video durdur
+  youtube indir <link>          -> video indirme | youtube mp3 <link> -> ses
+  youtube durum
+  deneme notlari [oyun]         -> wand/trainer degisim notlari (otomatik)
+  reklam atlayici durum/durdur  -> 7/24 reklam atlama sayaci (acilista baslar)
+  lua depotcache                -> zip'i ayiklar, .manifest'leri Steam
+                                   depotcache'a KENDI tasir (lua indir
+                                   sonrasi zaten otomatik)
+  maraton disk 10/100/1000      -> maraton disk limiti GB ayari
+
+ACIL GUVENLIK (v51.1 — fare/tıklama kontrolu senin elinde)
+  fren koy                    -> JARVIS HICBIR otomatik is yapamaz
+                                 (tıklama, video, snapshot acma KILITLI)
+  freni kaldir                -> kilidi acar (otomasyonlara izin geri gelir)
+  fareyi durdur               -> ACIL STOP: tum tiklama motorlari aninda
+                                 durur + guvenlik sigortasi cekilir
+  reklam atlayici sifirla     -> sigortayi temizler
+  GUVENLIK KATMANLARI (her zaman aktif): kose 60px YASAK bolge |
+  dakikada maks 3 tiklama (asarsa otomatik dur) | JARVIS one plandayken
+  tiklama YOK | buton 2 tarama ust uste gorunmeden tiklama YOK
+
+ONARICI (v51K — JARVIS kendi dosyalarini denetler)
+  onarici tara                -> tum kaynaklari derler, bozuklari raporlar
+  onarici yedek               -> config + kaynaklari tarihe damgali zip'e alır
+  onarici rapor               -> son tarama ozeti
+
+WAND OTOMATIK DENEME (v52 - OYUNU BASLAT + HILE UYGULA + NOT AL)
+  wand deneme <oyun> [alan] [yeni] -> tam zincir: oyunu KENDISI baslatir
+                                 (steam://rungameid), pid bekler, mevcut
+                                 degeri bulur, RAM'e yazar (yedekli),
+                                 DOGRULAR ve eski->yeni'yi OTOMATIK
+                                 config/hile_denemeleri.json'a kaydeder
+  wand deneme oar para        -> ornek | wand deneme oar para 999999
+  wand denemeler [oyun]       -> tum deneme notlari (hile kismi)
+  wand deneme durdur          -> zinciri kes (FREN koyar)
+  Not: basarisiz denemeler de not alir (ogreticidir). CEVRIMICI oyunlarda
+  HILE YOK kurali degismedi.
+
+TEK SATIR TAM ZINCIR (v53 - YONETICI IZNI YOK)
+  hile <oyun> <alan> <sayi>  -> tek komut tam zincir: "hile oar para 100"
+      adimlar: wand ac (oyunu bulur/kapaliysa baslatir) -> para filtrele
+      (mevcut degeri bulur) -> RAM'e yazar (tek_atis, yedekli, <=500 adres)
+      -> ne degisti dogrulama (gerekirse 'ayni' filtresi ile ikinci gecis)
+      -> KENDISINE EKLE: hile notlari + kendi hafizasi + wand oturumu
+  hile teksat [durum]        -> zincir durumu / son sonuc
+  Ornek: "hile oar para 100" | "hile undertale hp 9999"
+  Guvenlik: FREN kilitler; cevrimici/anti-cheat oyunlarda REDDEDILIR;
+  600+ adres yaygin degerde yazma YOK (oyun cokme korumasi).
+  v53.1: OAR gibi UE oyunlari icin UZMAN yol (hile_oar dosya okuma) +
+  exe-ad NORMALIZE eslesme (tire/bosluk farki sorun degil) + 2 tur pid
+  bekleme + ayrintili hata raporu (acik exe ornekleri listelenir).
+  v53.2: i32 bulamazsa FLOAT (f32) tarama/yazim — UE oyunlari parayi
+  float saklar; sonra 'ayni' filtresi. f32 adresleri oturuma karismaz.
+  v53.3: TIP OGRENME — basarili atisin tipi hafizaya yazilir (i32/f32);
+  sonraki "hile oar para 100" BILINEN tipi kullanir. FLOAT yazimda
+  dondurma OTOMATIK baslar (oyun degeri geri yazarsa sabit tutar).
+  hile/wand <oyun> <alan> dondur  -> son yazilan degeri adreslerde sabitler
+  hile/wand <oyun> <alan> birak   -> dondurucuyu serbest birakir
+  Eski 3 adimli yol hala acik: "hile ram ara/daralt/yaz".
+  v53.4: DOSYA YOLU fallback — RAM tusendi ise oyunun KAPANISI beklenir
+  (maks 5 dk), OAR kayit dosyalarina yazilir (yerel + bulut kopya).
+  hile oar dosya <n>       -> dogrudan dosya yolu (oyun aciksa bekler)
+  hile oar zengin ol [n]   -> tam zincir (varsayilan 999999)
+  v53.5: TRAINER BUTUNLESME — teksat basarilari trainer'a ISLENIR
+  (tip + adres + deger kalici). Artik:
+  trainer <oyun> goster    -> ogrenilen RAM hedeflerini de gosterir
+  trainer <oyun> uygula    -> oyun ACIKSA ogrenilen tip ile RAM'e yazar
+                              + dondurma otomatik; KAPALIysa dosya yolu
+  trainer <oyun> birak     -> dondurucuyu serbest birakir
+  Pano/wand durum artik TIP gosterir: i32/f32 (ogrenme + dondurucu).
+  v53.6: NUMPAD'LI KADEMELI KESIF (Cheat Engine "unknown initial value")
+  Para degerini OKUYAMAZSA (ekrandan/oturumdan/dosyadan) zincir OTOMATIK
+  kesif moduna gecer: yazilabilir RAM'den ~32 MB SNAPSHOT alinir (f32+i32
+  cift gorunum), sonra SEN oyunda parayi degistirip NumPad ile soydersin:
+  hile <oyun> kesif [n]  -> kesif taramasini ELLE baslat (orn: "hile oar kesif")
+  NumPad 1 = para ARTTI | 2 = AZALDI | 3 = DEGISIMEDI | 0 = YAZ
+    (oyun odakliyken de calisir; yazili: "hile kesif 1/2/3/0")
+  hile kesif yaz <n>     -> hedef degeri tasiyan adaylara YAZ + dogrula
+  hile kesif             -> durum (aday sayisi, filtre adimi, son NumPad sonucu)
+  hile kesif sifir       -> snapshot + kaydi sil, bastan basla
+  Kesif tamam olunca: yazim + dogrulama + tip ogrenme + DONDURMA otomatik,
+  v51 hile notu + trainer'a isleme (v53.5 ayni akis). Adimlar config/
+  kesif_log.txt dosyasina da dusulur; FREN kesfi de kilitler.
+
+OYUN DILI (v54 - OGRENILEN KOMUTLAR + AI DOSYA TESPITI)
+  wand <kelime>            -> bilinmiyorsa SORAR: "BU KOMUT NE?"
+                              (orn: "wand mermi")
+  wand <kelime> : <ne?>    -> OGRENIK: "wand mermi : sinirsiz mermi"
+      AI (Gemini) komutu ayristirir (alan+deger), yoksa yerel sozluk
+      (sinirsiz -> 9999999, mermi -> cephane). Hedef oyun otomatik:
+      acik oyun -> wand oturumu -> son oynama.
+      OGRENINCE: hile sekmesi KENDILIGINDEN acilir + arka planda AI'LI
+      DOSYA TESPITI: hangi kayit dosyasinda ne degistirilir, yerel tarama
+      dogrulamasiyla birlikte raporlar (config/oyun_dili.json'a islenir).
+  wand <kelime> (tekrar)   -> SORMADAN CALISTIRIR (v53 teksat tam zinciri:
+      RAM yolu -> f32 -> ne degisti -> dosya yolu) + sekme acilir.
+  oyun dili liste          -> ogrenilen komutlar
+  oyun dili sil <kelime>   -> unut
+  Guvenlik: FREN ogrenmeyi de calistirmayi kilitler; teksat guvenlik
+  katmanlari (cevrimici red, <=500 adres, yedek) uygulama adiminda gecer.
+
+TEK TUS (v55 — TUM OYUNLARDA GLOBAL KISAYOL, varsayilan F8)
+  JARVIS ACILINCA kendiliginden kurulur: F8'e her yerde bas (OYUN
+  ODAKLIYKEN BILE) -> JARVIS wand hilesini kendi calistirir:
+    1) oyunu bulur (elle hedef -> ogrenilen komut -> SU AN ACIK oyun ->
+       OAR uzmani -> son oynama; hicbiri yoksa 'oar'),
+    2) mevcut degeri okur (oturum/kayit/uzman), okunamazsa OTOMATIK
+       KADEMELI KESIF'e (v53.6) duser,
+    3) yazar + dogrular + gerekirse dondurur; FREN/cevrimici red gecerli.
+  tek tus                  -> durum (kapaliysa OTOMATIK kurar)
+  tek tus simdi            -> zinciri HEMEN elle baslatir (test)
+  kisayol <tus>            -> tus degistir (kisayol f8 / f9 / num1 / a)
+  kisayol kapat | baslat   -> kancayi kapat / ac
+  kisayol hedef oar para 999999  -> varsayilan hedefi sabitle
+  kisayol hedef temizle    -> otomatik cozume don
+  JARVIS'in kendi penceresi on plandayken tus YOK SAYILIR (yazi yazarken
+  yanlis tetiklenmesin).
+
+OZELLIKLER (v59 — 100 SISTEM-ICI OZELLIK, hepsi GERCEK)
+  "ozellik = sistem ici olan seyler". JARVIS'in makinenin ICINDEN yapabildigi
+  100 somut is; 14 kategori: sistem / pencere / surec / dosya / klavye / medya
+  / fare / ekran / pano / ag / guc / akil / hile / araclar.
+  ozellikler                -> 100 ozelligin kategori kategori TAM listesi
+  ozellikler <kategori>     -> yalniz o kategori (orn: "ozellikler fare")
+  ozellik sayisi            -> kac ozellik var (100)
+  ozellik ara <kelime>      -> isim/anahtar aramasi
+  ozellik <ad> [arg...]     -> CALISTIR (orn: "ozellik ram bos")
+  ozellik <sira>            -> sira numarasiyla calistir (orn: "ozellik 42")
+  ORNEKLER:
+    ozellik ram yuzde | ozellik disk bos | ozellik acik kalma
+    ozellik pencere listesi | ozellik aktif pencere | ozellik masaustu goster
+    ozellik surec ara chrome | ozellik en cok ram | ozellik yonetici mi
+    ozellik klasor listele <yol> | ozellik dosya oku <yol> 20
+    ozellik yaz merhaba dunya | ozellik ctrl c | ozellik tus f4
+    ozellik ses ac | ozellik oynat duraklat | ozellik sonraki parca
+    ozellik fare konumu | ozellik tikla 400 300 | ozellik surukle 10 10 500 500
+    ozellik ekran goruntusu | ozellik piksel rengi 100 100 | ozellik renk ara #FF0000
+    ozellik ekran oku        -> ekrani AI ile ANLAMLANDIRIR
+    ozellik pano oku | ozellik pano yaz <metin>
+    ozellik ping google.com | ozellik wifi listesi | ozellik internet var mi
+    ozellik kilit ekrani | ozellik ekrani kapat | ozellik ekrani yak
+    ozellik anlam cikar <metin> | ozellik plan yap <istek> | ozellik ozetle
+    ozellik cevir merhaba | ozellik beyni test
+    ozellik hesapla 12*8+3 | ozellik notepad | ozellik gorev yoneticisi
+  K TUSU: Giris cubugundaki K (= OZELLIKLER PANOSU) tusuna basinca acilan
+  panoda 100 ozelligin TAMAMI kategori kategori listelenir (aranabilir); bir
+  ozellige tiklayinca komut sohbete gider ve JARVIS hemen uygular. Ayni
+  panoda 1.000.000 AJAN bolumu de vardir (asagiya bak).
+  NOT: "gizli sekme/fren" gibi guvenlik katmanlari aynen gecerli (fare tik'i
+  FREN aktifken atilmaz).
+
+AJAN 1M (v59 — 1.000.000 AJAN SANAL KATALOG; hepsi GOZ + EL + AKIL)
+  "ajan = gozu onumde bilgisayarimi kontrol edebilen, gorebilen, klavyemi/
+   faremi kontrol edebilen, anlam cikarabilen". Bu yuzden her ajan 3 cekirdek
+  yetenekle dogar: GOZ (ekran goruntusu + AI ile anlama), EL (klavye+fare),
+  AKIL (dogal dil + plan + otonom yurutme).
+  NASIL: 1.000.000 ajan GERCEK liste DEGIL — FORMULLE uretilir (25 kategori x
+  8 uzmanlik). SIFIR bellek, ANINDA. (Eski 1M komut paketi 36 sn/130 MB idi;
+  tekrarlanmadi.)
+  ajanlar                        -> katalog ozeti + ilk 12 ajan
+  ajanlar sayi                   -> 1.000.000
+  ajan katalog <n>               -> ilk n ajan (1..200)
+  ajan katalog ara <kelime>      -> katalogda ara (kategori/beceri/uzmanlik)
+  ajan katalog kategori <ad>     -> o kategoriden ajanlar
+  ajan <no>                      -> ajan karti (GOZ/EL/AKIL seviyeleri)
+  ajan <no> calistir <istek>     -> ajani GERCEK motorda calistirir: AI plan
+                                    kurar, ekrana bakar, tiklar/yazar; ekran
+                                    goruntusu kaniti da doner
+  ajan <no> gor                  -> ajanin gozuyle ekrana bakar (AI anlatir)
+  ajan <no> anlam <metin>        -> ajanin akliyla anlam cikarir
+  ORNEK: "ajan 42" -> "ajan 42 calistir ekrandaki oyun penceresini bul".
+  NOT: "ajan yap ...", "ajan durdur" gibi ESKI komutlar AYNEN calisir
+  (katalog kapisi onlara dokunmaz).
+
+CASUS (v59 — KENDINI IZLEME / "casusluk sov" + USB'YE OTOMATIK KAYIT)
+  Kendi bilgisayarini izler: zaman + AKTIF PENCERE basligi (+ istege bagli pano
+  metni + periyodik ekran goruntusu). HEPSI SENIN ICIN; ag yok, tus yakalama
+  (keylogger) YOK, baskasini gozetleme YOK — sadece kisisel gunluk/sov.
+  KAYIT YERI: USB TAKILIYSA  <USB>\JARVIS_CASUS   (CIKIS YOLU)
+              USB yoksa      Belgeler\JARVIS_CASUS
+  KISAYOL   : F10  ve  Ctrl+T  ile AC/KAPA (global; baska uygulamadayken de).
+  casus                    -> (kapaliysa) baslatir / durum + CIKIS YOLU
+  casus baslat | casus durdur
+  casus durum              -> acik mi, kac kayit, kayit klasoru (CIKIS YOLU)
+  casus usb                -> USB var mi, hangi surucu, kayit yolu
+  casus klasor             -> kayit klasorunu acar
+  casus son 20             -> son kayitlar (pencere gecmisi)
+  casus kare               -> SIMDI tek ekran goruntusu al
+  casus tus <f10|ctrl+t>   -> kisayolu degistir
+  casus pano ac | kapat    -> pano metnini de kaydet / kaydetme
+  casus aralik 20          -> pencere gunlugu araligi (saniye)
+  Dosyalar: gunluk.jsonl (kayitlar), kare_*.bmp (goruntuler), CIKIS_YOLU.txt
+  FREN aktifken casus baslamaz/ durur (guvenlik).
+  casus rapor [n]          -> INSAN DILIYLE DURUM RAPORU: SU AN ACIK olan
+                              uygulama, FARE KONUMU, son olaylar
+                              (+ acildi / - kapandi / > on plana /
+                              kopyalandi: <metin> / fare -> x,y / ekran
+                              goruntusu), SON SORULARIN ve CIKIS YOLU.
+  casus son 20             -> ham kayit satirlari
+  casus mesaj <kisi> <konu>
+                           -> YAZMADAN MESAJ: AI taslak yazar, WhatsApp
+                              akisini baslatir (orn: casus mesaj Ayse yarin
+                              bulusalim). FREN'de gonderilmez.
+
+HILE TEKLIF (v59 — oyunun "acigini" bulup HILE ONERISI sunar)
+  hile teklif [oyun]       -> acik oyunu bulur; kayit dosyasi/wand hazir
+                              bulgularini tarar ve SOMUT teklif listesi verir
+  hile oneri [oyun]        -> aynisi
+  hile acik bul [oyun]     -> "acik taramasi" (teklifle ayni)
+  Cikti: onerilen alanlar (para/cash/can/cephane/xp/seviye/malzeme) ve her biri
+  icin hazir komut. Cevrimici/anti-cheat oyunda hile YASAK (ban kilidi).
+  Ornek: hile teklif oar -> "hile oar para 999999999" gibi komutlari onerir.
+
+DONMA AZALTMA (v59 — "arayuz cok donuyor" sikayeti)
+  1) 1M kelime MARATONU artik agir isleri (TUM index JSON yazimi + disk
+     beklecisi + sohbete gorsel atma) her 25 kelimede DEGIL, ZAMAN kisitli
+     yapar (index ~15 sn'de bir; sohbete gorsel en fazla 3 dakikada bir).
+     Eskiden index dosyasi kelime sayisiyla KARE olarak buyuyup arayuzu
+     kilitliyordu.
+  2) "merhaba görseli" HATASI DUZELDI: AI gorsel alindiktan sonra eski kod onu
+     None ile eziyordu -> gorsel hic gelmiyordu. Artik gelir.
+  3) "merhaba görseli" / "kelime görseli <kelime>" artik ARKA PLANDA uretir;
+     AI gorsel cagrisi UI thread'ini KILITLEMEZ (eski halde donuyordu).
+  4) GORSEL OLMIYORDU (asil neden!): AI motoru JPEG doner; tkinter JPEG
+     yukumiyor ve Pillow (PIL) kurulu DEGIL -> gorsel hic gorunmuyordu.
+     Cozum: jarvis_gorsel modulu (Windows GDI+) JPEG'i PNG'ye cevirir; maraton
+     ve sohbet gorseli artik PNG uretir/gosterir. Maraton boylece BOSA
+     CALISMAZ.
+  5) GORSEL URET "gorsel uret: <konu>" HALA GORUNMUYORDU (2. neden): dosya
+     JPEG verisiyle '.png' adiyla kaydediliyordu -> tkinter yukleyemiyordu.
+     Artik dosya uzantisi ICERIGE gore secilir (.jpg) ve GDI+ ile PNG'ye
+     cevrilir. Canli kanit: Pollinations JPEG (41 KB) -> PNG -> tkinter
+     512x512 yukledi.
+  6) "2 SAATTIR DUSUNUYOR" KILITLENMESI: canli oturum kurulamayinca durum
+     THINKING/INITIALISING'de SONSUZA KADAR kilitli kaliyordu. Artik DURUM
+     BEKCISI var: konusma yokken bu durum 75 saniyeyi asarsa kendini
+     LISTENING'e toparlar (arayuz asla "dusunuyor"da donmaz).
+
+TELEFON UYGULAMASI (v60 — PWA: APK'siz kurulabilir uygulama + 4K + 7/24)
+  Ne oldu? Telefondaki kopru sayfasi artik GERCEK bir uygulama gibi calisiyor:
+  manifest + service worker + kendi ikonu. Chrome'da "Ana ekrana ekle"
+  dediginde tarayici cercevesi olmadan, tam ekran, kendi ikonuyla acilir
+  (Android SDK olmadan APK'nin yaptigi is).
+  Adres: http://<PC-IP>:8766/telefon
+  Uclu noktalar (hepsi ayni sunucuda):
+    /telefon              -> uygulama sayfasi
+    /telefon.webmanifest  -> uygulama kimligi (tam ekran, ikon)
+    /telefon-sw.js        -> cevrimdisi kabuk onbellegi
+    /telefon-icon.svg     -> uygulama ikonu
+  4K KAMERA: sayfadaki "4K" butonu cozunurlugu cevirir (4K 3840x2160 ->
+  2K -> 1080p -> 720p); kamera o cozunurlukte acilir ve ekranda GERCEK
+  cozunurluk + fps yazar. "AI 1920p" butonu AI'ya gidecek karenin
+  genisligini secer (960 / 1280 / 1920 / 3840). Kamera 4K kalir, AI'ya
+  olceklenmis kare gonderilir (bant genisligi ve hiz icin).
+  7/24 NOBET: "Nobet" butonu acilinca
+    - ekran Wake Lock ile kapanmaz,
+    - kamera durursa (onended/hata) 2-3 sn icinde KENDI kendine geri gelir,
+    - telefon ekrani kapanip acilinca kamera yeniden alinir.
+  AI GORUYOR: saniyede 1 kare /api/telefon-kare ile ayni canli AI oturumuna
+  gonderilir; durum satirinda "gonderilen kare" sayaci gorunur.
+  PIN (iki gercek hata duzeltildi):
+    1) Telefon komutlari PIN GONDERMIYORDU; sunucu PIN zorunlu tuttugu icin
+       her komut 403 ile reddediliyordu. Artik uygulamada PIN kutusu var.
+    2) KRITIK: PIN uretimi 'secrets.randint' kullaniyordu — secrets modulunde
+       randint YOK. Bu yuzden PIN dosyasi BOS olusuyor, bos PIN kontrolu
+       atlanıyor ve "PIN zorunlu" guvenlik kapisi SESSIZCE devre disi
+       kaliyordu. Dogru cagri: secrets.randbelow(1000000).
+    Artik PIN ACILISTA uretilir ve ekranda yazilir:
+      SYS: 🔑 Telefon PIN: 052496  (dosya: config/telefon_pin.txt)
+    Telefondaki PIN kutusuna bu 6 haneyi yaz ve Kaydet'e bas.
+  KURULUM: Telefon ve PC ayni Wi-Fi'de olsun; Chrome'da adresi ac,
+  mikrofon/kamera iznini ver, sonra menu > "Ana ekrana ekle".
+  COK ADRES + DOGRU ADRES SECIMI ("web acilmiyor" cozumu):
+  JARVIS acilista TUM yerel IPv4 adreslerinin linkini yazar. Artik GERCEK
+  yerel ag adresi ONE alinir (192.168.* > 10.* > digerleri > 172.* sanal).
+  Eskiden varsayilan rota sanal bir adaptore dusuyordu (maske
+  255.255.255.255) ve telefon o adrese ULASAMIYORDU — "web acilmiyor"
+  sikayetinin sebebi buydu.
+  Bu makinenin DOGRU adresi: http://192.168.1.111:8766/telefon
+  JARVIS sunucusu 0.0.0.0:8766 dinler (tum arayuzler) ve duvar kurallari
+  hazir: "JARVIS Telefon Koprusu" (TCP 8766, In, Allow).
+  ACILMIYORSA sirayla:
+    0) JARVIS.exe ACIK olmali — kapaliysa 8766 hic dinlenmez (en sik sebep).
+    1) Telefon ayni Wi-Fi'de mi (mobil veriyi kapat).
+    2) PC'den dogrulama: ayni adresi PC tarayicisinda ac.
+    3) Adres cubuguna elle yaz: 192.168.1.111:8766/telefon
+    4) Windows Guvenlik Duvari'nda 8766 iznini kontrol et.
+
+WEMOD (v58 - H TUSU: WeMod'u acar/one getirir)
+  Giris cubugundaki H tusuna basinca ONCE WEMOD acilir.
+  Kurulum: %LOCALAPPDATA%\Wand\ (Squirrel) — Wand.exe / app-<surum>\Wand.exe
+  Derin baglanti: wemod:titles/<id>  (One-armed robber -> 77322, canli kanit)
+  * WeMod kapaliysa: oyunun trainer sayfasi acilir.
+  * WeMod acikken: pencere ON PLANA getirilir (tray'de olsa bile).
+  * WeMod yok/acilamazsa: sirayla WAND KLON (v56), sonra ORIJINAL hile
+    panosu acilir (guvenli geri donus).
+  wemod                    -> ac / one getir
+  wemod <oyun>             -> o oyunun trainerini ac (orn: wemod oar)
+  wemod durum              -> kurulum + exe + acik mi + kayitli id
+  wemod id <oyun> <sayi>   -> oyun icin WeMod title id'sini kaydet
+  Not: id'yi bilmiyorsan WeMod'da oyunu bir kez ac; id 'wemod durum' ile
+  gorunur ya da elle kaydedersin.
+
+WAND KLON (v56 - wand'in bagimsiz ikinci kopyasi; H zaten WeMod acarsa da
+komutla acilir)
+  Giris cubugundaki H tusuna basinca WeMod yoksa WAND KLON acilir.
+  TEMA    : orijinal hile panosuyla BIREBIR ayni koyu tema
+            (#04100c zemin, #0c2a1e kutu, #b3ff66 wand vurgusu, #00ff88/
+             #00e5ff/#ffd166 renkler).
+  PRENSIP : wand ile AYNI tam zincir (mevcut deger -> yaz -> geri oku &
+            dogrula -> yedek -> f32 ise dondur -> gecmis/geri al); deger
+            okunamazsa KADEMELI KESIF'e (v53.6) duser.
+  HIZ     : AYNI (klonun kendi taramasi YOK; dogrudan ayni motoru cagirir,
+            zincir arka planda kosar).
+  BAGIMSIZ: kendi gecmisi config/wand_klon_gecmis.jsonl; orijinal wand ve
+            hile panosuna dokunmaz.
+  Klon penceresindeki dugmeler: CALISTIR | DONDUR | BIRAK | GERI AL |
+            GECMIS | ORIJINAL HILE PANELI | KAPAT.
+  wand klon                -> klon panelini acar (H ile ayni)
+  wand klon durum          -> durum
+  wand klon kapat          -> pencereyi kapatir
+  Klon acilamazsa H tusu ESKISI gibi orijinal hile panosunu acar (guvenli).
+
+GUVENLIK PAKETI (v57 - canli kanit: '999999 -> 1' yazimi OAR'da
+"Altered save file detected" tetikledi)
+  1) DEGER DUSURULMEZ: para/can/cephane/cash/gold icin hedef, mevcut
+     degerden KUCUKSE yazim REDDEDILIR (hile artirmali). Zorlamak icin:
+       hile oar para 1 zorla
+  2) CANLI DEGER: kayit dosyasi BAYAT olabilir (oyun ekranindaki para ile
+     uyusmayabilir). Gercek degeri sen ver, arama onu kullansin:
+       hile oar para 9999999999 canli 1632856179
+     (Klon panosunda da 'CANLI' kutusu var.)
+  3) UE/Shipping oyunlarda (OAR dahil) ONCE f32 (float) taranir; kayit
+     dosyasindan gelen deger canli oyunda bulunamazsa YAZMA YAPILMAZ
+     (yanlis adreslere yazip kaydi bozmamak icin) ve cozum onerilir.
+  4) OAR kayit BUTUNLUK DENETIMI yapar (CashSave <-> SecureCashSave).
+     Yanlis/bayat degerle yazim oyunda tamper uyarisi cikarabilir.
+  NOT: Ekrandaki para ile kayit dosyasi uyusmuyorsa guvenli yol:
+       hile ram ara oar <ekrandaki deger>  ->  hile ram daralt oar degisti
+       ->  hile ram yaz oar <yeni>
+
+AJAN (otonom isler)
+  ajan <is>                 -> dusunur, planlar, yapar (dosya ac, ara, yaz...)
+  ajan gorev <is>           -> aynisi, gorev olarak
+  OGRETMESIZ: tikla/yaz/vision — ekrana bakar, hedefi kendisi bulur.
+
+OYUN ALGILAMA + OYNATMA
+  oyun oyna                 -> 90 sn kendisi oynar (sense-think-act)
+  oyun oyna 120             -> 120 sn
+  oyun oyna koye kadar yuru -> hedefli gorev
+  oyun durum | oyun durdur  -> durum / kes
+  oyun yardim <oyun>        -> tus rehberi + taktik
+  minecraft koy nerede      -> koy bulucu
+
+LUA ARACI (v49+v50 — WALFTECH BIREBIR PAKET)
+  lua ara <isim|appid>        -> steamdb tarzi arama (walftech + Steam)
+  lua indir <isim|appid>      -> GERCEK walftech zip'i indirir (S3 deposu):
+                                 <appid>.lua + <depot>_<manifest>.manifest +
+                                 Read me (ekran goruntundeki yapiyla ayni)!
+                                 S3'te yoksa yerel uretec: birebir lua yazar
+                                 (setManifestid + addappid + Share Depots)
+  lua indir a, b, c           -> toplu indirme | lua durdur -> sustur
+  lua durum                   -> kac lua, klasor nerede
+  lua panel                   -> tarayici paneli http://127.0.0.1:8772
+  SORU-EKI YASAGI (v50): 'zil ne demek', 'bu ne', 'nasil yani',
+  'fal nedir' gibi ekler KOMUT CALISTIRMAZ — sadece aciklama verir.
+  SOHBETTE GORSEL (v50): '<kelime> gorseli' yaz (orn: merhaba gorseli)
+  -> AI gorseli ANINDA uretilip sohbette gosterilir.
+
+EGLENCE (v47+v48 — BIREBIR KURAL: komutlar SADECE yazildigi gibi calisir;
+  cumle icinde gecen kelimeler tetiklemez — onlari AI karsilar)
+  kelime oyunu                -> 5 harfli bulmaca, 6 hak, renk ipucu
+  kelime oyunu <tahmin>       -> tahminini yaz (örn: kelime oyunu kral)
+  kelime oyunu yeni           -> yeni kelime
+  fal [soru]                  -> kahve fali (ciddiye alma)
+  espri                       -> kafa bulan espiri
+  meydan okuma [kolay|orta|zor|efsane] -> 24 saatlik cesaret gorevi
+  yaptim                      -> gorevi tamamla + gunluge EFSANE damgasi
+  gizli gunluk yaz <parola> <metin> -> parolali gizli gunluk
+  gizli gunluk oku <parola>   -> gunlugunu oku (parolasiz RED)
+  gizli gunluk sil <parola>   -> izleri yok et
+  skorlar [sifirla]           -> kelime oyunu skor tablosu
+  zil <saniye> [adet]         -> her N sn bir zil (zil 10, zil 10 5);
+                                 JARVIS kapaliyken de CALMAYA DEVAM EDER
+  zil durdur | zil durum      -> zili sustur / durum
+  (durum config/eglence/ altinda; her sey offline)
+
+VIDEO ANALIZ (v46 — JARVIS video IZLER)
+  video analiz <dosya.mp4>      -> kareleri cikarir, AI rapor verir
+  video analiz <tam yol>        -> Videos klasoru otomatik denenir
+  Rapor: oyun adi, hile menu/program, degisen degerler
+  (config/video_analiz/ altina kaydedilir; YouTube icin yt-dlp gerekir)
+
+TRAINER (v45 — OYUNA OZEL DOSYA; UE oyunlarinda ONERILEN YOL)
+  trainer <oyun> olustur         -> tum hile hedeflerini 0'dan uretir
+  trainer <oyun> uygula          -> kayitlara yazar (oyun KAPALI olmali)
+  trainer <oyun> goster          -> trainer icerigi
+  ORNEK: trainer oar olustur -> trainer oar uygula -> oyunu ac
+  (hedef degerleri otomatik: para 999999, seviye +1; dosya: config/trainer/)
+
+WAND / ASA (v43 — MANTIK + OGRENE + DONDURMA + PANO)
+  wand <oyun> para <mevcut> <yeni>    -> TEK ATIS (ilk atis ~1 sn)
+  wand <oyun> para                    -> degeri ben bulur, ben yazarim
+  2. atis OTOMATIK HIZLI              -> oturum adresleriyla TARAMASIZ
+  wand <oyun> dondur                  -> son degeri CANLI sabitler (asa geri doldurur)
+  wand <oyun> <mevcut> <yeni> dondur  -> at + sabitle TEK komutta
+  wand durum | wand gecmis            -> ogrenme karti + atis gecmisi
+  wand pano                           -> temali canli HTML: 127.0.0.1:8771
+  wand unut <oyun>                    -> ogrenilenleri sil
+  wand geri al <oyun>                 -> son RAM yazimini UNDO (coktuysa/yanlissa)
+  (ASA ogrenir: config/wand_bilgi.json; exe kapansa da hatirlar)
+  (UE/Shipping oyunlarda genis RAM yazimi OTOMATIK SINIRLANIR — cokme korumasi;
+   genis eslesme reddedilir, oyunu kaydet + "hile oto <oyun>" DOSYA yolu onerilir)
+
+HILE (TEK KAPI, %100 GERCEK)
+  hile oto <oyun> [para|can] [yeni]   -> WAND: TEK KOMUT. Degeri ben bulur,
+                                         RAM'e ben yazarim (saniyeler).
+  hile durum                          -> kurulu/acik oyun + hazir bulgular
+  hile <oyun>                         -> oyunun hile ozeti
+  hile arastir <oyun>                 -> kayit dosyalarindan bulgu
+  hile <oyun> para 15000              -> TEK SATIR: dosya/Steam Cloud/RAM otomatik
+  hile oar cash 444444                -> aynisi (takma ad: oar)
+  hile ram ara <oyun> <deger>         -> (elle) oyun ACIKKEN bellekte ara
+  hile ram daralt <oyun> degisti      -> (elle) adim 2: filtrele
+  hile ram yaz <oyun> <yeni>          -> (elle) adim 3: yaz + dogrula
+  hile test                           -> kapi KENDINI sinar (8 kontrol; 8/8 = TAM GUCTE)
+  hile uygula <oyun> [<bulgu> <deger>]| hile panel
+  KURAL: CEVRIMICI/anti-cheat oyunda HILE YASAK (ban kilidi otomatik).
+
+GIZLI SEKME (kayit yok)
+  gizli sekme <adres>       -> Chrome/Edge/Brave/Firefox ozel pencere
+  porno ac <site>           -> https://www.<site>.com ozel acilir
+
+OZ-URETIM (kendi dosyasini kendisi yazar; freebuff gerekmez)
+  yetenek uret <ad> : <istek>   -> AI'ya kod YAZDIRIR, tarar, kaydeder
+  yetenek <ad>                  -> calistirir
+  yetenek duzelt <ad>           -> bozuk yetenigi KENDI onarir
+
+HAFIZA (ultra)
+  hafiza son 10 | hafiza ara <kelime> | hafiza ozet
+
+INSAN MODU (bekci + muhabbet + kontrol)
+  bekci baslat [sn]         -> gozcu dongusu (otomatik baslar zaten)
+  bekci durum | bekci durdur
+  kontrol                   -> TAM DURUM raporu (insan dili)
+  muhabbet [konu]           -> kisa samimi sohbet (arada kendisi acar)
+  gece 23:00                -> gunun ozetini sesli verir (gunde bir)
+
+ZAMANLAMA
+  zamanla 21:30 ajan <is>   -> saatinde
+  her 5 dakika ajan <is>    -> periyodik
+  zincir <adim1> sonra <adim2> ...
+
+3D MOTOR (v61 — "3D:" ile baslar, three.js goruntuleyici config/3d_gosterici.html)
+  3D: kirmizi kup yarat | 3D: mavi kure donsun | 3D: yesil tor ziplasin
+  3D: listele | 3D: kup1 ucsun (ad-ile hareket, YENI nesne uretmez)
+  3D: sil kup1 | 3D: temizle | 3D: kaydet | 3D: yukle | 3D: goster
+  10 sekil x 26 renk x 6 hareket (spin/jump/float/dance/orbit/swing)
+
+3D BILESIK MODELLER (v61.2/v61.3/v74.3 — parcalardan birlesen gruplar)
+  3D: ev yarat            -> 5 parca (govde+cati+kapi+2 pencere), grup: ev1
+  3D: yesil agac yarat    -> 3 parca
+  3D: araba yarat         -> 11 parca: govde + kabin + cam bandi + 2 far +
+                             2 stop + 4 teker (teker yan yatik, cap 1.08 m)
+  OLCU (v74.3 — metreyi SEN soyle, araba oranli olceklenir):
+     3D: araba uzunluk 4.5 m genislik 1.8 m        (gercek otomobil)
+     3D: araba uzunluğu 17.7 m kaınlığı 2.1 m      (standart: 17.7 x 2.1)
+     Sayi vermezsen STANDART: 17.7 m uzunluk x 2.1 m genislik x 2.55 m
+     yukseklik. Izgara 1 birim = 1 metre; kamera sahneye OTOMATIK sigar.
+     (Not: 17.7 m bir otomobil degil otobus/limuzin boyudur; gercek araba
+     icin "3D: araba uzunluk 4.5 m genislik 1.8 m" yaz.)
+  3D: masa yarat (5) | 3D: kule yarat (4) | 3D: koyun yarat (6)
+  3D: kirmizi araba donsun -> araba yaratir + TUM parcalar doner (v61.3: dolu
+                             sahnede bile dogru; eski bugta son nesneye takiliyordu)
+  3D: ev1 donsun          -> GRUP hareketi: ev1'in butun parcalari doner
+  buyuk/kucuk desteklenir: 3D: buyuk kule yarat
+  TELEFON: /telefon sayfasindaki SAHNE tusu 3D sahneyi telefona gonderir
+
+3D KALITE + VIDEO IZLEME (v74.2/v74.3)
+  3D: 16k | 3D: gercekci | 3D: 16k yap   -> 16K GERCEKCI mod (VARSAYILAN ACIK):
+     yuksek piksel orani, yumusak golge (PCFSoft), ACES filmik ton, ortam
+     isigi (Hemisphere), sRGB, gercekci metal/puruzluluk. Rozet: '16K gercekci'
+  3D: normal | 3D: dusuk kalite        -> normal mod
+  3D: goster  -> goruntuleyiciyi ACAR (kalite ayarini uygular)
+  ONEMLI (v74.2): '3D: ...' ile nesne YARATMAK ARTIK PENCERE ACMAZ. Sahne
+     kaydedilir; acik olan goruntuleyici 3 saniyelik yoklamayla kendini
+     yeniler. Nöbetçi kalp atışı da pencere açmaz. Pencere yalnız '3D: goster'.
+  3D: araba video.mp4      -> VIDEoyu IZLER ve FILM ELESTIRISI yazar
+  3D: film izle <dosya>    -> ayni is
+     Nasil: OpenCV (cv2) ile filmden 8 kare ILERI SARILARAK cikarilir
+     (~0,3-0,6 saniye; 1,5 saatlik filmde de) ve TUM kareler tek cagrida
+     AI'ya gonderilir; AI bir film elestirmeni gibi TURKCE, maddeli yorum
+     yazar (konu/akis, kadraj-isik-renk, oyunculuk, artilar, eksiler, puan).
+     ffmpeg GEREKMEZ. Dosya aranir: proje klasoru + Indirilenler/Masaustu/
+     Videolar. Kareler: config/video_kare/, rapor: ekranda.
+
+YASAM ASISTANI (v62 — notlar, zamanlayici, cevirici, sifre, oyunlar)
+  NOTLAR:   not ekle marketten sut al | notlar | not ara sut | not sil 2
+            (kisa yol: "not sut al"; kalici: config/v62_notlar.json)
+  SAYAC:    sayac 30 saniye | sayac 5 dakika | sayac iptal (bitince log'a yazar)
+  KRONO:    krono baslat | krono (aradaki durum) | krono durdur
+  CEVIRICI: donustur 5 km mil | donustur 100 c f | donustur 2 gb mb
+            birimler -> tam liste (uzunluk/agirlik/hacim/veri/hiz/sicaklik)
+  GUVENLIK: sifre uret 20 | sifre uret 12 basit | md5 <metin> | sha256 <metin>
+  OYUNLAR:  zar at [1-6] | yazi tura (para at) | sayi tahmin 100 / tahmin 45 /
+            tahmin dur (buyuk-kucuk oyunu, deneme sayaci ile)
+  SAAT:     saat farki tokyo | new york | londra | dubai | ... (yaklasik UTC)
+  ALARM:    alarm 07:30 isme kalk | alarm listele | alarm iptal
+            (ertesi gune otomatik erteler; log'a "ALARM!" yazar + 3 BEEP)
+            v64: COKLU alarm + KALICI (config/v64_alarmlar.json) — JARVIS
+            yeniden baslasa bile alarmlar kendiliginden geri yuklenir;
+            "alarm iptal 07:30" tek saatlik alarmi dusurur
+  HATIRLATIC: hatirlat 10 dakika sut ic | hatirlaticilar | hatirlat iptal
+            (saniye/dakika/saat; v63, bitince 2 BEEP)
+  HESAP:    hesap 5*3+2 | hesap (5+3)*2 | hesap 2 uzeri 10 | hesap 2^8
+            hesap karekok 144 | hesap yuzde 20 of 250 | hesap 250 nin yuzde 20 si
+            (x=carpi, ^=us, guvenli AST; kod calistirmaz; v64)
+  PARA:     kur (tum kurlar) | dolar 100 | 100 dolar | euro 50 | tl 500 dolar
+            500 tl kac dolar | 100 dolar kac tl | sterlin 20 | jen 5000
+            (cift yonlu cevrim, guncel kur + onbellek; internet yoksa
+            eski kurlarla devam eder; v64/v65)
+  TAKVIM:   etkinlik ekle yarin 14:00 doktor | etkinlik cuma 18:30 ders
+            etkinlik 13.10 09:00 rapor | takvim (liste) | etkinlik sil 1
+            takvim temizle | bugun ne var (v65; zamani gelince 3 BEEP + log;
+            JARVIS yeniden baslasa da etkinlikler geri yuklenir)
+  KUR NOBETCISI (v65): saat basi otomatik kur kontrolu — USD/TL %1'den
+            fazla oynarsa 2 BEEP + "KUR UYARISI" log'u. Acilista kendiliginden baslar.
+  TEKRARLAYAN ETKINLIK (v66): etkinlik ekle her cuma 18:30 ders
+            (her hafta otomatik yeniden kurulur; restart sonrasi da yasar)
+  HAVA (v66): hava | hava izmir | hava ankara yarin | hava izmir yarin
+            (open-meteo ucretsiz API; bugun+yarin tahmin, 30 dk onbellek,
+            internet yoksa eski veri; sehir koordinatlari da onbelleklenir)
+  ZAMANLAYICILAR (v66): tek komutla TUM zamanlayici durumu — alarm,
+            hatirlatic, sayac, krono, etkinlikler, kur nobetcisi.
+  HABER (v67): haber | haber spor | haber ekonomi 5 | haber dunya 3
+            haber teknoloji | haber magazin | haber saglik (1-8 adet;
+            TRT + CNN Turk yedek kaynak, 15 dk onbellek, internet yoksa
+            eski haberlerle devam eder)
+  HAVA NOBETCISI (v67): her sabah 08:00 otomatik hava duyurusu (1 BEEP);
+            yagisli gunlerde ek "SEMSIYE UYARISI". Acilista kendiliginden baslar.
+
+--- v68 (2026-10-01) ---
+  TODO (v68): todo ekle ders calis | todo sut al (kisa yol) | todo
+            todo lar (sadece aciklar) | todo tamam 2 | todo sil 1
+            todo temizle (kalici: config/v68_todo.json; numaralar
+            silince tekrar kullanilmaz; JARVIS kapanip acilsa da durur)
+  HABER AC (v68): once "haber" ile listeye bak, sonra "haber ac 2"
+            (2. haberi varsayilan tarayicida acar; kategori de olur:
+            "haber ac spor 1"). Linkler v67 onbelleğinden gelir.
+  HABER OZET (v68): haber ozet | haber ozet spor — basliklari AI ile
+            2-3 cumlelik Turkce ozet haline getirir (api_keys.json'da
+            anahtar yoksa baslik analizinden kaba ozet verir).
+  AKILLI HAVA (v68): hava kaydet izmir — artik "hava" ve sabah
+            duyurulari bu sehirden gelir (bir kez sorar, hep hatirlar).
+            hava giyim — sicakliga + hava koduna gore giyim onerisi
+            (incecik/katmanli/kapüsonlu/kis montu, yagmurda semsiye,
+            karda bot, firtina uyarisi). config/v68_hava.json
+
+--- v69 (2026-10-01, 2. tur) ---
+  GUN OZET (v69): gun ozet — tek bakis sabah raporu: hava+giyim,
+            USD/TL kuru, acik yapilacaklar, bugunku etkinlikler.
+            gece ozet — ayni raporun YARIN versiyonu (yatmadan once
+            yarini planla).
+  TEKRARLAYAN TODO (v69): todo ekle her pazar alisveris |
+            todo ekle her cuma 18:00 rapor — "todo tamam <no>" deyince
+            is kendiliginden GELECEK haftaya tasinir (ayni gun bile;
+            kalici v68_todo.json'da yasar).
+  HABER DETAY OZET (v69): once "haber" ile listele, sonra
+            "haber ozet 2" — 2. haberin SAYFASINI ceker, AI ile
+            3-4 cumlelik Turkce ozet verir (kategori eklemek icin:
+            "haber ozet 1 spor"; AI anahtari yoksa sayfa basindan
+            metin gosterir). "haber ozet <kategori>" hala v68 liste ozetidir.
+
+--- v70 (2026-10-01, 3. tur) ---
+  SABAH NOBETCISI TAM RAPOR (v70): 08:00 duyurusu artik sadece hava degil —
+            TAM gun ozeti: hava+giyim, USD/TL, acik yapilacaklar, bugunku
+            etkinlikler (tek BEEP + satir satir log).
+  SAATLI TODO (v70): todo ekle yarin 14:00 rapor yaz | todo ekle pazar 09:00
+            alisveris — todo'ya girer VE o saatte hatirlatici kurulur
+            (takvim etkinligi olarak; JARVIS yeniden baslasa da yasar).
+            Saat yazmak ZORUNLU — yazmazsan duz todo olur, surprise yok.
+  HAFTA OZET (v70): hafta ozet — bu hafta biten todolar, acik isler,
+            gelecek 7 gunun etkinlikleri, kurulu alarm + kur nobetcisi durumu.
+
+--- v71 (2026-10-01, 4. tur) ---
+  TAMAMLA (v71): tamamla <kelime> — numara ezberlemeden todo tamamla:
+            "tamamla rapor" metninde rapor gecen tek acik isi tamamlar;
+            cok eslesme olursa adaylari listeler, numarayla sec.
+  YAKLASANLAR (v71): yaklasanlar — gelecekteki tum hatirlaticilar
+            (etkinlik + saatli todo) zamana sirali; "yaklasanlar iptal 2"
+            ile listeden kaldirirsan ZAMANLAYICISI DA IPTAL olur.
+  RESTART FIX (v71): bilgisayar kapali kalan gunlerde birikmis gecmis
+            etkinlikler JARVIS acilir acilmaz BEEP firtinasi yapmiyor:
+            gecmis olanlar loglanip temizlenir, tekrarliyorsa gelecek
+            haftaya sessizce zincirlenir.
+
+--- v72 (2026-10-01, 5. tur) ---
+  ERTELE (v72): yaklasanlar ertele <no> <n> <birim> — orn:
+            "yaklasanlar ertele 2 1 saat" — hatirlatici kayit + ZAMANLAYICI
+            birlikte sonraya tasinir (saniye/dakika/saat/gun).
+  TELEFON KARTI (v72): /telefon panelinde YENI GUN OZETI karti — hava,
+            giyim, USD/TL, acik todo, bugunku etkinlikler, yaklasanlar
+            (60 sn'de bir yenilenir; /api/telefon-ozet JSON ucu).
+  ACILIS DUYURUSU (v72): JARVIS acilirken bugunku yaklasan hatirlaticilar
+            tek satir log ile duyurulur (bugun kayit yoksa sessiz).
+
+--- v73 (2026-10-01, 6. tur) ---
+  TELEFON DOKUNABILIR KART (v73): /telefon gun ozeti kartinda artik
+            BUTONLAR var — acik todolar yaninda ✔ (tamamla), yaklasanlar
+            yaninda +1s (1 saat ertele) ve ✕ (iptal). Tiklayinca PIN
+            korumali komut kanalindan (api/telefon-komut) calisir.
+  VERIM GRAFIGI (v73): kartta son 7 gunun biten is sayisi metin
+            cubuklariyla (bugun * ile isaretli; _haftalik_verim).
+  YARININ HAVASI (v73): kartta bugunun yaninda ➡️ yarin satiri
+            (30 dk onbellekli; uzun fetch yok).
+
+--- v74.1 (2026-10-01) — 3D GÖRÜNTÜLEYİCİ ÇEVRİMDIŞI FIX ---
+  Kullanıcı bildirdi: görüntüleyici açılıyordu ama sahne BOŞ (izgara bile
+            yok). Kök neden: three.js unpkg.com CDN'inden ES-modül olarak
+            yükleniyordu; tarayıcıda bu yüklenemezse sayfa tamamen ölüyordu.
+            Artık: config/three.min.js + config/OrbitControls.js YERELDEN
+            yüklenir (CDN yok); dosya silinirse sonraki gösterimde otomatik
+            yeniden iner (_kutuphane_tazele). Canlı yoklama üç uç dener
+            (API / yerel json / https API). Piksel analiziyle doğrulandı:
+            '3D: araba' -> 10.707 kırmızı (gövde) + 896 mavi (kabin) piksel.
+
+--- v74 (2026-10-01, 7. tur) — UC HATA DÜZELTMESI ---
+  TERMÍNAL SORUNU KÖKTEN ÇÖZÜLDÜ: Nöbetçi (nobetci_daemon.pyw) JARVIS'i
+            eskiden YENI KONSOL PENCERESI açarak diriltiyordu; JARVIS konsol
+            uygulaması olduğundan duyurular o siyah pencereye yazılıyor,
+            pencere kapatilinca JARVIS ölüyor, nöbetçi 10 sn sonra YINE
+            pencereyle geri getiriyordu (sonsuz döngü — log'da 3300+ kayıt).
+            Artik: CREATE_NO_WINDOW ile PENCERESIZ diriltme + tek örnek kilidi
+            (config/nobetci.pid) + log kırpma. JARVIS'i elle kapatmak için
+            önce nöbetçiyi kapatmak gerekir (yoksa 10 sn'de sessizce döner).
+  GÖRSEL ÜRETİMİ ÇALIŞIYOR: "kedi görseli" biçimindeki komutlar eskiden
+            hiçbir katman tüketilmeyen ölü 'GORSEL_ISTEK:' dizgisine düşüyordu.
+            Artık ajan KENDISI Pollinations ile üretir (anahtarsız, JPEG->PNG
+            GDI+ dönüşümü), sonucu sohbete + telefon kartına düşürür (resim
+            olarak görünür). Aynı anda tek üretim; yeni istek eskiyi iptal eder.
+  3D: ARABA ARTIK GÖRÜNÜR: '3D: araba' gerçekten çalışıyordu ama görüntüleyici
+            yalnız komutta 'göster' geçince açılıyordu. Artık HER yaratmada
+            görüntüleyici otomatik açılır; sekme 3 sn'de bir sahneyi yoklar
+            (3d_sahne_veri.json), nesne değişince kendini yeniler. Telefon
+            kartında 3D satırı: sahnede nesne varsa '3D sahneyi göster',
+            boşsa '3D araba yarat' butonu (/api/telefon-3d-veri).
+  TELEFON KÖPRÜSÜ SAĞLAMLAŞTI: write_log sıra numaraları kuyruktan türetilir
+            (art arda yazan işler satır kaybettirmez); gorsel/3D arka plan
+            işleri canlı kuyruğa yazabilir (jarvis_telefon.telefon_yaz).
+
+MIKROFONSUZ MOD (v63 — kokten cozum)
+  Ses giris cihazi yoksa JARVIS artik log spam'i YAPMAZ: 4 denemeden sonra
+  60 saniyede bir sessizce tekrar dener, UI'ya TEK net uyarı verir
+  ("yazarak konusmaya devam edebilirsin"). Mikrofon takilirsa kendiliginden
+  tam hiza doner. Yazili komutlar her zaman calisir.
+
+================================================================================
+V75 — 1M GÜÇ KARTI + ÇİFT CEVAP (HER YERDE)
+================================================================================
+1M KOMUT + 1M AJAN GÖRÜNÜR:
+  - K (Özellikler) panelinin EN ÜSTÜNDE canlı sayılı GÜÇ KARTI:
+    1M KOMUT uzayı + 1M AJAN katalogu + maraton kütüphanesi durumu.
+  - 'ajanlar guc' -> ajan ekranında güç kartı; 'ajanlar kac' -> katalog sayısı.
+  - K panelindeki AJAN bölümünde 1M satırları da var.
+
+ÇİFT CEVAP KURALI (v75 — kullanici kurali, HEP):
+  Yerel motor bir komuta cevap verdiginde AYNI soru AI'ya da gider;
+  iki cevap da sohbette görünür (yerel aninda, AI birkaç sn sonra
+  'JARVIS (AI — ...):' olarak). Kapsam: hizli/cihaz komutlari, ajan/1M
+  komutlari, unut, test, gunaydin, portfoy, video, görsel, atolye, mesaj —
+  İSTİSNA YOK. YEREL MOD'da (kullanici 'yerel' yazdiysa) AI'ya gitmez;
+  'online' yazinca tekrar acilir. Ayni soru 30 kayitla tekrar gönderilmez.
+
+TELEFON KARTI ARTIK YEREL CEVAPLARI DA GÖSTERİR (v75 kok fix):
+  Telefondan gelen komutlarin yerel cevaplari (ajanlar, todo, 3D, hizli
+  cihaz komutlari...) oncekine karsilik SOHBETE DUSER: 'Siz: ...' +
+  'JARVIS: ...' satirlari telefon kartinda görünür (42 log noktasi
+  telefon koprusune baglandi). Canli kanit: 'ajanlar kac' -> kartta
+  AJAN KATALOGU: 1.000.000 ajan.
+================================================================================
+V74.4 — GERÇEK JARVIS PAKETİ (anlama + sessizlik + Siz garantisi)
+================================================================================
+1) GERÇEK ANLAMA + SORGUSUZ EYLEM:
+  - Sohbet/soru/dertlenme anında niyet AMAÇTAN anlaşılır; yazım hatası
+    ("raba"->araba, "büyüklükde"->büyüklükte) JARVIS tarafından düzeltilir,
+    ANCAK anlaşılır — hata diye geri dönmez.
+  - ASLA sorgulama, ASLA izin isteme: en olasi niyetle DOGRUDAN yapar.
+  - Canlı oturum + yerel model + ikinci-cevap AI'sında AYNI kural geçerli.
+
+2) 'Siz: ...' GARANTİSİ:
+  - Ne yazarsan yaz (yazı kutusu, telefon köprüsü, mesaj botu, yüzücü
+    kutucuk, yerel mod) sohbete MUTLAKA 'Siz: ...' olarak düşer.
+  - Telefondan gelen ajan komutları 'Siz: [ajan] ...' etiketiyle görünür.
+
+3) YEREL/OTOMATİK CEVAP ASLA KONUŞMAZ (TTS YOK):
+  - Yerel motor cevabı, AI ikinci cevabı, otomatik sorular yalnızca YAZI ile
+    gelir; sesli okuma KALDIRILDI.
+  - Tek sesli istisnalar: hatırlatıcı ALARM'ı + senin açık 'oku' komutun.
+  - Canlı oturumun (Gemini Live) kendi sesi aynen devam eder.
+
+4) ÇİFT CEVAP ARTIK AI'YA HEP GİDER:
+  - Bağlantı kopması/zombi oturum ikinci cevabı ENGELLEMEZ.
+  - Yalnızca senin açık YEREL/OFFLINE seçimin engeller ('online' yazınca açılır).
+  - Aynı soru 10 dakika içinde tekrar AI'ya gitmez; sonrasında yeniden gider.
+  - Bir atlama olursa SEBEBİ logda görünür (sessiz yutma yok).
+
+5) 'ALTIN' FALSE-POSITIVE DÜZELDİ:
+  - Uzun sohbet cümlesinde 'altın' kelimesi geçince borsa grafiği AÇILMAZ.
+  - Borsa/grafik yalnızca: kısa komut (8 kelimeye kadar) + net finans bağlamı
+    (borsa, hisse, dolar, euro, gram altın, altın kuru, bitcoin...) ya da
+    'grafiğini çiz' fiiliyle tetiklenir.
+
+6) 1M GÜÇ KARTI HER YERDE:
+  - 'ajanlar guc' / 'güç kartı' / 'kaç komutum var' / 'kaç ajanım var' ->
+    canlı sayılı güç kartı (1M KOMUT + 1M AJAN + maraton).
+  - 'ajan ekranı aç' ya da K (Özellikler) panelindeki 'Ajan ekranını aç'
+    satırı -> AJAN EKRANI penceresi: güç kartı, katalog arama kutusu,
+    ilk 12 ajan, ajan kartı butonları.
+
+7) 3D KOMUTLARI DAHA İNSAN DOSTU:
+  - '3D: araba 5 metre büyüklükde' / 'boyutu 5' / 'ebati 12' -> ORANLI ölçek.
+  - Yazım hatası tolere edilir: '3D: raba 1 metre' -> araba yaratır.
+================================================================================
+V74.3 — GERÇEKÇİ 3D ARABA + VİDEO İZLEME + İNSAN GİBİ DAVRANIŞ
+================================================================================
+3D ARABA ARTIK GERÇEK BİR ARAÇ (eskiden 17,7 birimlik DEV BİR KÜPTÜ):
+  - Gövde 17,7 m x 2,1 m x 1,5 m; kabin; cam bandı; 2 far; 2 stop; 4 teker
+    (1,08 m çap, yan yatık). Her parça [x,y,z] metre ölçeği ve dönmesiyle
+    çizilir (gösterici 'olcek' + 'donme' destekler).
+  - Kamera ve zemin ızgarası sahneye OTOMATİK sığar (Box3): 17,7 m'lik araç
+    da kadraja girer, ekran dışında kalmaz. Izgara: 1 birim = 1 metre.
+  - '3D: araba uzunluk 4,5 m genislik 1,8 m' -> ölçüler ayrıştırılır ve tüm
+    parçalar ORANLI ölçeklenir (eskiden sadece bir bilgi satırı dönüyordu).
+  - Canlı yoklama artık ZAMAN DAMGASI karşılaştırır: 11 parçadan 11 parçaya
+    geçen sahne de anında yenilenir (nesne sayısı aynı diye eskisi kalmaz).
+  - Sonsuz yenileme hatası giderildi: sayfaya gömülü damga ile veri
+    dosyasındaki damga aynı (eskiden saniye farkı sekme döngüsü yapıyordu).
+VİDEO İZLEME (ffmpeg GEREKMEZ):
+  - '3D: araba video.mp4' / '3D: film izle <dosya>': OpenCV ile 8 kare İLERİ
+    SARILARAK çıkarılır (1,5 saatlik filmde ~0,4 saniye; eski kare-kare
+    okuma 3,5 DAKİKA sürüyordu) ve TÜM kareler tek AI çağrısında gönderilir.
+  - Cevap: dosya adı, süre, MB, okuma ms + film eleştirmeni tonunda TÜRKÇE
+    maddeli eleştiri (konu/akış, kadraj-ışık-renk, oyunculuk, artılar,
+    eksiler, puan). genai yoksa REST yedeği çalışır.
+  - Dosya adı çıkarma düzeltildi: 'araba video.mp4' eskiden '.mp4' arıyordu.
+PENCERE AÇMA DAVRANIŞI ("her seferinde açılıyor kapa"):
+  - Nesne/model yaratmak ARTIK PENCERE AÇMAZ; mesaj nasıl açılacağını söyler
+    ('3D: goster'). Nöbetçi kalp atışı (gosteric_tazele) de açmaz.
+  - Nöbetçi zaten PENCERESİZ (CREATE_NO_WINDOW) ve tek örnek kilitli.
+İNSAN GİBİ DAVRANIŞ ("HATALAR MANTIK HATASI İNSANA GÖRE"):
+  - SYS/ERR TEKRAR SUSTURMA: aynı teşhis satırı 2,5 dakika içinde tekrar
+    gelirse ne ekrana ne konsola yazılır (ilk satır görünür, süre dolunca
+    "(son 2,5 dk içinde N kez)" bilgisiyle döner). Böylece 'Mikrofon
+    bulunamadi (4 deneme)', 'Baglanti yenileniyor (1/40)', 'Gemini 8
+    saniyedir sessiz' satırları ekranı doldurup konuşmayı boğmaz.
+  - ÇİFT CEVAP: sesli yanıtın metni gelmediğinde aynı soruya arka arkaya
+    yeni cevap üretilmiyor; kurtarma YALNIZCA BİR KEZ çalışır.
+  - DİL KURALI: canlı AI oturumuna '%100 TÜRKÇE + insan gibi, resmî robot
+    kalıbı kurma, yapmadığın işi yaptım deme' kuralı eklendi.
+================================================================================
+Derleme: tools/py312/python.exe tools/rebuild_jarvis.py  (exe kapali olmali)

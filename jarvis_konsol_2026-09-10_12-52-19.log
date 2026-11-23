@@ -1,0 +1,2 @@
+[Per 10.09.2026 12:52:19,56] JARVIS basladi 
+patch.py:131: DeprecationWarning: mss.mss is deprecated and will be removed in a future release; use mss.MSS instead

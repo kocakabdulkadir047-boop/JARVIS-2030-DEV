@@ -1,0 +1,49 @@
+═══════════════════════════════════════════════════════════════
+ JARVIS — KELİME FOTOĞRAFLARINI DÜZENLEME KILAVUZU
+═══════════════════════════════════════════════════════════════
+
+▶ NASIL AÇILIR?
+  "GORSEL_YONETICI.bat" dosyasına ÇİFT TIKLA.
+  (Python kurulu olmalı — bilgisayarında Python 3.14 var, sorun yok.)
+
+▶ NASIL ÇALIŞIR?
+  JARVIS konuşurken cümleyi kelimelere böler ve her kelimeyi
+  "gorsel_kutuphanesi\index.json" dosyasında arar.
+  Kelime kayıtlıysa, karşısındaki resmi ekranda gösterir.
+
+  Kelime eşleşmesi BİREBİRDİR:
+    • "ankara" kelimesine resim atarsan JARVIS "ankara" derken o resmi gösterir.
+    • Büyük/küçük harf ve noktalama fark etmez.
+      "ankara'da", "Ankara!" gibi söylenişler de eşleşir.
+    • Türkçe karakter serbest (ş, ğ, ü, ö, ç, ı).
+    • Fonksiyonel kelimeler (bir, ve, ama, merhaba, çok…) ASLA resim tetiklemez.
+    • Konuşma parçası başına ilk 6 kelime değerlendirilir.
+    • Aynı anda en fazla 3 fotoğraf gösterilir (ortada büyük, yanlarda küçük).
+
+▶ YÖNETİCİDE NE YAPABİLİRSİN?
+  📸 Fotoğraf değiştir  → Listeden kelime seç, bilgisayarından resim seç.
+                           Resim otomatik 512×512 PNG'e çevrilir.
+                           (Listeye ÇİFT TIKLAMAK da aynısını yapar.)
+  ➕ Yeni kelime ekle   → Yeni kelime yaz + resim seç. Artık JARVIS o
+                           kelimeyi söylerken resmini gösterir.
+  📂 Klasörden toplu    → Bir klasör seç; içindeki her resim DOSYA ADI
+     EKLE                 kadar kelimeye bağlanır.
+                           kedi.png → "kedi" | galatasaray.jpg → "galatasaray"
+  🗑️ Kelimeyi sil       → Evet: kelime + dosya silinir.
+                           Hayır: sadece eşleşme kaldırılır, dosya durur.
+  🔗 Eşleşmeyen         → Arşivde durup kelimeye bağlı olmayan 122 eski
+     DOSYALAR…            dosyayı listeler. Seçip "Eşleştir" dersen dosya
+                           adındaki kelimeye bağlanır.
+  📁 Klasörü aç         → Resim arşivini Windows Gezgini'nde açar.
+
+▶ ÖNEMLİ NOTLAR
+  • Değişiklikler ANINDA geçerli. JARVIS.exe'yi yeniden derlemek gerekmez;
+    JARVIS açıkken bile yeni resmi bir sonraki kullanımda kullanır.
+  • Her kayıtta eski index.json, "index.json.yedek" olarak saklanır.
+    Bir hata olursa dosyayı ".yedek" uzantısız geri kopyalaman yeterli.
+  • Resimler otomatik ortadan kare kırpılıp 512×512 yapılır — şeritte
+    düzgün görünsün diye. Kendi resminin kompozisyonunu merkeze kur.
+
+Sorun olursa: tools\gorsel_yonetici.py dosyasını Python ile açıp
+hatayı okuyabilirsin; index.json.yedek her zaman geri dönüş noktan.
+═══════════════════════════════════════════════════════════════

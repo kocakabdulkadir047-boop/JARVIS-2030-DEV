@@ -1,0 +1,169 @@
+══════════════════════════════════════════════════════════════════
+ JARVIS HİLE - BASİT KULLANIM KILAVUZU (her seferinde buraya bak)
+══════════════════════════════════════════════════════════════════
+
+ÖNCE ŞUNU BİL:
+  - JARVIS açık olacak. H tuşuna basınca HİLE PANOSU açılır.
+  - Panelde 7 sekme var. SENİN İŞİN HEPSİ 1. SEKMEDE:
+    "OYUN SECENEKLERI"
+  - Diğer sekmelere dokunmana gerek yok.
+
+──────────────────────────────────────────────────────────────────
+ 1) PANİYİ AÇMAK
+──────────────────────────────────────────────────────────────────
+  1. JARVIS'i aç (zaten açıksa dokunma).
+  2. H tuşuna bas.
+  3. Açılan pencerede en soldaki sekme: "OYUN SECENEKLERI" -> ona tıkla.
+  4. Soldaki listeden OYUNU seç (ör. One-armed robber).
+     Sağda o oyunun hile listesi çıkar.
+
+──────────────────────────────────────────────────────────────────
+ 2) PARA HİLESİ (One-armed robber) - EN KOLAYI, HEP ÇALIŞIR
+──────────────────────────────────────────────────────────────────
+  OYUN AÇIKKEN:
+  1. Oyunda ekranda gördüğün PARAYI not et (ör. 43444233).
+  2. Panele dön. Üstteki "Su an ekranda:" kutusuna o sayıyı yaz.
+  3. "Para (Cash) = 999999" satırındaki UYGULA'ya bas.
+  4. Oyuna dön: para 999999 olmuş olur. (Kalıcı olsun diye oyunda
+     bir kez KAYDET / Save yap.)
+
+  OYUN KAPALIYKEN:
+  1. Panele dön, hiçbir kutuya bir şey yazma.
+  2. UYGULA'ya bas. Para hem yerel hem Steam bulutuna yazılır.
+  3. Oyunu aç: para hazır.
+
+──────────────────────────────────────────────────────────────────
+ 3) DİĞER HİLELER (Sınırsız Mermi, Sınırsız Can, Kapı, Polis...)
+──────────────────────────────────────────────────────────────────
+  İLK KEZ (adresi öğretme - sadece bir kere, 30 saniye):
+  1. Oyunu AÇ.
+  2. Panelden: "Su an ekranda:" kutusuna oyunda YAZAN sayıyı yaz.
+     - Mermi için: elindeki mermi sayısı (ör. 30)
+     - Can için: canın (ör. 100)
+     - Kapı/Polis/Alarm için: KUTUYA HİÇBİR ŞEY YAZMA.
+  3. O hilenin satırına tıkla (veya klavyeden Numpad tuşuna bas).
+     Altta "taranan ... MB" diye ilerleme yazar (yaklaşık 10 saniye).
+  4. OYUNA DÖN ve o şeyi değiştir:
+     - Mermi ise: ATEŞ ET (mermi azalsın)
+     - Can ise: HASAR AL (can azalsın)
+     - Kapı/Polis/Alarm ise: o şeyi oyunda tetikle
+  5. Aday sayısı düşer (18000 -> 40 -> 1). 1'e inince panel KENDİSİ
+     yazar: "BULUNDU ... ACIK". Satır "● ACIK" (yeşil) olur.
+
+  SONRAKİ SEFERLER (çok kolay):
+  - Sadece satıra tıkla ya da Numpad tuşuna bas: AÇIK/KAPALI olur.
+  - Oyun kapanıp yeniden açıldıysa adresler değişir: 3. bölümdeki
+    "ilk kez" adımlarını tekrarla (30 saniye).
+
+  ÖNEMLİ: Aynı anda sadece BİR tarama yapılır. Bir tanesi sürerken
+  diğerine basarsan "su an tarama suruyor" der. Bekle ya da
+  "TARAMAYI DURDUR"a bas.
+
+──────────────────────────────────────────────────────────────────
+ 4) ALT+W - OYUN ÜSTÜNDE KÜÇÜK PANEL
+──────────────────────────────────────────────────────────────────
+  - Panele girmeye gerek yok: oyun sırasında Alt+W'ye bas.
+    Küçük karanlık panel sağ üstte açılır (tekrar bas: kapanır).
+  - Oradaki satırlara tıklamak = hileyi aç/kapat. Numpad tuşları da
+    oradan çalışır.
+  - Panele eklemek için: OYUN SECENEKLERI sekmesinde
+    "ALT+W KAPLAMA" düğmesine bas.
+  - DİKKAT: Numpad tuşları hangi panel AÇIKSA onu çalıştırır.
+    Kaplama açıksa Numpad kaplamayı, kapalıysa büyük paneli çalıştırır.
+    Çakışma artık yok (v25.9 düzeltmesi).
+
+──────────────────────────────────────────────────────────────────
+ 5) UNDERTALE (bambaşka, en kolayı - dosyaya yazar)
+──────────────────────────────────────────────────────────────────
+  1. Oyunda BİR KEZ oyna ve kaydet (kayıt dosyası oluşsun), sonra
+     oyunu KAPAT.
+  2. Panelde One-armed robber yerine UNDERTALE'i seç.
+  3. Şunlar HEMEN çalışır, adres öğretmek gerekmez:
+     - "1K Altin Ekle"  (altına +1000)
+     - "1K XP Ekle"
+     - "Sinirsiz Saglik (HP = Maks)"
+     - "Maksimum Can (99)"
+     - "Altin = 9999"
+     Satıra tıkla -> UYGULA. Bitti.
+
+──────────────────────────────────────────────────────────────────
+ 6) GERİ ALMA / KAPATMA
+──────────────────────────────────────────────────────────────────
+  - Açık hileyi kapatmak: satıra tekrar tıkla (○ KAPALI olur) veya
+    "HEPSINI KAPAT" düğmesine bas.
+  - Para/Undertale değişikliğini geri almak: OTO TUM OYUNLAR
+    sekmesinde "DOSYADA YEDEKTEN DON" (her yazmadan önce otomatik
+    yedek alınıyor: .hile.bak).
+
+──────────────────────────────────────────────────────────────────
+ 7) KURALLAR (bunları yapma)
+──────────────────────────────────────────────────────────────────
+  - ONLINE oyunlarda (Bodycam gibi) hile DENEME: panel zaten reddeder.
+    Hesabın yasaklanabilir.
+  - Hile açıkken oyunu kapatırsan normal; yeniden açınca "ilk kez"
+    adımlarını tekrarla.
+  - Hiçbir şey olmuyorsa: oyunu aç mı unuttun? "Su an ekranda"ya
+    doğru sayıyı yazdın mı? Oyunda o şeyi değiştirdin mi? Bunlar
+    %90'lık sebeptir.
+
+──────────────────────────────────────────────────────────────────
+ HATIRLATMA KARTI (en kısa hâli)
+──────────────────────────────────────────────────────────────────
+  PARA   : oyun açık + ekrandaki parayı yaz + UYGULA
+  MERMİ  : oyun açık + mermiyi yaz + Numpad 3 + ateş et
+  CAN    : oyun açık + canı yaz + Numpad 1 + hasar al
+  TEK TUS: sonrasında sadece Numpad tuşuna bas
+  KÜÇÜK PANEEL: Alt+W
+  KAPAT  : satıra tekrar tıkla ya da HEPSINI KAPAT
+  UNDERTALE: oyunu kaydet+kapat, satıra tıkla, UYGULA
+══════════════════════════════════════════════════════════════════
+
+══════════════════════════════════════════════════════════════════
+ v26 YENİ: "GERÇEK WAND" — ON ARAŞTIRMA + HARİTA IŞINLAMA
+══════════════════════════════════════════════════════════════════
+
+ 1) ON ARAŞTIRMA (sen hiçbir şey yapmıyorsun)
+    JARVIS oyununun KAYIT DOSYALARINI kendisi araştırır:
+      - yeni oyun kurduğunda
+      - oyunu açtığında (arka planda olsa bile)
+      - ve arka planda sessizce sırayla (sen sormadan).
+    Bulduğunu "şu paraymış" diye anlatır:
+
+      PARA gibi duruyor: "CashSave" = 1.632.856.179 (Cash.sav).
+      Bunu 999.999 yaparsam oyundaki PARA değişir.
+
+    Nerede görürsün?  H paneli > OYUN SEÇENEKLERİ sekmesi
+      - "Otomatik bulunan (oyun adı)" grubundaki satırlar
+      - Her satırın yanında bir tuş var (Numpad 1..9,0  ya da  F1..F12)
+      - Satıra bas ya da tuşa bas -> değer HEMEN değişir. Bekleme yok.
+
+    Tüm bulgular okunabilir bir dosyaya da yazılır (Not Defteri ile aç):
+      %LOCALAPPDATA%\JARVIS\HILE_BULGULAR.txt
+
+    İstediğin an elle araştırma: OYUN SEÇENEKLERİ > ON ARAŞTIRMA
+
+    ÖNEMLİ: Kayıt dosyasına yazarken OYUN KAPALI olmalı (oyun açıkken
+    yazarsan oyun eski değeri geri getirir). Oyun açıkken JARVIS bunu söyler:
+    oyunda kaydet -> oyunu kapat -> tekrar bas.
+
+ 2) HARİTA IŞINLAMA / TELEPORT (GTA ve benzeri oyunlar)
+    OYUN SEÇENEKLERİ > "Harita / Işınlama" grubu:
+      * KONUMU ÖĞREN -> oyundaki X,Y,Z konumunu KENDİSİ bulur.
+        Sen sadece ekranda yazana uyarsın: 2-3 saniye YÜRÜ, sonra DUR
+        (yönerge ekranda tek satır olarak yazar; başka şey yapmıyorsun).
+      * KONUM KAYDET -> şu an durduğun yeri hafızaya alır.
+      * ISINLA       -> seni kaydettiğin yere geri ışınlar.
+      * KONUM DONDUR -> konumunu sabit tutar (düşme/atılma olmaz).
+      * KONUMU UNUT  -> kaydı sıfırlar.
+
+    Kullanım: bir yere git -> KONUM KAYDET -> işini hallet -> ISINLA.
+    Oyunu kapatıp yeniden açarsan KONUMU ÖĞREN'i bir kez tekrarla.
+
+ 3) TEK TUŞ, BEKLETMEDEN
+    Öğrenilen RAM adresleri İMZA ile saklanır: oyunu kapatıp yeniden
+    açtığında JARVIS adresi KENDİSİ yeniden bulur; sen uğraşmazsın.
+
+ 4) KURAL AYNI
+    Sadece çevrimdışı / tek kişilik oyunlar. Çevrimiçi ve anti-cheat
+    korumalı oyunlarda araç kendini reddeder (korsan/DRM yok).
+══════════════════════════════════════════════════════════════════

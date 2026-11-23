@@ -1,0 +1,4 @@
+[Per 10.09.2026 12:58:53,55] JARVIS basladi 
+patch.py:131: DeprecationWarning: mss.mss is deprecated and will be removed in a future release; use mss.MSS instead
+Warning: there are non-data parts in the response: ['text', 'thought'], returning concatenated data result from data parts, check out the non data parts for full response from model.
+[Per 10.09.2026 13:00:31,32] JARVIS kapandi. Cikis kodu: 0 

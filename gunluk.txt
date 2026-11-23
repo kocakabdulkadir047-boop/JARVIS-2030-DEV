@@ -1,0 +1,549 @@
+[03:15:36] JARVIS: Merhaba! Ben J.A.R.V.I.S. Iyiyim, sen nasilsin? Sohbet edebiliriz ya da bir is verebilirsin: oyun, hatirlatici, fiyat takibi, harita, 3D model, gorsel/video...
+[03:15:38] SYS: HATIRAT KURULDU: ara (18000 sn sonra)
+[03:15:38] JARVIS: Hatirlatma kuruldu: ara | 18000 sn sonra
+[03:15:46] SYS: DURUM | komut=0 | degisim=0 | exe=0 | hata=0 | sohbet=1 | hatirlat=1 | ekran=KAPALI | afk=KAPALI
+[03:15:46] SYS: DURUM | fiyat urunu=0
+[03:16:36] SYS: HATIRAT KURULDU: beni ara (6 sn sonra)
+[03:16:36] JARVIS: Hatirlatma kuruldu: beni ara | 6 sn sonra
+[03:16:43] SYS: HATIRAT: beni ara
+[03:17:17] SYS: DURUM | komut=0 | degisim=0 | exe=0 | hata=0 | sohbet=0 | hatirlat=1 | ekran=KAPALI | afk=KAPALI
+[03:17:17] SYS: DURUM | fiyat urunu=0
+[03:17:17] SYS: EKRAN IZLEME DURDURULDU.
+[03:17:17] SYS: AFK KORUMA | durduruldu.
+[03:17:17] JARVIS: AFK korumasi kapatildi.
+[03:17:17] SYS: HARITA | Ankara | https://www.google.com/maps/search/?api=1&query=Ankara
+[03:17:17] JARVIS: Oyunu aciyorum; ekran gorerek insan gibi oynayacagim. Ban riskine karsi yavas ve molali.
+[03:17:17] SYS: OYUN | acik oyun penceresi bulunamadi. Once bir oyun ac; sonra "oyun oyna" de.
+[03:17:17] JARVIS: Merhaba! Ben J.A.R.V.I.S. Iyiyim, sen nasilsin? Sohbet edebiliriz ya da bir is verebilirsin: oyun, hatirlatici, fiyat takibi, harita, 3D model, gorsel/video...
+[03:21:35] SYS: DURUM | komut=0 | degisim=0 | exe=0 | hata=0 | sohbet=0 | hatirlat=0 | ekran=KAPALI | afk=KAPALI
+[03:21:35] SYS: DURUM | fiyat urunu=0
+[03:21:35] SYS: EKRAN IZLEME DURDURULDU.
+[03:21:35] SYS: AFK KORUMA | durduruldu.
+[03:21:35] JARVIS: AFK korumasi kapatildi.
+[03:21:35] SYS: HARITA | Ankara | https://www.google.com/maps/search/?api=1&query=Ankara
+[03:21:35] JARVIS: Oyunu aciyorum; ekran gorerek insan gibi oynayacagim. Ban riskine karsi yavas ve molali.
+[03:21:35] SYS: OYUN | acik oyun penceresi bulunamadi. Once bir oyun ac; sonra "oyun oyna" de.
+[03:21:35] JARVIS: Merhaba! Ben J.A.R.V.I.S. Iyiyim, sen nasilsin? Sohbet edebiliriz ya da bir is verebilirsin: oyun, hatirlatici, fiyat takibi, harita, 3D model, gorsel/video...
+[03:21:38] JARVIS: Anladim; gorevi ust duzey ajana aktardim. Sonucu ve yaptiklarimi yazacagim.
+[03:55:30] SYS: HATIRAT | bekleyen hatirlatma yok.
+[03:55:59] SYS: HATIRAT KURULDU: beni ara (10 sn sonra)
+[03:55:59] JARVIS: Hatirlatma kuruldu: beni ara | 10 sn sonra
+[03:56:10] SYS: HATIRAT: beni ara
+[03:56:51] JARVIS: Anladim: oyunu arastirip en mantikli platforma brief gonderecegim ve yerelde EXE uretecegim.
+[03:57:05] JARVIS: Oyun arastirmasi tamam: **Galaksi Çıkmazı** | platform: Unity
+[03:57:05] PLAN | OYUN ADI: **Galaksi Çıkmazı**
+[03:57:05] PLAN | TUR: Uzay keşif, survival, aksiyon‑adventure
+[03:57:05] PLAN | PLATFORM: Unity (Roblox Studio ile entegre Lua scriptleri)
+[03:57:05] PLAN | MEKANİKLER:
+[03:57:05] PLAN | - Işık‑keten enerjisi ile içe çektirme
+[03:57:05] PLAN | - Boyut atlama (dimensional jump)
+[03:57:05] PLAN | - Canlı çevre etkileşimleri (buzalanan su, dinamik devasa yapılar)
+[03:57:05] PLAN | - Mikro mikro görev sistemleri (resource gathering + tile‑based puzzle)
+[03:57:05] PLAN | GORSEL STİL: Retro‑pixel noir‑karışımı, neon‑siyah kontrast, minimal animasyon.
+[03:57:05] PLAN | KONTROLLER:
+[03:57:05] PLAN | - Klasik WASD / sol fare + sağ fare (taçla)
+[03:57:05] PLAN | - Özel hareketler için R ve F tuşları
+[03:57:05] PLAN | - Oyun içi komut paneli (cüzdan, alet, hayatta kalma).
+[03:57:05] PLAN | SEVIYELER:
+[03:57:05] PLAN | 1️⃣ Dünya: Çöl gezegeninin çevrimleri
+[03:57:05] PLAN | 2️⃣ Buzluk: Virüsle boğuk göl ve kar denizleri
+[03:57:05] PLAN | 3️⃣ Yüksek: Yüzen kutup diskleri ve warp sahneleri
+[03:57:05] PLAN | 4️⃣ Gizli: Zamanlı gizli kaseler (Boss)
+[03:57:05] PLAN | TEKNİK PLAN:
+[03:57:05] PLAN | - Unity C# + Lua bridge ile oyun mantığı.
+[03:57:05] PLAN | - Prof. sürükle‑ve‐bırak .NET ortamında (ScriptableObjects).
+[03:57:05] PLAN | - Asset mağazası, DragonBones için animasyonlar.
+[03:57:05] PLAN | - Multiplayer sunucu: Photon (replication, RPC).
+[03:57:05] PLAN | - Test kapsamı: unit, play‑testing 3 sprint, QA süreci.
+[03:57:05] PLAN | ---
+[03:57:06] SYS: PLATFORM | adaylar: OpenCode(180), Claude(46)
+[03:57:06] SYS: PLATFORM | secim: OpenCode | gerekce: kurulu/aktif ve en uygun puan.
+[03:57:07] SYS: PLATFORM | OpenCode acildi. Sohbet kismi hazirlaniyor.
+[03:57:19] SYS: SOHBET | girdi alani varsayilan konumdan odaklandi.
+[03:57:25] SYS: SOHBET | "merhaba" 0.2 sn icinde harf harf yazildi.
+[03:57:25] SYS: SOHBET | detayli brief panodan tek mesaja yapistirildi (667 karakter).
+[03:57:30] SYS: SOHBET DOGRULAMA | **EVET.** Ekranın alt kısmında "Takip iletisi ekleyin..." ifadesinin yer aldığı mesaj yazma alanı ve yapay zeka sohbet arayüzü açıkça görünmektedir.
+[03:57:30] JARVIS: Tek mesaj gonderildi -> OpenCode | hedef: Unity
+[03:57:30] JARVIS: Yerel oyun uretimi basliyor -> C:\Users\Koçak\Documents\JARVIS_Oyunlar\galaksi_cikmazi_20261108_035730
+[03:59:15] JARVIS: OYUN HAZIR (EXE) -> C:\Users\Koçak\Documents\JARVIS_Oyunlar\galaksi_cikmazi_20261108_035730\dist\PlatformMacera.exe
+[04:14:33] SYS: AFK KORUMA | durduruldu.
+[04:14:33] SYS: SONSUZ MOD KAPANDI; normal sohbet moduna donuldu.
+[04:14:34] SYS: SONSUZ MOD ACILDI. HER SEYI YAPABILIR: PowerShell, dosya, EXE, Gmail, ekran/klavye/fare, Unity/Roblox/Godot. 10 AI fikir verir, 11. hakem uygular. Tehlikeli komutlar yine engellenir.
+[04:14:34] SYS: AFK KORUMA | acildi; oyun acikken 45 sn hareketsizlikte devreye girer.
+[04:14:34] SYS: AFK KORUMA | basladi. Her saniye oyun kontrol edilecek; hareketsizlikte otomatik hareket (en fazla 15 dakika).
+[04:14:34] SYS: AFK KORUMA | oyun acik: J.A.R.V.I.S | hareket bekleniyor.
+[04:21:48] SYS: OYUN | durdurma istegi alindi.
+[04:21:48] SYS: AFK KORUMA | durduruldu.
+[04:21:48] JARVIS: Sahibin geldi. Yapay zekaya hemen bitirip test etmesini ve sonucu sana vermesini söyledim.
+[04:21:48] JARVIS: Yapay zekaya kaldığı yerden devam etmesini ve iyileştirmesini söyledim.
+[04:21:48] SYS: DURUM | komut=0 | degisim=0 | exe=0 | hata=0 | sohbet=0 | hatirlat=0 | ekran=KAPALI | afk=KAPALI
+[04:21:48] SYS: DURUM | fiyat urunu=0
+[04:22:44] SYS: OYUN | durdurma istegi alindi.
+[04:22:44] SYS: AFK KORUMA | durduruldu.
+[04:22:44] JARVIS: Sahibin geldi. Yapay zekaya hemen bitirip test etmesini ve sonucu sana vermesini söyledim.
+[04:22:44] JARVIS: Yapay zekaya kaldığı yerden devam etmesini ve iyileştirmesini söyledim.
+[04:22:44] SYS: DURUM | komut=0 | degisim=0 | exe=0 | hata=0 | sohbet=0 | hatirlat=0 | ekran=KAPALI | afk=KAPALI
+[04:22:44] SYS: DURUM | fiyat urunu=0
+[04:35:31] JARVIS: Seni duydum: "bana roblox ve içinde ink game yap". Bunu tam anlayamadim; biraz daha detay verir misin? Istersen "neler yapabilirsin" diye sorabilirsin.
+[04:36:12] JARVIS: Merhaba! Ben J.A.R.V.I.S. Iyiyim, sen nasilsin? Sohbet edebiliriz ya da bir is verebilirsin: oyun, hatirlatici, fiyat takibi, harita, 3D model, gorsel/video...
+[04:37:25] JARVIS: Seni duydum: "merhana". Bunu tam anlayamadim; biraz daha detay verir misin? Istersen "neler yapabilirsin" diye sorabilirsin.
+[04:37:26] JARVIS: Merhaba! Nasıl yardımcı olabilirim?
+[04:37:42] JARVIS: Seni duydum: "bana roblox ve içinde ink game yap". Bunu tam anlayamadim; biraz daha detay verir misin? Istersen "neler yapabilirsin" diye sorabilirsin.
+[04:42:27] JARVIS: Merhaba! Ben J.A.R.V.I.S. Iyiyim, sen nasilsin? Sohbet edebiliriz ya da bir is verebilirsin: oyun/Roblox oyunu yap, hatirlatici, fiyat takibi, harita, 3D model, gorsel/video...
+[04:43:12] JARVIS: Anladim: oyunu arastirip en mantikli platforma brief gonderecegim ve yerelde EXE uretecegim.
+[04:43:13] JARVIS: Oyun arastirmasi tamam: JARVIS Oyunu | hedef platform: Roblox (Roblox Studio, Luau, R15/R6)
+[04:43:13] PLAN | **OYUN ADI**: Inky Blitz
+[04:43:13] PLAN | **TUR**: Battle‑Royale Ink Combat
+[04:43:13] PLAN | **PLATFORM**: Roblox Studio, Luau, R15, mobile/desktop
+[04:43:13] PLAN | **HEDEF KITLE**: 13‑35 yaş, rekabetçi Roblox mobil/PC oyuncuları
+[04:43:13] PLAN | **MEKANIKLER**: Çarpışmalı “Paint & Capture” puanları, Fade‑Trail, Ink‑Splash power‑ups, çift takım “C4‑Bomb”, “Drain Counter”
+[04:43:13] PLAN | **KONTROLLER**: WASD + Mouse = hareket, L mouse = ateş, M mouse = dash, Q/E = boya türü, R = yeniden doldur
+[04:43:13] PLAN | **ARAYUZ**: HUD – sağlık, ink seviyesi, minic harita, power‑up simgesi; 3‑panel ekran, yön göstergesi, gizli tuş çubuğu
+[04:43:13] PLAN | **SEVIYELER/TURLAR**: 1. Harita: Neon City, 2. Turf Woods, 3. Skygrid – her birinde 8 tur + 1 Boss
+[04:43:13] PLAN | **GORSEL STİL**: 3D voxel vektör, sharp‑dot shader, canlı renk paleti, flat‑shading, piksel UI
+[04:43:13] PLAN | **SES/EFEKT**: Synthwave müzik, splash sesi, paint FX, UI tıklama sesleri, düşük‑latency iskeç
+[04:43:13] PLAN | **TEKNİK PLAN**: Sunucu: ReplicatedHandles, MapPersistence, IdleCleanup; İstemci: cinematik kamera, input repl, hitbox test; Yapı pipeline: BuildModule, AssetStore, DataStore; Marketplace yayın
+[04:43:13] PLAN | **ARAŞTIRMA NOTLARI**: • Paket > 4 M; ◦ Optimize brush shader < 30 FPS; ◦ Anti‑cheat reloading limit; ◦ UI tweening; ◦ Matchmaker senkronizasyon testleri
+[04:43:13] SYS: PLATFORM | adaylar: OpenCode(180), Claude(46)
+[04:43:13] SYS: PLATFORM | secim: OpenCode | gerekce: kurulu/aktif ve en uygun puan.
+[04:43:14] SYS: PLATFORM | OpenCode acildi. Sohbet kismi hazirlaniyor. ("dur/durabilirsin/yeter" dersen sahibin geldi deyip bitirmesini isteyecegim; durmazsan bitince devam/iyilestirme isteyebilirim.)
+[04:44:01] SYS: SOHBET | girdi alani varsayilan konumdan odaklandi.
+[04:44:17] JARVIS: Anladim: oyunu arastirip en mantikli platforma brief gonderecegim ve yerelde EXE uretecegim.
+[04:44:20] JARVIS: Oyun arastirmasi tamam: JARVIS Oyunu | hedef platform: Roblox (Roblox Studio, Luau, R15/R6)
+[04:44:20] PLAN | **OYUN ADI**: Inky Blitz
+[04:44:20] PLAN | **TUR**: Battle‑Royale Ink Combat
+[04:44:20] PLAN | **PLATFORM**: Roblox Studio, Luau, R15, mobile/desktop
+[04:44:20] PLAN | **HEDEF KITLE**: 13‑35 yaş, rekabetçi Roblox mobil/PC oyuncuları
+[04:44:20] PLAN | **MEKANIKLER**: Çarpışmalı “Paint & Capture” puanları, Fade‑Trail, Ink‑Splash power‑ups, çift takım “C4‑Bomb”, “Drain Counter”
+[04:44:20] PLAN | **KONTROLLER**: WASD + Mouse = hareket, L mouse = ateş, M mouse = dash, Q/E = boya türü, R = yeniden doldur
+[04:44:20] PLAN | **ARAYUZ**: HUD – sağlık, ink seviyesi, minic harita, power‑up simgesi; 3‑panel ekran, yön göstergesi, gizli tuş çubuğu
+[04:44:20] PLAN | **SEVIYELER/TURLAR**: 1. Harita: Neon City, 2. Turf Woods, 3. Skygrid – her birinde 8 tur + 1 Boss
+[04:44:20] PLAN | **GORSEL STİL**: 3D voxel vektör, sharp‑dot shader, canlı renk paleti, flat‑shading, piksel UI
+[04:44:20] PLAN | **SES/EFEKT**: Synthwave müzik, splash sesi, paint FX, UI tıklama sesleri, düşük‑latency iskeç
+[04:44:20] PLAN | **TEKNİK PLAN**: Sunucu: ReplicatedHandles, MapPersistence, IdleCleanup; İstemci: cinematik kamera, input repl, hitbox test; Yapı pipeline: BuildModule, AssetStore, DataStore; Marketplace yayın
+[04:44:20] PLAN | **ARAŞTIRMA NOTLARI**: • Paket > 4 M; ◦ Optimize brush shader < 30 FPS; ◦ Anti‑cheat reloading limit; ◦ UI tweening; ◦ Matchmaker senkronizasyon testleri
+[04:44:20] SYS: PLATFORM | adaylar: OpenCode(180), Claude(46)
+[04:44:20] SYS: PLATFORM | secim: OpenCode | gerekce: kurulu/aktif ve en uygun puan.
+[04:44:21] SYS: PLATFORM | OpenCode acildi. Sohbet kismi hazirlaniyor. ("dur/durabilirsin/yeter" dersen sahibin geldi deyip bitirmesini isteyecegim; durmazsan bitince devam/iyilestirme isteyebilirim.)
+[04:44:44] SYS: SOHBET | "merhaba" 0.2 sn icinde harf harf yazildi.
+[04:44:45] SYS: SOHBET | detayli brief panodan tek mesaja yapistirildi (3396 karakter).
+[04:45:11] SYS: SOHBET | girdi alani gorsel AI ile bulundu (0.35, 0.90).
+[04:45:13] SYS: SOHBET | "merhaba" 0.2 sn icinde harf harf yazildi.
+[04:45:14] SYS: SOHBET | detayli brief panodan tek mesaja yapistirildi (3396 karakter).
+[04:45:33] SYS: SOHBET DOGRULAMA | EVET. Ekran görüntüsünde bir yapay zeka sohbet arayüzü açık ve alt kısımda "Takip iletisi ekleyin; komutlar için /..." yazan mesaj yazma alanı net bir şekilde görünmektedir.
+[04:45:33] JARVIS: Tek mesaj gonderildi -> OpenCode | hedef: Roblox (Roblox Studio, Luau, R15/R6)
+[04:45:33] JARVIS: Roblox hedefi icin ayrintili brief AI platformuna gonderildi ve klasore kaydedildi -> C:\Users\Koçak\Documents\JARVIS_Oyunlar\jarvis_oyunu_20261108_044533
+[04:45:33] SYS: ROBLOX | Gercek Roblox oyunu/yer dosyasi icin OpenCode/Claude/Freebuff ve/veya Roblox Studio uretimi takip edilir. "dur/yeter" dersen sahibin geldi deyip bitirmesini isterim; "devam et" dersen iyilestirmesini isterim.
+[04:46:01] SYS: SOHBET DOGRULAMA | EVET. Ekran görüntüsünde bir yapay zeka sohbet arayüzü açık ve alt kısımda "Takip iletisi ekleyin..." yazan mesaj yazma alanı net bir şekilde görünmektedir.
+[04:46:01] JARVIS: Tek mesaj gonderildi -> OpenCode | hedef: Roblox (Roblox Studio, Luau, R15/R6)
+[04:46:01] JARVIS: Roblox hedefi icin ayrintili brief AI platformuna gonderildi ve klasore kaydedildi -> C:\Users\Koçak\Documents\JARVIS_Oyunlar\jarvis_oyunu_20261108_044601
+[04:46:01] SYS: ROBLOX | Gercek Roblox oyunu/yer dosyasi icin OpenCode/Claude/Freebuff ve/veya Roblox Studio uretimi takip edilir. "dur/yeter" dersen sahibin geldi deyip bitirmesini isterim; "devam et" dersen iyilestirmesini isterim.
+[04:51:23] SYS: PLATFORM | ekran analizi: AI yaniti bitmis gorunuyor.
+[04:51:23] SYS: PLATFORM | AI bitmis gorunuyor; devam/iyilestirme istiyorum (1/3).
+[04:51:28] SYS: SOHBET | girdi alani varsayilan konumdan odaklandi.
+[04:51:29] SYS: PLATFORM | mesaj gonderildi -> OpenCode (302 karakter)
+[04:52:31] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[13:04:49] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[13:05:02] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[13:05:03] JARVIS: Seni duydum: "online mod". Ne yapmamı istiyorsun? Biraz daha acarsan hemen yapayim. Ornek: "bana roblox ve icinde ink game yap" ya da "neler yapabilirsin".
+[13:08:10] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[13:13:02] JARVIS: Merhaba! J.A.R.V.I.S, burada ne yapabilirim? Ne istersen hemen söyle, hemen başlıyoruz!
+[13:13:11] JARVIS: Merhaba! Ben J.A.R.V.I.S. Iyiyim, sen nasilsin? Sohbet edebiliriz ya da bir is verebilirsin: oyun/Roblox oyunu yap, hatirlatici, fiyat takibi, harita, 3D model, gorsel/video...
+[13:16:02] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[13:16:12] JARVIS: Merhaba! J.A.R.V.I.S, burada ne yapabilirim? Ne istersen hemen söyle, hemen başlıyoruz!
+[13:16:13] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[13:18:36] JARVIS: Merhaba! J.A.R.V.I.S, burada ne yapabilirim? Ne istersen hemen söyle, hemen başlıyoruz!
+[13:18:47] JARVIS: Buyur Abi, seni dinliyorum. Ne yapmak istersin? Ornek: "roblox ve icinde ink game yap", "10 saniye sonra hatirlat", "ekrani izle", "fiyat takip et".
+[13:19:40] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[13:21:46] JARVIS: Merhaba! Ben J.A.R.V.I.S. Iyiyim, sen nasilsin? Sohbet edebiliriz ya da bir is verebilirsin: oyun/Roblox oyunu yap, hatirlatici, fiyat takibi, harita, 3D model, gorsel/video...
+[13:22:00] JARVIS: Merhaba! J.A.R.V.I.S, burada ne yapabilirim? Ne istersen hemen söyle, hemen başlıyoruz!
+[13:22:07] JARVIS: Merhaba! Ben J.A.R.V.I.S. Iyiyim, sen nasilsin? Sohbet edebiliriz ya da bir is verebilirsin: oyun/Roblox oyunu yap, hatirlatici, fiyat takibi, harita, 3D model, gorsel/video...
+[13:25:02] JARVIS: Merhaba! J.A.R.V.I.S, burada ne yapabilirim? Ne istersen hemen söyle, hemen başlıyoruz!
+[13:25:33] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[13:25:48] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[13:26:09] JARVIS: Merhaba! Ben J.A.R.V.I.S., size yardımcı olmaktan mutluluk duyarım. Neye ihtiyacınız var? 🚀
+[13:27:24] JARVIS: Seni duydum: "canlı ses". Ne yapmamı istiyorsun? Biraz daha acarsan hemen yapayim. Ornek: "bana roblox ve icinde ink game yap" ya da "neler yapabilirsin".
+[13:29:08] JARVIS: Merhaba! J.A.R.V.I.S, burada ne yapabilirim? Ne istersen hemen söyle, hemen başlıyoruz!
+[13:29:09] JARVIS: Merhaba! J.A.R.V.I.S, burada ne yapabilirim? Ne istersen hemen söyle, hemen başlıyoruz!
+[13:29:10] JARVIS: Merhaba! J.A.R.V.I.S, burada ne yapabilirim? Ne istersen hemen söyle, hemen başlıyoruz!
+[13:29:11] JARVIS: Merhaba! J.A.R.V.I.S, burada ne yapabilirim? Ne istersen hemen söyle, hemen başlıyoruz!
+[13:29:44] JARVIS: Merhaba! J.A.R.V.I.S, burada ne yapabilirim? Ne istersen hemen söyle, hemen başlıyoruz!
+[13:29:47] JARVIS: Merhaba! J.A.R.V.I.S, burada ne yapabilirim? Ne istersen hemen söyle, hemen başlıyoruz!
+[13:30:04] JARVIS: Merhaba! J.A.R.V.I.S, burada ne yapabilirim? Ne istersen hemen söyle, hemen başlıyoruz!
+[13:34:40] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[13:36:35] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[13:36:43] JARVIS: Merhaba! J.A.R.V.I.S, burada ne yapabilirim? Ne istersen hemen söyle, hemen başlıyoruz!
+[13:36:46] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[14:24:28] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[14:48:46] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[15:09:09] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[15:09:25] JARVIS: Seni duydum: "nesin?". Ne yapmamı istiyorsun? Biraz daha acarsan hemen yapayim. Ornek: "bana roblox ve icinde ink game yap" ya da "neler yapabilirsin".
+[15:10:10] JARVIS: Merhaba! Ben J.A.R.V.I.S. Iyiyim, sen nasilsin? Sohbet edebiliriz ya da bir is verebilirsin: oyun/Roblox oyunu yap, hatirlatici, fiyat takibi, harita, 3D model, gorsel/video...
+[15:10:44] SYS: FIYAT TAKIP | eklendi: https://www.vatanbilgisayar.com/sony-playstation-5-slim-digital-surum-oyun-konsolu-154947.html | platformlar: Vatan
+[15:10:44] JARVIS: Fiyat takibine aldim: https://www.vatanbilgisayar.com/sony-playstation-5-slim-digital-surum-oyun-konsolu-154947.html | platformlar: Vatan
+[15:10:45] SYS: FIYAT | baslangic https://www.vatanbilgisayar.com/sony-playstation-5-slim-digital-surum-oyun-konso (Vatan): ₺57999.00 | https://www.vatanbilgisayar.com/arama/https%3A%2F%2Fwww.vatanbilgisayar.com%2Fsony-playstation-5-slim-digital-surum-oyun-konsolu-154947.html/
+[15:10:45] SYS: FIYAT | kontrol tamam; degisim yok.
+[15:11:15] JARVIS: Seni duydum: "fiyat kaç". Ne yapmamı istiyorsun? Biraz daha acarsan hemen yapayim. Ornek: "bana roblox ve icinde ink game yap" ya da "neler yapabilirsin".
+[15:29:28] SYS: FIYAT | kontrol tamam; degisim yok.
+[15:29:30] JARVIS: Seni duydum: "l,şjyoutkjywf3ı9hlk0roı6plylkyop4kyşylhop h". Ne yapmamı istiyorsun? Biraz daha acarsan hemen yapayim. Ornek: "bana roblox ve icinde ink game yap" ya da "neler yapabilirsin".
+[15:30:12] JARVIS: Seni duydum: "1223p8ııy7lıohsxgscsdghsdy6a7qa6rzsryua7T6olölollkıökölklklkllklkklkllklklklklllllllşlşlşölşl". Ne yapmamı istiyorsun? Biraz daha acarsan hemen yapayim. Ornek: "bana roblox ve icinde ink game yap" ya da "neler yapabilirsin".
+[15:31:06] JARVIS: Buyur Abi, seni dinliyorum. Ne yapmak istersin? Ornek: "roblox ve icinde ink game yap", "10 saniye sonra hatirlat", "ekrani izle", "fiyat takip et".
+[15:59:31] SYS: FIYAT | kontrol tamam; degisim yok.
+[15:59:35] JARVIS: Merhaba! Ben J.A.R.V.I.S. Iyiyim, sen nasilsin? Sohbet edebiliriz ya da bir is verebilirsin: oyun/Roblox oyunu yap, hatirlatici, fiyat takibi, harita, 3D model, gorsel/video...
+[15:59:52] SYS: HATIRAT KURULDU: Hatirlatma (10 sn sonra)
+[15:59:52] JARVIS: Hatirlatma kuruldu: Hatirlatma | 10 sn sonra
+[16:00:03] SYS: HATIRAT: Hatirlatma
+[16:00:45] JARVIS: Seni duydum: "zil çal". Ne yapmamı istiyorsun? Biraz daha acarsan hemen yapayim. Ornek: "bana roblox ve icinde ink game yap" ya da "neler yapabilirsin".
+[16:01:26] JARVIS: Anladim: oyunu arastirip en mantikli platforma brief gonderecegim ve yerelde EXE uretecegim.
+[16:02:34] JARVIS: Oyun arastirmasi tamam: InkTide Arena | hedef platform: Roblox (Roblox Studio, Luau, R15/R6)
+[16:02:34] PLAN | OYUN ADI: InkTide Arena
+[16:02:34] PLAN | TUR: Multiplayer Competitive Battle Royale (Paintball‑style)
+[16:02:34] PLAN | PLATFORM: Roblox (Roblox Studio, Luau, R15)
+[16:02:34] PLAN | HEDEF KITLE: 13‑25+, casual to mid‑core, fans of Fortnite/Team Fortress 2
+[16:02:34] PLAN | MEKANIKLER: Real‑time ink spread, terrain coloration, revive system, power‑up drops, team‑vs‑team, capture zones, paint‑based health bar
+[16:02:34] PLAN | KONTROLLER: Left stick – move, Right stick – aim, A – fire, B – dash, X – toggle cam, Y – activate power‑up
+[16:02:34] PLAN | ARAYUZ: Minimal HUD (ink% bar, kill feed thumbnails, zone timer, elimination count)
+[16:02:34] PLAN | SEVIYELER/TURLAR: Green, Blue, Purple, Yellow – each grants color dominance bonuses, InkZone levels 1‑3
+[16:02:34] PLAN | GORSEL STIL: 3D voxel with comic‑book shading, signature splash particles, dynamic sky reflecting dominant ink hue
+[16:02:34] PLAN | SES/EFEKT: Dripping ink, splash FX, footsteps, power‑up chime, background chiptune, team battle hymns
+[16:02:34] PLAN | TEKNIK PLAN: R15 rigs + BodyColors, Custom Dynamic Bones for brush, serverless paint manager, RemoteEvents for ink sync, Mesh redecoration for wall cover, Debris for splashes, Terrain coloring via Decals/BrickColor, UI via ScreenGui & TextButton, animated death animation with LootDropSpawner
+[16:02:34] PLAN | ARASTIRMA NOTLARI: Ink logic predicted client‑side, reconciled server‑side; latency mitigation via predict‑cancel; regionify large arenas; use ReplicatedStorage for “PlayerDeath” events; optimize paint diffusion via RenderStepped throttling.
+[16:02:34] SYS: PLATFORM | adaylar: OpenCode(180), Claude(46)
+[16:02:34] SYS: PLATFORM | secim: OpenCode | gerekce: kurulu/aktif ve en uygun puan.
+[16:02:36] SYS: PLATFORM | OpenCode acildi. Sohbet kismi hazirlaniyor. ("dur/durabilirsin/yeter" dersen sahibin geldi deyip bitirmesini isteyecegim; durmazsan bitince devam/iyilestirme isteyebilirim.)
+[16:02:41] SYS: FIYAT | kontrol tamam; degisim yok.
+[16:02:42] SYS: SOHBET | girdi alani gorsel AI ile bulundu (0.00, 0.00).
+[16:02:46] SYS: SOHBET DOGRULAMA | EVET. Ekran görüntüsünde bir yapay zeka sohbet arayüzü açık durumda ve alt kısımda mesaj yazma kutusu ile gönderme butonu görünmektedir.
+[16:02:47] SYS: SOHBET | "merhaba" 0.2 sn icinde harf harf yazildi.
+[16:02:48] SYS: SOHBET | detayli brief panodan tek mesaja yapistirildi (4337 karakter).
+[16:02:52] SYS: SOHBET DOGRULAMA | **EVET**  Ekran görüntüsünde bir yapay zeka sohbet arayüzü açık durumdadır ve alt kısımda mesaj yazma alanı net bir şekilde görünmektedir.
+[16:02:52] JARVIS: Tek mesaj gonderildi -> OpenCode | hedef: Roblox (Roblox Studio, Luau, R15/R6)
+[16:02:52] JARVIS: Roblox hedefi icin ayrintili brief AI platformuna gonderildi ve klasore kaydedildi -> C:\Users\Koçak\Documents\JARVIS_Oyunlar\inktide_arena_20261108_160252
+[16:02:52] SYS: ROBLOX | Gercek Roblox oyunu/yer dosyasi icin OpenCode/Claude/Freebuff ve/veya Roblox Studio uretimi takip edilir. "dur/yeter" dersen sahibin geldi deyip bitirmesini isterim; "devam et" dersen iyilestirmesini isterim.
+[16:03:51] JARVIS: Anladim: oyunu arastirip en mantikli platforma brief gonderecegim ve yerelde EXE uretecegim.
+[16:04:49] JARVIS: Oyun arastirmasi tamam: JARVIS Roblox Oyunu | hedef platform: Roblox (Roblox Studio, Luau, R15/R6)
+[16:04:49] PLAN | OYUN ADI: JARVIS Roblox Oyunu
+[16:04:49] PLAN | TUR: Roblox deneyimi
+[16:04:49] PLAN | PLATFORM: Roblox (Roblox Studio, Luau)
+[16:04:49] PLAN | HEDEF KITLE: Roblox oyuncuları
+[16:04:49] PLAN | MEKANIKLER: hareket, gorev, skor/odul, tur yonetimi
+[16:04:49] PLAN | KONTROLLER: WASD + Mouse kamera; mobil joystick
+[16:04:49] PLAN | ARAYUZ: menu, oyun sekmesi, ayarlar, bildirimler
+[16:04:49] PLAN | SEVIYELER/TURLAR: artan zorluk veya tur sistemi
+[16:04:49] PLAN | GORSEL STIL: Roblox uyumlu, okunakli, performansli
+[16:04:49] PLAN | SES/EFEKT: UI ve oyun olay sesleri
+[16:04:49] PLAN | TEKNIK PLAN: ServerScript/LocalScript/RemoteEvent, DataStore, README
+[16:04:49] PLAN | ARASTIRMA NOTLARI: istek metnindeki ozel modlari birebir uygula.
+[16:04:49] SYS: PLATFORM | adaylar: OpenCode(180), Claude(46)
+[16:04:49] SYS: PLATFORM | secim: OpenCode | gerekce: kurulu/aktif ve en uygun puan.
+[16:04:50] SYS: PLATFORM | OpenCode acildi. Sohbet kismi hazirlaniyor. ("dur/durabilirsin/yeter" dersen sahibin geldi deyip bitirmesini isteyecegim; durmazsan bitince devam/iyilestirme isteyebilirim.)
+[16:04:53] SYS: SOHBET | girdi alani varsayilan konumdan odaklandi.
+[16:04:56] SYS: SOHBET DOGRULAMA | **EVET.**   Ekranın alt kısmında model seçeneği ve gönderme butonu bulunan bir mesaj yazma kutusu ile yukarıda sohbet geçmişi açıkça görünmektedir.
+[16:04:56] SYS: SOHBET | "merhaba" 0.2 sn icinde harf harf yazildi.
+[16:04:57] SYS: SOHBET | detayli brief panodan tek mesaja yapistirildi (3505 karakter).
+[16:05:02] SYS: SOHBET DOGRULAMA | EVET. Ekran görüntüsünde bir yapay zeka sohbet uygulaması açıktır ve alt kısımda metin yazılmış olan mesaj giriş alanı net bir şekilde görünmektedir.
+[16:05:02] JARVIS: Tek mesaj gonderildi -> OpenCode | hedef: Roblox (Roblox Studio, Luau, R15/R6)
+[16:05:02] JARVIS: Roblox hedefi icin ayrintili brief AI platformuna gonderildi ve klasore kaydedildi -> C:\Users\Koçak\Documents\JARVIS_Oyunlar\jarvis_roblox_oyunu_20261108_160502
+[16:05:02] SYS: ROBLOX | Gercek Roblox oyunu/yer dosyasi icin OpenCode/Claude/Freebuff ve/veya Roblox Studio uretimi takip edilir. "dur/yeter" dersen sahibin geldi deyip bitirmesini isterim; "devam et" dersen iyilestirmesini isterim.
+[16:05:15] JARVIS: Seni duydum: "seni kim yaptı". Ne yapmamı istiyorsun? Biraz daha acarsan hemen yapayim. Ornek: "bana roblox ve icinde ink game yap" ya da "neler yapabilirsin".
+[16:27:39] JARVIS: Merhaba! Ben J.A.R.V.I.S. Ne hakkında konuşmak istersin?
+[16:27:40] SYS: FIYAT | kontrol tamam; degisim yok.
+[16:27:52] JARVIS: Merhaba! Ben J.A.R.V.I.S, senin için buradayım. Her türlü soruna yardımcı olabilir, bilgi ve tavsiye sunabilirim. Ne hakkında konuşmak istersin?
+[16:27:54] SYS: FIYAT | kontrol tamam; degisim yok.
+[16:28:23] JARVIS: Seni duydum: "senii kim yaptı?". Ne yapmamı istiyorsun? Biraz daha acarsan hemen yapayim. Ornek: "bana roblox ve icinde ink game yap" ya da "neler yapabilirsin".
+[16:28:47] JARVIS: Seni duydum: "seni kim yaptı". Ne yapmamı istiyorsun? Biraz daha acarsan hemen yapayim. Ornek: "bana roblox ve icinde ink game yap" ya da "neler yapabilirsin".
+[16:30:27] SYS: FIYAT | kontrol tamam; degisim yok.
+[16:30:29] JARVIS: Merhaba! Ben J.A.R.V.I.S. Iyiyim, sen nasilsin? Sohbet edebiliriz ya da bir is verebilirsin: oyun/Roblox oyunu yap, hatirlatici, fiyat takibi, harita, 3D model, gorsel/video...
+[16:30:39] SYS: FIYAT | kontrol tamam; degisim yok.
+[16:44:12] SYS: FIYAT | kontrol tamam; degisim yok.
+[16:44:16] JARVIS: Seni duydum: "seni kim yaptı?". Ne yapmamı istiyorsun? Biraz daha acarsan hemen yapayim. Ornek: "bana roblox ve icinde ink game yap" ya da "neler yapabilirsin".
+[16:44:25] SYS: FIYAT | kontrol tamam; degisim yok.
+[18:39:12] JARVIS: Merhaba, nasılsın? J.A.R.V.I.S olarak her zaman sana yardımcı olmaya hazırım! 🚀
+[18:39:13] SYS: FIYAT | kontrol tamam; degisim yok.
+[18:39:22] SYS: FIYAT | kontrol tamam; degisim yok.
+[18:39:23] JARVIS: Zil çal demişsiniz, ama fiziksel bir zil çalamam. Yardımcı olabileceğim başka bir şey var mı?
+[18:39:54] JARVIS: Seni duydum: "dijital dünyada zil çal". Ne yapmamı istiyorsun? Biraz daha acarsan hemen yapayim. Ornek: "bana roblox ve icinde ink game yap" ya da "neler yapabilirsin".
+[08:39:19] SYS: NIYET | sohbet
+[08:39:19] JARVIS: Ben J.A.R.V.I.S: Abdulkadir'in kişisel yapay zekâsıyım. Bilgisayarında çalışır; sohbet eder, PowerShell kullanır, oyun/Roblox oyunu brief'i hazırlar ve AI platformuna gönderir, ekranını izler, hatırlatır, fiyat takip eder.
+[08:39:19] SYS: NIYET | komut | kod=zil
+[08:39:19] JARVIS: Zil çalındı! İsteğin varsa "10 sn sonra zil çal" ya da "beni 5 dk sonra hatırlat".
+[08:39:19] SYS: NIYET | iki | kod=zil
+[08:39:19] JARVIS: Zil çalındı! İsteğin varsa "10 sn sonra zil çal" ya da "beni 5 dk sonra hatırlat".
+[08:39:19] JARVIS: Merhaba! Ben J.A.R.V.I.S. Iyiyim, sen nasilsin? Sohbet edebiliriz ya da bir is verebilirsin: oyun/Roblox oyunu yap, hatirlatici, fiyat takibi, harita, 3D model, gorsel/video...
+[08:39:19] SYS: NIYET | komut | kod=zil
+[08:39:19] SYS: HATIRAT KURULDU: Zil çal! (10 sn sonra)
+[08:39:19] JARVIS: Zil: 10 sn sonra çalınacak. Unutmayacağım.
+[08:39:19] SYS: NIYET | komut | kod=kronometre
+[08:39:19] SYS: HATIRAT KURULDU: Kronometre: süre doldu (30 saniye) (30 sn sonra)
+[08:39:19] JARVIS: Kronometre kuruldu: 30 sn sonra haber vereceğim.
+[12:16:52] SYS: NIYET | sohbet
+[12:16:52] JARVIS: Ben J.A.R.V.I.S: Abdulkadir'in kişisel yapay zekâsıyım. Bilgisayarında çalışır; sohbet eder, PowerShell kullanır, oyun/Roblox oyunu brief'i hazırlar ve AI platformuna gönderir, ekranını izler, hatırlatır, fiyat takip eder.
+[12:16:55] SYS: FIYAT | kontrol tamam; degisim yok.
+[12:17:14] SYS: NIYET | komut | kod=zil
+[12:17:14] JARVIS: Zil çalındı! İsteğin varsa "10 sn sonra zil çal" ya da "beni 5 dk sonra hatırlat".
+[12:17:28] SYS: NIYET | iki | kod=zil
+[12:17:28] JARVIS: Zil çalındı! İsteğin varsa "10 sn sonra zil çal" ya da "beni 5 dk sonra hatırlat".
+[12:17:28] JARVIS: Merhaba! Ben J.A.R.V.I.S. Iyiyim, sen nasilsin? Sohbet edebiliriz ya da bir is verebilirsin: oyun/Roblox oyunu yap, hatirlatici, fiyat takibi, harita, 3D model, gorsel/video...
+[12:17:44] SYS: NIYET | komut | kod=zil
+[12:17:44] SYS: HATIRAT KURULDU: Zil çal! (10 sn sonra)
+[12:17:44] JARVIS: Zil: 10 sn sonra çalınacak. Unutmayacağım.
+[12:17:55] SYS: HATIRAT: Zil çal!
+[12:18:06] SYS: NIYET | komut | kod=kronometre
+[12:18:06] SYS: HATIRAT KURULDU: Kronometre: süre doldu (30 saniye) (30 sn sonra)
+[12:18:06] JARVIS: Kronometre kuruldu: 30 sn sonra haber vereceğim.
+[12:18:36] SYS: HATIRAT: Kronometre: süre doldu (30 saniye)
+[17:23:49] BEKCI | RAM % 99 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:23:50] SYS: FIYAT | kontrol tamam; degisim yok.
+[17:23:53] JARVIS: Seni duydum: "whatsapp aç". Ne yapmamı istiyorsun? Biraz daha acarsan hemen yapayim. Ornek: "bana roblox ve icinde ink game yap" ya da "neler yapabilirsin".
+[17:24:01] SYS: FIYAT | kontrol tamam; degisim yok.
+[17:24:02] SYS: Goz: Ara (SearchHost.exe)
+[17:24:09] BEKCI | RAM % 98 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:24:17] SYS: Goz: Ara (SearchHost.exe)
+[17:24:19] JARVIS: Buyur Abi, seni dinliyorum. Ne yapmak istersin? Ornek: "roblox ve icinde ink game yap", "10 saniye sonra hatirlat", "ekrani izle", "fiyat takip et".
+[17:24:20] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:24:23] SYS: Goz: Yeni Sekme - Google Chrome (chrome.exe)
+[17:24:26] SYS: Goz: whatsapp web - Google'da Ara - Google Chrome (chrome.exe)
+[17:24:31] BEKCI | RAM % 99 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:24:33] SYS: Goz: WhatsApp Web - Google Chrome (chrome.exe)
+[17:24:39] SYS: Goz: WhatsApp - Google Chrome (chrome.exe)
+[17:24:46] SYS: Goz: Ara (SearchHost.exe)
+[17:24:49] SYS: Goz: WhatsApp - Google Chrome (chrome.exe)
+[17:25:01] BEKCI | RAM % 99 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:25:27] BEKCI | RAM % 99 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:25:53] BEKCI | RAM % 99 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:26:14] BEKCI | RAM % 99 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:26:35] BEKCI | RAM % 99 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:26:43] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:27:00] BEKCI | RAM % 99 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:27:21] BEKCI | RAM % 98 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:27:46] BEKCI | RAM % 99 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:28:07] BEKCI | RAM % 98 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:28:24] SYS: DIKKAT: Mod OFFLINE kayitli ama INTERNET VAR. AI cevaplari icin "online mod" yaz ya da giris cubugundaki ONL butonuna bas.
+[17:28:30] BEKCI | RAM % 99 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:28:54] BEKCI | RAM % 98 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:29:21] BEKCI | RAM % 99 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:29:42] BEKCI | RAM % 99 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:30:02] BEKCI | RAM % 97 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:30:25] BEKCI | RAM % 98 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:30:51] BEKCI | RAM % 98 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:31:15] BEKCI | RAM % 98 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:31:39] BEKCI | RAM % 98 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:32:03] BEKCI | RAM % 98 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:32:25] BEKCI | RAM % 99 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:32:48] BEKCI | RAM % 98 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim | internet koptu — online isler su an durur
+[17:32:49] SYS: Goz: WhatsApp (Yanıt Vermiyor) (dwm.exe)
+[17:32:52] SYS: Goz: Roblox (RobloxPlayerBeta.exe)
+[17:33:01] SYS: Goz: WhatsApp (Yanıt Vermiyor) (dwm.exe)
+[17:33:13] BEKCI | RAM % 98 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:33:22] SYS: Goz: WhatsApp (WhatsApp.Root.exe)
+[17:33:25] SYS: Goz: Görev Yöneticisi (Taskmgr.exe)
+[17:33:25] SYS: Dikkat: RAM %98 dolu, arka plandaki uygulamalari kapatmak ister misin?
+[17:33:28] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:33:34] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:33:34] BEKCI | RAM % 98 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:33:36] SYS: DIKKAT: Mod OFFLINE kayitli ama INTERNET VAR. AI cevaplari icin "online mod" yaz ya da giris cubugundaki ONL butonuna bas.
+[17:33:37] SYS: Goz: Welcome - jatvis - Visual Studio Code (Code.exe)
+[17:33:40] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:33:43] SYS: Goz: Welcome - jatvis - Visual Studio Code (Code.exe)
+[17:33:47] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:33:56] BEKCI | RAM % 98 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 99 dolu — bazi yer acmak lazim
+[17:34:29] BEKCI | RAM % 96 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 99 dolu — bazi yer acmak lazim
+[17:34:44] SYS: Goz: Welcome - jatvis - Visual Studio Code (Code.exe)
+[17:34:50] BEKCI | RAM % 97 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 99 dolu — bazi yer acmak lazim
+[17:34:55] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:35:04] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:35:11] BEKCI | RAM % 97 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 99 dolu — bazi yer acmak lazim
+[17:35:13] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:35:31] BEKCI | RAM % 97 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 99 dolu — bazi yer acmak lazim
+[17:35:31] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:35:34] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:35:37] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:35:51] BEKCI | RAM % 90 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 99 dolu — bazi yer acmak lazim
+[17:35:56] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:36:05] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:36:12] BEKCI | RAM % 92 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 99 dolu — bazi yer acmak lazim
+[17:36:20] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:36:26] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:36:32] BEKCI | RAM % 91 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 99 dolu — bazi yer acmak lazim
+[17:36:35] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:36:38] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:36:44] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:36:53] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:36:53] BEKCI | RAM % 90 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 99 dolu — bazi yer acmak lazim
+[17:36:56] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:37:13] BEKCI | RAM % 91 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 99 dolu — bazi yer acmak lazim
+[17:37:32] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:37:34] BEKCI | RAM % 92 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 99 dolu — bazi yer acmak lazim
+[17:37:38] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:37:47] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:37:55] BEKCI | RAM % 92 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 99 dolu — bazi yer acmak lazim
+[17:38:15] BEKCI | RAM % 92 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 99 dolu — bazi yer acmak lazim
+[17:38:20] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:38:23] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:38:26] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:38:29] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:38:32] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:38:35] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:38:36] BEKCI | Disk % 98 dolu — bazi yer acmak lazim
+[17:38:37] SYS: DIKKAT: Mod OFFLINE kayitli ama INTERNET VAR. AI cevaplari icin "online mod" yaz ya da giris cubugundaki ONL butonuna bas.
+[17:38:56] BEKCI | Disk % 98 dolu — bazi yer acmak lazim
+[17:39:02] SYS: FIYAT | kontrol tamam; degisim yok.
+[17:39:17] BEKCI | Disk % 98 dolu — bazi yer acmak lazim
+[17:39:26] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:39:29] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:39:32] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:39:38] BEKCI | Disk % 98 dolu — bazi yer acmak lazim
+[17:39:58] BEKCI | RAM % 78 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:40:19] BEKCI | RAM % 78 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:40:23] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:40:35] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:40:39] BEKCI | Disk % 98 dolu — bazi yer acmak lazim
+[17:40:44] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:41:00] BEKCI | RAM % 78 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:41:21] BEKCI | RAM % 82 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:41:38] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:41:42] BEKCI | RAM % 82 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:41:50] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:41:53] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:42:02] BEKCI | RAM % 82 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:42:14] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:42:17] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:42:20] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:42:23] BEKCI | RAM % 83 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:42:43] BEKCI | RAM % 84 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:43:04] BEKCI | RAM % 84 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:43:14] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:43:17] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:43:24] BEKCI | RAM % 84 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:43:29] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:43:32] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:43:37] SYS: DIKKAT: Mod OFFLINE kayitli ama INTERNET VAR. AI cevaplari icin "online mod" yaz ya da giris cubugundaki ONL butonuna bas.
+[17:43:44] SYS: Goz: Yeni Sekme - Google Chrome (chrome.exe)
+[17:43:45] BEKCI | RAM % 85 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:43:47] SYS: Goz: YouTube - Google Chrome (chrome.exe)
+[17:43:53] SYS: Goz: (546) YouTube - Google Chrome (chrome.exe)
+[17:43:59] SYS: Goz: (546) Japon Mafyası Yakuza'ya Kabul Edilen İlk ve Tek Kadın! (Mako Nis (chrome.exe)
+[17:44:02] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:44:05] SYS: Goz: (546) Japon Mafyası Yakuza'ya Kabul Edilen İlk ve Tek Kadın! (Mako Nis (chrome.exe)
+[17:44:06] BEKCI | RAM % 90 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:44:08] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:44:17] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:44:20] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:44:26] BEKCI | RAM % 88 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:44:47] BEKCI | RAM % 88 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:44:48] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:44:51] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:45:06] SYS: Goz: (546) Bu İcat Neden Başarısız Oldu? - YouTube - Google Chrome (chrome.exe)
+[17:45:08] BEKCI | RAM % 90 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:45:28] BEKCI | RAM % 88 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:45:48] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:45:49] BEKCI | RAM % 89 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:45:51] SYS: Goz: (546) YouTube - Google Chrome (chrome.exe)
+[17:45:57] SYS: Goz: OpenCode (OpenCode.exe)
+[17:46:03] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:46:09] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:46:10] BEKCI | RAM % 90 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:46:15] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:46:18] SYS: Goz: (546) Gizli Apple Watch Göndermesi! #shorts - YouTube - Google Chrome (chrome.exe)
+[17:46:30] BEKCI | RAM % 90 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:46:33] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:46:39] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:46:45] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:46:48] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:46:52] BEKCI | RAM % 90 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:46:54] SYS: Goz: (546) Antalya’da Bir Çarşının Altından 865 Mezar Çıktı #tarih #antalya (chrome.exe)
+[17:47:06] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:47:12] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:47:12] BEKCI | RAM % 90 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:47:21] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:47:30] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:47:33] BEKCI | RAM % 89 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:47:36] SYS: Goz: (546) YouTube - Google Chrome (chrome.exe)
+[17:47:39] SYS: Goz: (546) Deadlock Rem ses tahmini - YouTube - Google Chrome (chrome.exe)
+[17:47:54] BEKCI | RAM % 89 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:48:00] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:48:06] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:48:09] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:48:14] BEKCI | RAM % 88 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:48:15] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:48:37] SYS: DIKKAT: Mod OFFLINE kayitli ama INTERNET VAR. AI cevaplari icin "online mod" yaz ya da giris cubugundaki ONL butonuna bas.
+[17:48:42] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:48:51] SYS: Goz: (546) Deadlock Rem ses tahmini - YouTube - Google Chrome (chrome.exe)
+[17:48:54] SYS: Goz: (546) Bambu Lab A1 Filament Yüklenmiyor, Tüp Boş (07FF-C003): Takipçi  (chrome.exe)
+[17:49:18] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:49:27] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:49:30] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:49:33] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:50:00] SYS: Goz: (546) 4 ÇOCUĞA ÇAMUR VERDİM… ve KAYSERİ YAĞLAMASI YAPTILAR! - YouTube  (chrome.exe)
+[17:50:42] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:50:51] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:51:09] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:51:12] SYS: Goz: (546) 4 ÇOCUĞA ÇAMUR VERDİM… ve KAYSERİ YAĞLAMASI YAPTILAR! - YouTube  (chrome.exe)
+[17:51:45] SYS: Goz: (546) Köydeki Acımasız Lakaplar - 4 - YouTube - Google Chrome (chrome.exe)
+[17:52:03] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:52:09] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:52:12] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:52:15] SYS: Goz: (546) Köydeki Acımasız Lakaplar - 4 - YouTube - Google Chrome (chrome.exe)
+[17:52:30] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:52:39] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:52:42] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:52:48] SYS: Goz: (546) Köydeki Acımasız Lakaplar - 4 - YouTube - Google Chrome (chrome.exe)
+[17:52:51] SYS: Goz: (546) Oyunlarda kenardan düşünce neden yine zıplıyorsun? - YouTube - G (chrome.exe)
+[17:53:21] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:53:24] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:53:27] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:53:30] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:53:34] SYS: Goz: (546) Oyunlarda kenardan düşünce neden yine zıplıyorsun? - YouTube - G (chrome.exe)
+[17:53:38] SYS: DIKKAT: Mod OFFLINE kayitli ama INTERNET VAR. AI cevaplari icin "online mod" yaz ya da giris cubugundaki ONL butonuna bas.
+[17:53:46] SYS: Goz: (546) Türk Marşı - Turkish Anthem Mozart - Rondo Alla Turca - YouTube  (chrome.exe)
+[17:54:04] SYS: FIYAT | kontrol tamam; degisim yok.
+[17:54:10] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:54:25] SYS: Goz: (546) Türk Marşı - Turkish Anthem Mozart - Rondo Alla Turca - YouTube  (chrome.exe)
+[17:54:28] SYS: Goz: (546) Klasik bir Türk evi mimar dokunuşuyla neye dönüşür? #mimar #evta (chrome.exe)
+[17:54:46] SYS: Goz: (546) Beynin Bir Ampulden Fazla Güç Harcar mı? 🧠💡 - YouTube - Google C (chrome.exe)
+[17:54:52] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:54:55] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:54:58] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:55:01] SYS: Goz: (546) Beynin Bir Ampulden Fazla Güç Harcar mı? 🧠💡 - YouTube - Google C (chrome.exe)
+[17:55:19] SYS: Goz: (546) YouTube - Google Chrome (chrome.exe)
+[17:55:31] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:55:37] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:55:40] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:55:43] SYS: Goz: (546) KURTLAR VADİSİ: GİZLİ TOMBALACI MESAJI - YouTube - Google Chrome (chrome.exe)
+[17:55:55] SYS: Goz: (546) YouTube - Google Chrome (chrome.exe)
+[17:56:04] SYS: Goz: (546) Çok Güzel Hareketler 2 - 199. Bölüm - YouTube - Google Chrome (chrome.exe)
+[17:56:07] MUHABBET | Abdulkadir Bey, mesai bitimine doğru yaklaşırken şu zavallı RAM'i de biraz azat 
+[17:56:07] BEKCI | RAM % 88 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 98 dolu — bazi yer acmak lazim
+[17:56:10] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:56:16] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:56:19] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:56:27] BEKCI | RAM % 90 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:56:31] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:56:34] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:56:37] SYS: Goz: (546) Çok Güzel Hareketler 2 - 199. Bölüm - YouTube - Google Chrome (chrome.exe)
+[17:56:46] SYS: Goz: Yeni Sekme - Google Chrome (chrome.exe)
+[17:56:48] BEKCI | RAM % 91 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:56:49] SYS: Goz: Sony Playstation 5 Slim Digital Sürüm Oyun Konsolu Fiyatı ve Özellikle (chrome.exe)
+[17:56:55] SYS: Goz: (546) Çok Güzel Hareketler 2 - 199. Bölüm - YouTube - Google Chrome (chrome.exe)
+[17:57:04] SYS: Goz: Medal Overlay (Medal.exe)
+[17:57:09] BEKCI | RAM % 90 — cok yuklu; kapatilacak seyler var gibime bakiyor | Disk % 98 dolu — bazi yer acmak lazim
+[17:57:10] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:57:19] SYS: Goz: (546) Çok Güzel Hareketler 2 - 199. Bölüm - YouTube - Google Chrome (chrome.exe)
+[17:57:25] SYS: Goz: Sony Playstation 5 Slim Digital Sürüm Oyun Konsolu Fiyatı ve Özellikle (chrome.exe)
+[17:57:30] BEKCI | RAM % 81 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 97 dolu — bazi yer acmak lazim
+[17:57:31] SYS: Goz: (546) Çok Güzel Hareketler 2 - 199. Bölüm - YouTube - Google Chrome (chrome.exe)
+[17:57:34] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:57:40] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:57:43] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:57:50] BEKCI | RAM % 82 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 97 dolu — bazi yer acmak lazim
+[17:57:55] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:57:58] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:58:01] SYS: Goz: (546) Çok Güzel Hareketler 2 - 199. Bölüm - YouTube - Google Chrome (chrome.exe)
+[17:58:11] BEKCI | RAM % 81 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 97 dolu — bazi yer acmak lazim
+[17:58:16] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:58:22] SYS: Goz: Administrator: Windows PowerShell (powershell.exe)
+[17:58:31] SYS: Goz: Proje Devri Nasıl Yapılır (12) - Google Chrome (chrome.exe)
+[17:58:31] BEKCI | RAM % 82 — biraz isi basi; gereksiz seyler kapanabilir | Disk % 97 dolu — bazi yer acmak lazim
+[17:58:34] SYS: Goz: Seç Administrator: Windows PowerShell (powershell.exe)
+[17:58:37] SYS: Goz: (546) Çok Güzel Hareketler 2 - 199. Bölüm - YouTube - Google Chrome (chrome.exe)
+[17:58:38] SYS: DIKKAT: Mod OFFLINE kayitli ama INTERNET VAR. AI cevaplari icin "online mod" yaz ya da giris cubugundaki ONL butonuna bas.

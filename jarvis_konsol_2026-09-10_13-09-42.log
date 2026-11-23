@@ -1,0 +1,14 @@
+[Per 10.09.2026 13:09:42,84] JARVIS basladi 
+patch.py:131: DeprecationWarning: mss.mss is deprecated and will be removed in a future release; use mss.MSS instead
+Warning: there are non-data parts in the response: ['text', 'thought'], returning concatenated data result from data parts, check out the non data parts for full response from model.
+  + Exception Group Traceback (most recent call last):
+  |   File "patch.py", line 60, in run
+  |   File "asyncio\taskgroups.py", line 71, in __aexit__
+  |   File "asyncio\taskgroups.py", line 164, in _aexit
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "patch.py", line 104, in _receive_audio
+    | RuntimeError: audio receive stream ended — reconnect
+    +------------------------------------
+[Per 10.09.2026 13:11:33,63] JARVIS kapandi. Cikis kodu: 0 

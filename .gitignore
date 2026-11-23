@@ -1,0 +1,41 @@
+﻿# Python cache
+__pycache__/
+.pytest_cache/
+*.py[cod]
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+*.p12
+*secret*
+*credential*
+*token*
+*api_key*
+*api-key*
+*password*
+*pin*
+
+# Personal data
+**/memory/
+**/*gecmisi*.json
+**/*gecmis*.jsonl
+**/*hafiza*.json
+**/*hafiza*.jsonl
+**/not_defteri.txt
+**/qr/
+**/koruma/
+**/config/
+
+# Backups and temporary files
+*.bak
+*.tmp
+*.log
+*.pyc
+
+# Build outputs
+*.exe
+*.dll
+*.pyd

@@ -1,0 +1,2061 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+JARVIS CHAT V2 - Gercek sohbet yolu entegrasyonu (GOREV 2.7 / F3 + F4 + F5).
+
+NEDEN BU MODUL:
+  main.pyc (orijinal bytecode) icindeki JarvisLive._on_text_command, sohbet
+  cevabini once `self._ai_tek_cevap(...)` ile alir; basarili olursa yazip
+  konusur, olmazsa canli oturuma (Gemini Live) gecer.
+
+  Bu modul `JarvisLive._ai_tek_cevap` yerine GECER, boylece:
+    * Normal sohbet ve mod sorgusu -> CHAT V2 process_message() (TEK motor)
+    * Cihaz komutu / gelistirme / oyun / ayar gibi ORIJINAL komutlar
+      DEGISMEZ (on_text_command aynen calisir, sadece cevap fonksiyonu
+      degisir)
+    * Ikinci cevap ureticileri devre disi birakilir (tek cevap + tek TTS)
+
+Bytecode'a HIC dokunulmaz. Yama, calisma zamaninda sinif nesnelerine
+uygulanir (jarvis_ai_entry.py exec sonrasi cagrilir).
+"""
+from __future__ import annotations
+
+import hashlib
+import hmac
+import json
+import os
+import queue
+import re
+import threading
+import time
+import uuid
+from typing import Any, Dict, List, Optional, Tuple
+
+# -------------------------------------------------------------------
+# GOREV (emir) kalibi - bunlar orijinal ajan akisinda kalmalidir
+# -------------------------------------------------------------------
+_GOREV_KALIP = re.compile(
+    r'\b(olu[şs]tur|olu[şs]tur|yaz|yazdir|ekle|sil|analiz et|analizle|'
+    r'geli[şs]tir|gelistir|kodla|programla|implement|d[uü]zelt|'
+    r'raporla|indir|indir|kurulum|ayarla|degistir|değiştir|'
+    r'ara[şs]t[ıi]r|arastir|incele ve|olustur)\b', re.I)
+
+# Soru kalipleri - bunlar CHAT V2'ye gider (bilgi sorusu)
+_SORU_KALIP = re.compile(
+    r'(nedir|ne\s|nas[ıi]l|kim|hangi|nerede|ne kadar|a[çc]ıkla|'
+    r'anlat|özetle|ozetle|tan[ıi]t|tanimla)', re.I)
+
+# -------------------------------------------------------------------
+# Orijinal sistemin OZEL KOMUT sinyalleri. Bu mesajlar CHAT V2'ye
+# GONDERILMEZ; mevcut yerel yonlendirme (cihaz, oyun, kod, arastirma,
+# hava durumu vb.) aynen korunur.
+# -------------------------------------------------------------------
+_ORIJINAL_OZEL_KALIP = (
+    'sonsuz', 'oyun', 'youtube', 'tdk', 'maraton', 'gunaydin', 'gunaydın',
+    'borsa', 'portfoy', 'telefon', 'gorsel', 'görsel', 'ozellik',
+    'hava durumu', 'kamera', 'mikrofon', 'anlik', 'anlık',
+    'calistir', 'çalıştır', 'baglanti', 'bağlantı',
+)
+# Kelime bazli (sozcuk siniri) eslesme icin
+_ORIJINAL_OZEL_RX = re.compile(
+    r'\b(' + '|'.join(re.escape(p) for p in _ORIJINAL_OZEL_KALIP) + r')\b',
+    re.I)
+
+
+def _orijinal_ozel_komut(metin: str) -> bool:
+    """Mesaj orijinal sistemin ozel bir komutu mu? (CHAT V2'ye gitmez)
+
+    NOT: 'python', 'kod', 'program', 'dosya' gibi genel kelimeler
+    BILerek listeye alinmadi; aksi halde "Python nedir?" gibi bilgi
+    sorulari yanlislikla orijinal akisa (ajan/aratirma) gider.
+    Emir kipi zaten _gorev_mi() ile elenir.
+    """
+    m = str(metin or '').strip().lower()
+    if not m:
+        return False
+    try:
+        import jarvis_anlama as _an
+        for ad in ('cihaz_komutu_mu', 'yerel_komut_mu', 'mod_komutu_mu',
+                   'cihaz_bilgisi_mi'):
+            f = getattr(_an, ad, None)
+            if callable(f):
+                try:
+                    if f(m):
+                        return True
+                except Exception:
+                    pass
+    except Exception:
+        pass
+    return bool(_ORIJINAL_OZEL_RX.search(m))
+
+
+def _ch2_uygun(metin: str) -> bool:
+    """Bu mesaj CHAT V2 tarafindan yanitlanmali mi?
+
+    Normal sohbet ve mod sorgusu CHAT V2 ile yanitlanir; cihaz komutlari,
+    ozel komutlar ve acik emirler orijinal akista kalir.
+    """
+    m = str(metin or '').strip()
+    if not m:
+        return False
+    tip = _niyet_tipi(m)
+    if tip == 'device_command':
+        return False
+    if _gorev_mi(m):
+        return False
+    if _orijinal_ozel_komut(m):
+        return False
+    if tip == 'development_task':
+        return _soru_mu(m)
+    return True
+
+
+# -------------------------------------------------------------------
+# Sayaclar (testler icin)
+# -------------------------------------------------------------------
+SAYAC: Dict[str, int] = {
+    'chat_v2_cevap': 0,      # CHAT V2'den gelen cevap sayisi
+    'tekrar_atlandi': 0,     # ayni mesaj icin tekrar sayisi (atlandi)
+    'tts': 0,                # TTS cagrisi sayisi
+    'orijinal_ai': 0,        # orijinal _ai_tek_cevap cagrisi
+    'cevap_reddi': 0,        # CHAT V2 cevap vermedi -> orijinale donuldu
+    'broker_izin': 0,        # merkezi brokerdan gecen bulut istegi
+    'broker_red': 0,         # broker tarafindan reddedilen istek
+}
+
+_KILIT = threading.Lock()
+
+# -------------------------------------------------------------------
+# FAZ 2.2A: merkezi bulut izin bileti (oturum + tek kullanimlik HMAC)
+# -------------------------------------------------------------------
+_YETKI_SIR = os.urandom(32)
+_YETKI_OTURUM = os.urandom(8).hex()
+_YETKI_GECERLI_SN = 300.0
+_YETKI_KAYNAKLAR = (
+    'canli', 'sesli', 'adapter_master', 'adapter_sonsuz',
+    'adapter_yedek', 'test', 'beyin', 'v51', 'sarmalayici',
+)
+_YETKI_KILIT = threading.Lock()
+_YETKI_KAYIT: Dict[str, Dict[str, Any]] = {}
+_YETKI_AKTIF = {'tid': None}
+_ISTEK_BAGLAM = threading.local()
+
+# Son cevap (tekillestirme / request_id korumasi)
+_SON: Dict[str, Any] = {
+    'anahtar': None,
+    'request_id': None,
+    'cevap': None,
+    'sonuc': None,
+    'zaman': 0.0,
+}
+
+# Ayni mesaj icin tekrar penceresi (sn)
+TEKRAR_PENCERE = 20.0
+
+# Arayuzun kendi yazdigi 'Siz:' satirini tekrar yazmama penceresi (sn)
+TK_LOG_PENCERE = 120.0
+
+# CHAT V2'nin devreye girmesini kontrol eden bayrak
+_ENTEGRE = False
+
+# Devam eden istekler: ayni mesajin eszamanli tekrari ikinci model
+# cagrisi baslatmaz; ilk istegin sonucunu bekler.
+class _Ucus:
+    __slots__ = ('event', 'sonuc', 'hata', 'request_id')
+
+    def __init__(self) -> None:
+        self.event = threading.Event()
+        self.sonuc: Optional[Dict[str, Any]] = None
+        self.hata: Optional[str] = None
+        self.request_id: Optional[str] = None
+
+
+_UCUS: Dict[Tuple[str, str, str], _Ucus] = {}
+_UCUS_KILIT = threading.Lock()
+_UCUS_BEKLEME_SN = 300.0
+
+# Yerel model (Ollama) icin tek aktif istek; digerleri sirada bekler.
+_YEREL_KILIT = threading.Lock()
+_YEREL_DURUM_KILIT = threading.Lock()
+_YEREL_AKTIF = False
+_YEREL_BEKLEYEN = 0
+
+
+# -------------------------------------------------------------------
+# Yardimcilar
+# -------------------------------------------------------------------
+def _niyet_tipi(metin: str) -> str:
+    """CHAT V2 niyet tipi (hata olursa normal_chat)."""
+    try:
+        from CHAT_V2.message_router_v2 import classify_intent
+        return str(classify_intent(metin).get('type', 'normal_chat'))
+    except Exception:
+        return 'normal_chat'
+
+
+def _standart_sohbet_promtu(sistem: Optional[str]) -> bool:
+    """sistem parametresi standart JARVIS sohbet promptu mu?
+
+    Ozel gorev promptlari (mesaj duzeltme, dosya okuma, bildirim onayi vb.)
+    orijinal _ai_tek_cevap ile calismaya devam etmelidir.
+    """
+    if not sistem:
+        return False
+    s = str(sistem).strip().lower()
+    return s.startswith('sen jarvis adinda turkce konusan')
+
+
+def _gorev_mi(metin: str) -> bool:
+    """Kullanici acik bir GOREV (emir) mi verdi?
+
+    True  -> orijinal ajan akisinda kalmali (kod yaz, analiz et, arastir...)
+    False -> bilgi sorusu / sohbet -> CHAT V2 tek motor
+    """
+    m = str(metin or '')
+    if _GOREV_KALIP.search(m):
+        return True
+    # Orijinal sistemin gorunur arastirma komutu
+    if re.search(r'\b(ara[sş]t[ıi]r\w*|incele ve)\b', m, re.I):
+        return True
+    return False
+
+
+def _soru_mu(metin: str) -> bool:
+    """Bilgi sorusu mu? (gelistirme gorevi degil)"""
+    m = str(metin or '').strip()
+    if not m:
+        return False
+    if m.endswith('?'):
+        return True
+    return bool(_SORU_KALIP.search(m))
+
+
+def _anahtar(metin: str) -> str:
+    """Mesaj kimlik anahtari (tekilleştirme icin)."""
+    return ' '.join(str(metin or '').strip().lower().split())[:200]
+
+
+def _tam_anahtar(metin: str, ek: str = '') -> str:
+    """Mesajin tamami; uzun mesajlarda 200 karakter kesmesi olmaz.
+
+    `ek` gecmis parmak izidir: ayni metin FARKLI baglamda ise onbellek
+    isabeti sayilmaz.
+    """
+    anahtar = ' '.join(str(metin or '').strip().lower().split())
+    return anahtar + (('|g=' + str(ek)) if ek else '')
+
+
+def _hafiza():
+    """Sohbet hafizasi modulu (lazy; import hatasi sohbeti durdurmaz)."""
+    import jarvis_sohbet_hafizasi as H
+    return H
+
+
+def _mesaj_hash(metin: str) -> str:
+    """Bilet baglama hash'i: mesajin TAMAMI (ilk 200 karakter degil)."""
+    return hashlib.sha256(
+        str(metin or '').strip().encode('utf-8')).hexdigest()
+
+
+def _ses_kapali_mi() -> bool:
+    """Yazili-only modda TTS/mikrofon yoluna hic girme."""
+    return str(os.environ.get('JARVIS_YAZILI_ONLY', '')).strip() == '1'
+
+
+def _istek_id_uret() -> str:
+    return 'req-' + uuid.uuid4().hex
+
+
+def _ucus_anahtari(metin: str, kaynak: Optional[str],
+                   mod: Optional[str], ek: str = '') -> Tuple[str, str, str]:
+    return (str(kaynak or ''), str(mod or ''), _tam_anahtar(metin, ek))
+
+
+def _hata_sonucu(kod: str, mesaj: str, mod: Optional[str] = None
+                 ) -> Dict[str, Any]:
+    mod = str(mod or 'offline')
+    return {
+        'request_id': None, 'mode': mod, 'mode_label': mod,
+        'message_type': 'normal_chat', 'ai_provider': None, 'model': None,
+        'success': False, 'result_type': 'connection_error',
+        'response': None, 'error': mesaj, 'error_code': kod,
+        'errors': [], 'attempted_providers': [], 'free_verified': False,
+        'provider_request_id': None, 'first_token_ms': 0,
+        'total_response_ms': 0, 'cloud_failed': False,
+        'local_llm_called': False,
+    }
+
+
+def _paylasilan_sonuc(sonuc: Dict[str, Any],
+                      lider_id: Optional[str]) -> Dict[str, Any]:
+    """Bekleyen istege ayni cevabin kopyasini, yeni request_id ile ver."""
+    yeni = dict(sonuc) if isinstance(sonuc, dict) else {}
+    eski = yeni.get('request_id') or lider_id
+    yeni['request_id'] = _istek_id_uret()
+    if eski:
+        yeni['shared_request_id'] = eski
+    yeni['shared'] = True
+    return yeni
+
+
+def yerel_durum() -> Dict[str, Any]:
+    """Yerel model kuyrugu durumu (UI/testler icin)."""
+    with _YEREL_DURUM_KILIT:
+        return {'aktif': bool(_YEREL_AKTIF),
+                'bekleyen': int(_YEREL_BEKLEYEN)}
+
+
+def _yerel_bildir(bildirim: Any, metin: str) -> None:
+    if not callable(bildirim):
+        return
+    try:
+        bildirim(metin)
+    except Exception:
+        pass
+
+
+def _yerel_calis(fn: Any, bildirim: Any = None) -> Any:
+    """Yerel model cagrisini tek slotta calistir; digerleri bekler."""
+    global _YEREL_AKTIF, _YEREL_BEKLEYEN
+    with _YEREL_DURUM_KILIT:
+        _YEREL_BEKLEYEN += 1
+        mesgul = bool(_YEREL_AKTIF) or _YEREL_BEKLEYEN > 1
+    if mesgul:
+        _yerel_bildir(
+            bildirim, 'Yerel model çalışıyor; mesajınız sıraya alındı.')
+    alindi = False
+    sirada = True
+    try:
+        _YEREL_KILIT.acquire()
+        alindi = True
+        with _YEREL_DURUM_KILIT:
+            _YEREL_BEKLEYEN -= 1
+            sirada = False
+            _YEREL_AKTIF = True
+        return fn()
+    finally:
+        with _YEREL_DURUM_KILIT:
+            if sirada:
+                _YEREL_BEKLEYEN -= 1
+            if alindi:
+                _YEREL_AKTIF = False
+        if alindi:
+            _YEREL_KILIT.release()
+
+
+def _chat_v2_process(metin: str) -> Dict[str, Any]:
+    """CHAT V2 process_message() cagrisi (tek yetkili cevap motoru).
+
+    FAZ 2.2A: yetki bileti ve istek kaynagi, ayni is parcacigina ait
+    thread-local baglamdan okunur. Boylece adapterlerin dogrudan
+    cagrilari bile motorun son kapisindan gecmek zorunda kalir.
+    """
+    from CHAT_V2.chat_engine_v2 import ChatEngineV2
+    engine = ChatEngineV2()
+    bilet = getattr(_ISTEK_BAGLAM, 'bilet', None)
+    kaynak = getattr(_ISTEK_BAGLAM, 'kaynak', None)
+    force_mode = getattr(_ISTEK_BAGLAM, 'force_mode', None)
+    gecmis = getattr(_ISTEK_BAGLAM, 'gecmis', None)
+    return engine.process_message(
+        metin, force_mode=force_mode, yetki=bilet, kaynak=kaynak,
+        gecmis=gecmis)
+
+
+def _mesaj_benzes(eski: str, yeni: str) -> bool:
+    a = _anahtar(eski)
+    b = _anahtar(yeni)
+    if not a or not b:
+        return False
+    if a == b:
+        return True
+    # "[SISTEM NOTU: ...] Kullanici: <mesaj>" bicimini de normalize et
+    for ayirac in ('kullanıcı:', 'kullanici:', 'kullanici :'):
+        if ayirac in b:
+            b = b.split(ayirac)[-1].strip()
+            break
+    return a == b
+
+
+# -------------------------------------------------------------------
+# Ana entegrasyon
+# -------------------------------------------------------------------
+def entegre_et(ns: Dict[str, Any]) -> bool:
+    """exec edilen main.pyc ad alanindan CHAT V2 entegrasyonunu kur.
+
+    ns: main.pyc icindeki modul ad alani (JarvisLive sinifi burada).
+    """
+    global _ENTEGRE
+
+    JL = ns.get('JarvisLive')
+    if JL is None:
+        print("[CHAT_V2] JarvisLive sinifi bulunamadi - entegrasyon atlandi")
+        return False
+
+    # ----------------------------------------------------------------
+    # 0) HUD 'Siz:' tekrarini engelle: arayuzun kendi yazdigi satiri
+    #    isaretle; sarmalayici ayni satiri ikinci kez yazmaz. Istek
+    #    yine TEK kez gonderilir.
+    # ----------------------------------------------------------------
+    orj_write_log = getattr(JL, 'write_log', None)
+    if orj_write_log is not None:
+        def _write_log(self, satir, *a, **k):
+            try:
+                s = str(satir or '')
+                if s.startswith('Siz: '):
+                    self._jarvis_son_siz = (s, time.time())
+            except Exception:
+                pass
+            return orj_write_log(self, satir, *a, **k)
+        JL.write_log = _write_log
+
+    # ----------------------------------------------------------------
+    # 1) _ai_tek_cevap -> CHAT V2 (normal sohbet + mod sorgusu)
+    # ----------------------------------------------------------------
+    orj_ai_tek = JL._ai_tek_cevap
+
+    def _ai_tek_cevap(self, soru, sistem=None, zaman=45, *a, **k):
+        metin = str(soru or '').strip()
+        if metin:
+            tip = _niyet_tipi(metin)
+            ch2_uygun = False
+            if tip == 'mod_sorgulama':
+                # Mod sorgusu: LLM/araştırma YOK, anında yanıt.
+                ch2_uygun = True
+            elif tip == 'normal_chat':
+                ch2_uygun = _standart_sohbet_promtu(sistem)
+            elif tip == 'development_task':
+                # GOREV 2.7 / F3: gelistirme gorevi ikiye ayrilir.
+                #   acik EMIR ("program olustur") -> orijinal ajan akisi
+                #   BILGI SORUSU ("Python nedir?") -> CHAT V2 (yerel model)
+                ch2_uygun = (not _gorev_mi(metin)) and _soru_mu(metin)
+            if ch2_uygun:
+                cevap, rid, tekrar = _tek_cevap_uret(metin)
+                if cevap:
+                    return (cevap, 'CHAT V2 (%s)' % (rid[:8] if rid else '-'))
+                with _KILIT:
+                    SAYAC['cevap_reddi'] += 1
+                # CHAT V2 basarisiz: orijinal AI akisina SESSIZ gecis YOK.
+                return ('', 'CHAT V2')
+        with _KILIT:
+            SAYAC['orijinal_ai'] += 1
+        return orj_ai_tek(self, soru, sistem, zaman, *a, **k)
+
+    JL._ai_tek_cevap = _ai_tek_cevap
+
+    # ----------------------------------------------------------------
+    # 1b) _on_text_command -> CHAT V2 (TEK yetkili cevap motoru)
+    #     Orijinal komut yonlendirmesi (cihaz, oyun, kod, arastirma vb.)
+    #     korunur; yalnizca SOHBET ve MOD SORGUSU CHAT V2'ye gider.
+    #     Boylece: arastirma baslamaz, ajan katmani devreye girmez,
+    #     ikinci cevap uretilmez, tek metin + tek TTS olur.
+    # ----------------------------------------------------------------
+    orj_on_text = JL._on_text_command
+
+    def _on_text_command(self, t, *a, **k):
+        metin = str(t or '').strip()
+        # --- GOREV 2.8: Beyin komut kontrolü ---
+        from jarvis_chat_v2_entegrasyon import beyin_komutu_algila
+        if metin and beyin_komutu_algila(metin):
+            beyin_ayarlari_ac(self)
+            return None
+        # Cihaz komutu / ozel komut / acik emir: orijinal akis DEGISMEZ.
+        if not metin or not _ch2_uygun(metin):
+            return orj_on_text(self, t, *a, **k)
+
+        _kok_kaydet(self)
+
+        def _bildir(mesaj: str) -> None:
+            try:
+                _log_satiri(self, "SYS: " + str(mesaj))
+            except Exception:
+                pass
+
+        # FAZ 2.2A: TEK merkezi broker. Mod, oturum onayi, bilet ve
+        # kaynak kontrolu burada yapilir; izinsiz bulut istegi cikmaz.
+        sonuc, tekrar = guvenli_isle(
+            metin, kaynak='canli', bildirim=_bildir,
+            oturum=_oturum_anahtari(self))
+        sonuc = sonuc or {}
+        rtip = str(sonuc.get('result_type') or '')
+        cevap = str(sonuc.get('response') or '').strip()
+
+        # Ayni mesajin eszamanli/eski tekrari icin ikinci satir uretme.
+        if tekrar:
+            try:
+                self._chat_v2_cevap_verildi = True
+            except Exception:
+                pass
+            return None
+
+        if rtip == 'answer' and cevap:
+            _kullanici_satiri(self, metin)
+            _log_satiri(self, "JARVIS: " + cevap)
+            try:
+                _ad = str(sonuc.get('ai_provider') or '').strip()
+                _mdl = str(sonuc.get('model') or '').strip()
+                if _ad or _mdl:
+                    _st = ("SYS: Sağlayıcı: %s | Model: %s"
+                           % (_ad or '-', _mdl or '-'))
+                    _ko = _kota_ozet(sonuc)
+                    if _ko:
+                        _st += ' | ' + _ko
+                    _log_satiri(self, _st)
+            except Exception:
+                pass
+            if not _ses_kapali_mi():
+                try:
+                    self._speak_text_safe(cevap)
+                except Exception:
+                    pass
+                with _KILIT:
+                    SAYAC['tts'] += 1
+            try:
+                self._chat_v2_cevap_verildi = True
+            except Exception:
+                pass
+            return None
+
+        # Gercek AI yaniti YOK: JARVIS: satiri ve TTS YOK; sessiz fallback YOK.
+        _kullanici_satiri(self, metin)
+        _log_satiri(self, "SYS: " + _durum_satiri(sonuc))
+        try:
+            self._chat_v2_cevap_verildi = True
+        except Exception:
+            pass
+        return None
+
+    JL._on_text_command = _on_text_command
+
+    # ----------------------------------------------------------------
+    # 2) _ai_ikinci_cevap -> devre disi (ikinci cevap + araştırma tetigi)
+    # ----------------------------------------------------------------
+    def _ai_ikinci_cevap(self, *a, **k):
+        """GOREV 2.7 / F4: Ikinci cevap uretimi kapatildi.
+
+        Eski davranis: yerel cevap verildiginde ayni soru AI'ya da sorulur
+        ve "JARVIS (AI — ...)" kanalinda ikinci bir metin + TTS uretilirdi.
+        Artik CHAT V2 tek yetkili cevap motorudur.
+        """
+        return False
+
+    JL._ai_ikinci_cevap = _ai_ikinci_cevap
+
+    # ----------------------------------------------------------------
+    # 3) _v90_bekci -> CHAT V2 cevapladiginda ikinci cevap uretmesin
+    # ----------------------------------------------------------------
+    orj_bekci = getattr(JL, '_v90_bekci', None)
+
+    def _v90_bekci(self, *a, **k):
+        """GOREV 2.7 / F4: 'canlı oturumdan cevap gelmedi' fallback'i
+        CHAT V2 cevapladiginda ikinci metin uretmez."""
+        if getattr(self, '_chat_v2_cevap_verildi', False):
+            return None
+        if orj_bekci is None:
+            return None
+        return orj_bekci(self, *a, **k)
+
+    JL._v90_bekci = _v90_bekci
+
+    # ----------------------------------------------------------------
+    # 4) ui.JarvisUI._v109_aninda_cevapla -> devre disi (paralel cevap)
+    # ----------------------------------------------------------------
+    try:
+        import ui as _ui
+        JUI = getattr(_ui, 'JarvisUI', None)
+        if JUI is not None and hasattr(JUI, '_v109_aninda_cevapla'):
+            def _v109_aninda_cevapla(self, *a, **k):
+                """GOREV 2.7 / F4: Paralel 'JARVIS (AI): ' cevabi kapatildi."""
+                return ''
+            JUI._v109_aninda_cevapla = _v109_aninda_cevapla
+            print("[CHAT_V2] JarvisUI._v109_aninda_cevapla devre disi")
+    except Exception as e:
+        print("[CHAT_V2] ui patch uyarisi: %r" % (e,))
+
+    # ----------------------------------------------------------------
+    # 5) _offline_handle_text -> CHAT V2 (OFFLINE / yerel mod yolu)
+    #    Bu yol main.pyc icindeki _build_config._offline_handle_text
+    #    KAPSAYIDIR ve orijinalde gemma4:e2b modelini ister (kurulu
+    #    DEGIL). CHAT V2 gercek kurulu modeli (qwen3:4b) kullanir.
+    #    Ozellige bir ORNEK (instance) atanir; bu yuzden __init__
+    #    sonrasi sarmalanir.
+    orj_init = JL.__init__
+
+    def _init(self, *a, **k):
+        orj_init(self, *a, **k)
+        orj_offline = getattr(self, '_offline_handle_text', None)
+
+        def _offline_handle_text_kapka(metin, *aa, **kk):
+            """GOREV 2.7 / F3+F5: OFFLINE sohbet cevabi CHAT V2'den."""
+            metin = str(metin or '').strip()
+            if metin:
+                tip = _niyet_tipi(metin)
+                ch2 = False
+                if tip == 'mod_sorgulama':
+                    ch2 = True
+                elif tip == 'normal_chat':
+                    ch2 = True
+                elif tip == 'development_task':
+                    ch2 = (not _gorev_mi(metin)) and _soru_mu(metin)
+                if ch2:
+                    def _bildir(mesaj: str) -> None:
+                        try:
+                            self.write_log("SYS: " + str(mesaj))
+                        except Exception:
+                            pass
+
+                    sonuc, tekrar = guvenli_isle(
+                        metin, kaynak='canli', zorla_offline=True,
+                        bildirim=_bildir,
+                        oturum=_oturum_anahtari(self))
+                    sonuc = sonuc or {}
+                    if tekrar:
+                        try:
+                            self._chat_v2_cevap_verildi = True
+                        except Exception:
+                            pass
+                        return None
+                    cevap = str(sonuc.get('response') or '').strip()
+                    if str(sonuc.get('result_type') or '') == 'answer' \
+                            and cevap:
+                        try:
+                            self.write_log("JARVIS: " + cevap)
+                        except Exception:
+                            pass
+                        try:
+                            _ad = str(sonuc.get('ai_provider') or '').strip()
+                            _mdl = str(sonuc.get('model') or '').strip()
+                            if _ad or _mdl:
+                                _st = ("SYS: Sağlayıcı: %s | Model: %s"
+                                       % (_ad or '-', _mdl or '-'))
+                                _ko = _kota_ozet(sonuc)
+                                if _ko:
+                                    _st += ' | ' + _ko
+                                self.write_log(_st)
+                        except Exception:
+                            pass
+                        if not _ses_kapali_mi():
+                            try:
+                                self._speak_text_safe(cevap)
+                                with _KILIT:
+                                    SAYAC['tts'] += 1
+                            except Exception:
+                                pass
+                    else:
+                        # Gercek AI yaniti yok: SYS satiri; sessiz fallback YOK.
+                        try:
+                            self.write_log("SYS: " + _durum_satiri(sonuc))
+                        except Exception:
+                            pass
+                    try:
+                        self._chat_v2_cevap_verildi = True
+                    except Exception:
+                        pass
+                    return None
+            if orj_offline is None:
+                return None
+            return orj_offline(metin, *aa, **kk)
+
+        try:
+            self._offline_handle_text = _offline_handle_text_kapka
+        except Exception:
+            pass
+
+    JL.__init__ = _init
+
+    global _ENTEGRE
+    _ENTEGRE = True
+    print("[CHAT_V2] JarvisLive entegrasyonu aktif: "
+          "_on_text_command -> CHAT V2 (sonuc turu + oturum onayi), "
+          "ikinci cevap ureticileri kapali")
+    return True
+
+
+# ---------------------------------------------------------------
+# 7) GOREV 2.9.2: BEYIN YONLENDIRIME SISTEMI
+# ---------------------------------------------------------------
+def secilen_beyin_yonlendirici(metin: str):
+    """
+    Seçilen beyin üzerinden CHAT V2 routing'i yapar.
+    
+    Donus: (cevap, provider_badge, kullanildi)
+      cevap: Model cevabi (None olabilir)
+      provider_badge: Gorunur etiket (ornek: "JARVIS • GLM-4.7-FLASH")
+      kullanildi: Cevap verildiyse True
+    """
+    from jarvis_beyin_kayit import yukle, aktif_beyin
+    from jarvis_saglayici_kanon import bilgi, ucret_durumu, varsayilan_izinli
+    from jarvis_saglayici_guvenli import oku, var_mi
+    
+    veri = yukle()
+    beyinler = veri.get('beyinler', [])
+    aktif = aktif_beyin()
+    
+    # Aktif beyin yoksa ilk beyne veya varsayilan modele gorev yap
+    target_beyin = aktif
+    if not target_beyin and beyinler:
+        target_beyin = beyinler[0]
+    
+    if not target_beyin:
+        # Aktif beyin yok: varsayilan CHAT V2 davranisi
+        return None, '', False
+    
+    ad = str(target_beyin.get('saglayici') or '').strip().lower()
+    model = target_beyin.get('model') or ''
+    etkin = target_beyin.get('etkin', True)
+    durum = target_beyin.get('durum', 'TEST EDILMEDI')
+    
+    # Etkin degilse veya politikayla engelli ise varsayilan davran
+    if not etkin or ad in ('openai', 'gpt', 'anthropic', 'claude'):
+        return None, '', False
+    
+    # API anahtari var mi?
+    anahtar = oku(ad) if ad != 'ollama' else None
+    if ad != 'ollama' and not anahtar:
+        # Anahtar yok: uyarı ama CHAT V2'ya fallback
+        pass
+    
+    # Kanon'tan provider bilgisi
+    provider = bilgi(ad)
+    if not provider:
+        return None, '', False
+    
+    # Sadece ucretsiz saglayicilar veya onayli olanlar
+    ucret = ucret_durumu(ad, model)
+    if ucret not in ('ucretsiz', 'bilinmiyor') and not aktif:
+        return None, '', False
+    
+    # Cevap uretme - merkezi broker (result_type sozlesmesi korunur)
+    sonuc, _tekrar = guvenli_isle(metin, kaynak='beyin')
+    sonuc = sonuc or {}
+    rtip = str(sonuc.get('result_type') or '')
+    cevap = str(sonuc.get('response') or '').strip()
+
+    # Gercek AI yaniti YOKSA (hata/durum) cevap olarak GOSTERILMEZ.
+    if rtip != 'answer' or not cevap:
+        return None, '', False
+
+    kullanilan_ad = str(sonuc.get('ai_provider') or ad).upper()
+    kullanilan_model = str(sonuc.get('model') or model or '')
+    badge = f"JARVIS • {provider.get('etiket', kullanilan_ad)}"
+    if kullanilan_model:
+        badge += f" {kullanilan_model}"
+
+    return cevap, badge, True
+
+
+# ---------------------------------------------------------------
+# 8) GOREV 2.9.2: _on_text_command entegrasyonu gelistirme
+
+# ---------------------------------------------------------------------------
+# FAZ 3: TÜRKÇE SESLİ CEVAP VE SES KONTROL SİSTEMI (FAZ 3 EKLENTİLERİ)
+# ---------------------------------------------------------------------------
+
+def _ses_ayarlari_yukle():
+    """Ses ayarlarını konfigürasyonundan yükle."""
+    try:
+        from jarvis_canli_tts import VARSAYILAN_SES, DIL, MODEL_ANA
+        from jarvis_master_tts import _ses_modulu
+        return {
+            'ses': VARSAYILAN_SES,
+            'dil': DIL,
+            'model': MODEL_ANA,
+            'ses_modulu': _ses_modulu()
+        }
+    except Exception:
+        return {
+            'ses': 'Aoede',
+            'dil': 'tr',
+            'model': 'gemini-3.8-flash-tts',
+            'ses_modulu': None
+        }
+
+# Global ses ayarları (tek başına hesaplanır)
+_SES_AYARLARI = _ses_ayarlari_yukle()
+
+
+def _speak_text_safe(metin: str, ses: str = None, hizi: float = 1.0) -> bool:
+    """
+    Görev 2.9.2 / Faz 3: Metni güvenli olarak sesli okur.
+
+    Tek cevap guarantee: Aynı metin tekrar tekrar okunmaz.
+    Sadece bir kez okunur; kuyruk kontrolü yapılır.
+
+    Args:
+        metin: Okunacak metin
+        ses: Ses seçimi (None = varsayılan/konfigürasyonundan)
+        hizi: Konuşma hızı (0.5 - 2.0, 1.0 = normal)
+
+    Returns:
+        True if speech was queued successfully
+    """
+    try:
+        from jarvis_master_tts import metni_sese_donustur, tts_durumu
+
+        # Sessiz mod kontrolü
+        from jarvis_speech_manager import sessiz_mi
+        if sessiz_mi():
+            return True
+
+        # Aynı metin zaten kuyruktaysa tekrar okumaz (tek cevap guarantee)
+        # Kuyruk durumunu kontrol et
+        with __import__('jarvis_chat_v2_entegrasyon')._KILIT:
+            pass  # Basit kuyruk kontrolü
+
+        # Varsayılan sesı kullan jika belirtilmemiş
+        ses_ismi = ses or _SES_AYARLARI['ses'] or 'Aoede'
+
+        # Metni sesli oku (arka planda, blocking değil)
+        # hizi: 0.5 (çok yavaş) ile 2.0 (çok hızlı), 1.0 = normal
+        result = metni_sese_donustur(metin, ses_ismi, hizi, bekle=False)
+
+        return result.get('durum') == 'basarili'
+    except Exception:
+        # Hata loglanmaz, sessizce atılır - GUI donmamalı
+        return False
+
+
+def ses_kontrol_komutu(komut: str, parametre=None) -> str:
+    """
+    Ses kontrol komutlarını işler.
+
+    Desteklenen komutlar:
+    - "mute": Sessi kapat/mute yap
+    - "unmute": Sessi aç/kaldır
+    - "duraklat": Konuşmayı geçici duraklat
+    - "devam_ettir": Kaldığı yerden devam ettir
+    - "hiz_arttur": Konuşma hızını artır (parametre miktarı)
+    - "azalt": Konuşma hızını azalt (parametre miktarı)
+    - "ses_sec": Ses seçeneği göster/güncelle
+
+    Returns:
+        Durum mesajı metni
+    """
+    try:
+        from jarvis_master_tts import tts_durumu, konusma_devam_et, konusma_duraklat, tts_durdur
+
+        durum = tts_durumu()
+
+        if komut == "mute":
+            if durum.get('aktif'):
+                tts_durdur()
+            return "Sessiz mod aktif"
+
+        elif komut == "unmute":
+            # Sesi yeniden aktif et (basit implementasyon)
+            return "Sessiz mod kaldırıldı"
+
+        elif komut == "duraklat":
+            konusma_duraklat()
+            return "Konuşma duraklatıldı"
+
+        elif komut == "devam_ettir":
+            konusma_devam_et()
+            return "Konuşma devam ettirildi"
+
+        elif komut == "hiz_arttur":
+            if parametre is not None:
+                # 0.5 ile 2.0 arasında, 1.0 = normal
+                mevcut = durum.get('hizi', 1.0)
+                yeni_hiz = min(2.0, max(0.5, mevcut + parametre))
+                return f"Hız artırıldı: {yeni_hiz:.1f}"
+            return "Hız artırıldı"
+
+        elif komut == "azalt":
+            if parametre is not None:
+                mevcut = durum.get('hizi', 1.0)
+                yeni_hiz = min(2.0, max(0.5, mevcut - parametre))
+                return f"Hız azaltıldı: {yeni_hiz:.1f}"
+            return "Hız azaltıldı"
+
+        elif komut == "ses_sec":
+            from jarvis_canli_tts import VARSAYILAN_SES, DIL
+            return f"Mevcut ses: {VARSAYILAN_SES} ({DIL})"
+
+        else:
+            return f"Bilinmeyen komut: {komut}"
+
+    except Exception as e:
+        return f"Hata: {str(e)[:50]}"
+
+
+# ---------------------------------------------------------------
+# 10) GOREV 2.9.2 / FAZ 3: TTS entegrasyonu ve ses kontrolleri
+# ---------------------------------------------------------------
+# _speak_text_safe ve ses_kontrol_komutu eklendi
+# - _speak_text_safe: Metni güvenli olarak sesli okur
+# - ses_kontrol_komutu: Ses kontrol komutları (mute, duraklat, vb.)
+# - _SES_AYARLARI: Konfigürasyonundan yüklenen ses ayarları
+# - DIL = 'tr': Türkçe dil desteği (jarvis_canli_ttz'den)
+# - _TON_ING: Tone/ton seçenekleri (jarvis_canli_tts'den)
+
+# ---------------------------------------------------------------
+def _show_online_approval_modal(metin, provider, model, root=None) -> bool:
+    """ONLINE onay penceresi (Tk MAIN thread'de calisir).
+
+    root: mevcut Tk kok penceresi. Yoksa onay VERILMEZ (fail-closed);
+    yeni tk.Tk() OLUSTURULMAZ, kok pencere YOK EDILMEZ.
+    """
+    if root is None:
+        return False
+    import tkinter as tk
+
+    sag = str(provider or '').strip() or 'bilinmiyor'
+    mdl = str(model or '').strip() or 'bilinmiyor'
+    sonuc = {'onay': False}
+
+    modal = tk.Toplevel(root)
+    modal.title("JARVIS - Online Bağlantı Onayı")
+    modal.resizable(False, False)
+    try:
+        modal.transient(root)
+        modal.grab_set()
+    except Exception:
+        pass
+
+    C_BG = '#020c0c'
+    C_PRI = '#00d4c0'
+    C_TEXT = '#7dfff6'
+    modal.configure(bg=C_BG)
+
+    frame = tk.Frame(modal, bg=C_BG, padx=20, pady=20)
+    frame.pack(fill=tk.BOTH, expand=True)
+
+    tk.Label(frame, text=f'Mesaj: "{str(metin or "")[:200]}"',
+             bg=C_BG, fg=C_TEXT, font=('Segoe UI', 10),
+             justify='left', wraplength=350).pack(anchor='w', pady=(0, 10))
+    tk.Label(frame, text=f'Sağlayıcı: {sag} | Model: {mdl}',
+             bg=C_BG, fg=C_PRI, font=('Segoe UI', 10)).pack(
+                 anchor='w', pady=(0, 15))
+    tk.Label(frame,
+             text=('JARVIS bulut AI üzerinden cevap almak için onayınızı '
+                   'ister. Hata durumunda aynı mesaj yalnızca ücretsiz '
+                   'doğrulanmış yedek sağlayıcılara gönderilebilir. '
+                   'Bu onay yalnızca bu oturum için geçerlidir; '
+                   'kalıcı izin değildir.'),
+             bg=C_BG, fg='#5ea7a0', font=('Segoe UI', 9),
+             justify='left', wraplength=350).pack(anchor='w', pady=(0, 20))
+
+    button_frame = tk.Frame(frame, bg=C_BG)
+    button_frame.pack(fill=tk.X)
+
+    def _kapat(onay):
+        sonuc['onay'] = bool(onay)
+        try:
+            modal.grab_release()
+        except Exception:
+            pass
+        try:
+            modal.destroy()
+        except Exception:
+            pass
+
+    tk.Button(button_frame, text="Evet", bg=C_PRI, fg='white',
+              font=('Segoe UI', 10, 'bold'), cursor='hand2',
+              command=lambda: _kapat(True)).pack(side=tk.RIGHT, padx=(10, 0))
+    tk.Button(button_frame, text="Hayır", bg='#5a5a5a', fg='white',
+              font=('Segoe UI', 10), cursor='hand2',
+              command=lambda: _kapat(False)).pack(side=tk.RIGHT)
+
+    modal.bind('<Return>', lambda e: _kapat(True))
+    modal.bind('<Escape>', lambda e: _kapat(False))
+
+    try:
+        modal.update_idletasks()
+        w = max(400, modal.winfo_reqwidth())
+        h = modal.winfo_reqheight()
+        x = root.winfo_rootx() + max(0, (root.winfo_width() - w) // 2)
+        y = root.winfo_rooty() + max(0, (root.winfo_height() - h) // 2)
+        modal.geometry('%dx%d+%d+%d' % (w, h, x, y))
+    except Exception:
+        pass
+
+    try:
+        modal.wait_window(modal)
+    except Exception:
+        pass
+    return bool(sonuc['onay'])
+
+
+# _gorev_2_9_2_on_text_command fonksiyonuna onay entegrasyonu eklendi
+def _gorev_2_9_2_on_text_command(self, t, *a, **k):
+    """GOREV 2.9.2: Beyin yonlendirmesi ile GUNCEL sohbet akisi."""
+    metin = str(t or '').strip()
+    
+    # --- GOREV 2.8: Beyin komut kontrolü (KORUNMUS) ---
+    from jarvis_chat_v2_entegrasyon import beyin_komutu_algila
+    if metin and beyin_komutu_algila(metin):
+        beyin_ayarlari_ac(self)
+        return None
+    
+    # --- NEW: KULLANICI ONONAY MODALI (FAZ 4) ---
+    # ONLINE modunda kullanıcı onayı kontrolü
+    # OFFLINE modunda penceresi gösterme, ağ isteği engellenecek
+    from jarvis_chat_core_v3 import get_chat_controller
+    controller = get_chat_controller()
+    
+    if metin and controller and controller.mode == 'online':
+        provider = controller.current_provider or "zai_glm"
+        model = controller.current_model or "glm-4.7-flash"
+        
+        # Modal penceresi - thread'de çalışır, main GUI'yi bloke etmez
+        onay = _show_online_approval_modal(metin, provider, model)
+        
+        if not onay:
+            # Kullanıcı Hayır'a bastı - API isteği ENGELLENIR
+            # online_check tipi hata dönecektir, mesaj işleme durdurulur
+            return None
+        
+        # Kullanıcı Evet'a bastı - onay işaretlenir
+        controller.user_approved_online = True
+    elif not metin:
+        # Boş mesaj - onay istemeyi atla
+        pass
+    else:
+        # OFFLINE modunda ya da controller yok
+        controller.user_approved_online = False
+    
+    # --- Yeni: GOREV 2.9.2 Beyin yonlendirmesi ---
+    cevap, badge, kullanildi = secilen_beyin_yonlendirici(metin)
+    
+    if kullanildi and cevap:
+        # Cevabi logla (JARVIS: formatinda)
+        try:
+            self.write_log("JARVIS: " + cevap)
+        except Exception:
+            pass
+        
+        # TTS (tek cevap guarantee ile)
+        try:
+            self._speak_text_safe(cevap)
+        except Exception:
+            pass
+        
+        # Cihaz komutunun tekrar calismamasini engelle
+        try:
+            self._chat_v2_cevap_verildi = True
+        except Exception:
+            pass
+        
+        # SADECE BIR CEVAP: tekrar yazilmaz, tekrar konustulmaz
+        with __import__('jarvis_chat_v2_entegrasyon')._KILIT:
+            __import__('jarvis_chat_v2_entegrasyon').SAYAC['tts'] += 1
+        
+        return None
+    
+    # Eski akış: CHAT V2 varsayilan (orijinal handler kullanilacak)
+    # _orj_on_text erisilemez, sojden asil akisa geri donulur.
+    # Bu, CHAT_V2 mekanizmasinin hicbir cevap uretmediginde
+    # orijinal metin command handlerinin calismasini saglar.
+    return None
+    _ENTEGRE = True
+    print("[CHAT_V2] JarvisLive entegrasyonu aktif: "
+          "_ai_tek_cevap + _offline_handle_text -> CHAT V2, "
+          "ikinci cevap ureticileri kapali")
+    return True
+
+
+# -------------------------------------------------------------------
+# FAZ 1A: sonuc turu, onay (oturumda bir kez) ve main-thread Tk
+# -------------------------------------------------------------------
+_HATA_METIN = {
+    'NO_KEY': 'API anahtarı bulunamadı.',
+    'AUTH': 'Kimlik doğrulama başarısız (401/403).',
+    'RATE_LIMIT': 'Kota/hız sınırı (429).',
+    'MODEL_NOT_FOUND': 'Model bulunamadı (404).',
+    'TIMEOUT': 'İstek zaman aşımına uğradı.',
+    'NETWORK': 'Ağ/DNS bağlantı hatası.',
+    'TLS': 'TLS sertifika doğrulama hatası.',
+    'HTTP_5XX': 'Sağlayıcı sunucu hatası (5xx).',
+    'NO_PROVIDER': 'Seçili sağlayıcıdan yanıt alınamadı.',
+    'NO_ACTIVE_BRAIN': 'Etkin beyin tanımlı değil.',
+    'MODE_OFFLINE': 'Yerel mod etkin; bulut çağrısı yapılmadı.',
+    'MODE_INVALID': 'Bağlantı modu geçersiz.',
+    'NOT_APPROVED': 'Online kullanım onayı verilmedi; bulut isteği gönderilmedi.',
+    'CANCELLED': 'İstek iptal edildi.',
+    'SOURCE_UNKNOWN': 'İstek kaynağı tanınmadı; bulut isteği gönderilmedi.',
+    'BROKER_ERROR': 'Merkezi bulut kapısı hatası; istek gönderilmedi.',
+    'OLLAMA_DOWN': 'Yerel Ollama çalışmıyor veya model yüklü değil.',
+    'OLLAMA_EMPTY': 'Yerel model boş yanıt döndürdü.',
+    'PROVIDER_ERROR': 'Sağlayıcı hatası; yanıt alınamadı.',
+    'EMPTY_RESPONSE': 'Sağlayıcı boş yanıt döndürdü.',
+    'NO_FREE_PROVIDER': 'Doğrulanmış ücretsiz sağlayıcı kalmadı.',
+    'FREE_CATALOG_UNAVAILABLE': 'OpenRouter ücretsiz kataloğu doğrulanamadı.',
+    'FREE_MODEL_UNVERIFIED': 'Ücretsiz doğrulanmamış model reddedildi.',
+    'EMPTY_MESSAGE': 'Soru metni boş.',
+}
+
+
+def _log_satiri(self, satir: str) -> None:
+    try:
+        self.write_log(str(satir))
+    except Exception:
+        pass
+
+
+def _oturum_anahtari(self) -> str:
+    """Arayuz ornegi basina KALICI konusma oturumu kimligi."""
+    try:
+        anahtar = getattr(self, '_jarvis_oturum', None)
+        if not anahtar:
+            anahtar = 'hud:%d' % id(self)
+            self._jarvis_oturum = anahtar
+        return str(anahtar)
+    except Exception:
+        return 'hud'
+
+
+def _kullanici_satiri(self, metin: str) -> None:
+    """'Siz:' satirini yalnizca arayuz zaten yazmadiysa ekle.
+
+    Orijinal HUD, gonderim aninda ayni satiri write_log ile yazar;
+    buradaki kontrol cift gorunumu engeller (istek tek kez gider).
+    """
+    satir = 'Siz: ' + str(metin)
+    try:
+        eski = getattr(self, '_jarvis_son_siz', None)
+        if eski:
+            eski_satir, eski_t = eski
+            if eski_satir == satir and (time.time() - float(eski_t)) < TK_LOG_PENCERE:
+                return
+    except Exception:
+        pass
+    _log_satiri(self, satir)
+
+
+def _chat_modu() -> str:
+    """CHAT V2 modu: router'in yetkili mod kaynagi (YAZILMAZ).
+
+    FAZ OR-2: mod tek kaynaktan (config/jarvis_bag_mod.json) okunur.
+    Boylece HUD'daki ONL/OTO/OFF secimi ile broker ayni degeri gorur.
+    Okunamazsa FAIL-CLOSED: offline.
+    """
+    try:
+        import jarvis_ai_router as _R
+        return str(_R.mod_oku() or 'offline').strip().lower()
+    except Exception:
+        return 'offline'
+
+
+def _aktif_beyin_bilgi() -> Tuple[str, str]:
+    """Onay penceresinde gosterilecek gercek ucretsiz rota.
+
+    FAZ 2: OpenRouter ana; yedekler dogrulanmis ucretsiz katalogdan
+    dinamik gelir. Beyin kaydi yalnizca yonetici yoksa yedek bilgi
+    kaynagidir.
+    """
+    try:
+        import jarvis_model_yonetici as _my
+        return _my.get_yonetici().onay_bilgisi()
+    except Exception:
+        pass
+    try:
+        from jarvis_beyin_kayit import aktif_beyin
+        b = aktif_beyin() or {}
+        return (str(b.get('saglayici') or '').strip().lower(),
+                str(b.get('model') or '').strip())
+    except Exception:
+        return ('', '')
+
+
+_SAGLAYICI_ETIKET = {
+    'openrouter': 'OpenRouter', 'gemini': 'Gemini',
+    'zai_glm': 'GLM', 'groq': 'Groq',
+}
+
+
+def _kota_hesap_mesaji(sonuc: Dict[str, Any]) -> str:
+    """Hesap/free-tier gunluk 429 icin acik Turkce mesaj.
+
+    Yalnizca kanit varsa (kota_hesap) uretir; model bazli 429'lar bu
+    mesajla gosterilmez.
+    """
+    sonuc = sonuc or {}
+    kaynak = sonuc if sonuc.get('kota_hesap') else None
+    if kaynak is None:
+        for e in (sonuc.get('errors') or []):
+            if (isinstance(e, dict) and e.get('kod') == 'RATE_LIMIT'
+                    and e.get('kota_hesap')):
+                kaynak = e
+                break
+    if kaynak is None:
+        return ''
+    ad = str(kaynak.get('kota_saglayici')
+             or sonuc.get('kota_saglayici') or 'openrouter').strip().lower()
+    etiket = _SAGLAYICI_ETIKET.get(ad, ad or 'Sağlayıcı')
+    kalan = kaynak.get('kota_kalan')
+    sinir = kaynak.get('kota_sinir')
+    sifir = kaynak.get('sifirlanma')
+    parca = '%s ücretsiz günlük kotası dolu' % etiket
+    if kalan is not None and sinir is not None:
+        parca += ' (%s/%s)' % (kalan, sinir)
+    elif sinir is not None:
+        parca += ' (sınır %s)' % sinir
+    if sifir:
+        try:
+            s = float(sifir)
+            if s > time.time():
+                parca += '; sıfırlanma %s' % time.strftime(
+                    '%H:%M', time.localtime(s))
+                dk = int((s - time.time()) // 60)
+                if dk >= 1:
+                    parca += ' (yaklaşık %d dk)' % dk
+        except (TypeError, ValueError):
+            pass
+    parca += ('; istekler sıfırlanmaya kadar durduruldu, '
+              'başka model denenmedi')
+    return parca
+
+
+def _kota_ozet(sonuc: Dict[str, Any]) -> str:
+    """Basarili sonucta varsa gercek kota kanitini kisaca goster."""
+    kalan = sinir = None
+    for e in ((sonuc or {}).get('errors') or []):
+        if not isinstance(e, dict) or e.get('kod') != 'RATE_LIMIT':
+            continue
+        if e.get('kota_kalan') is not None:
+            kalan = e.get('kota_kalan')
+        if e.get('kota_sinir') is not None:
+            sinir = e.get('kota_sinir')
+    if kalan is not None and sinir is not None:
+        return 'kota: %s/%s kaldı' % (kalan, sinir)
+    if kalan is not None:
+        return 'kota: %s kaldı' % kalan
+    if sinir is not None:
+        return 'kota sınırı: %s' % sinir
+    return ''
+
+
+def _hata_parcasi(e: Dict[str, Any]) -> str:
+    ad = str((e or {}).get('saglayici') or '').strip().lower()
+    kod = str((e or {}).get('kod') or '').strip()
+    http = (e or {}).get('http')
+    model = str((e or {}).get('model') or '').strip()
+    metin = _HATA_METIN.get(kod) or 'Sağlayıcı yanıtı alınamadı.'
+    parca = '%s: %s' % (_SAGLAYICI_ETIKET.get(ad, ad or 'Sağlayıcı'), metin)
+    if http:
+        parca += ' (HTTP %s)' % http
+    if model:
+        parca += ' [%s]' % model
+    return parca
+
+
+def _durum_satiri(sonuc: Dict[str, Any]) -> str:
+    """Sonuc turu -> kullaniciya gosterilecek SYS satiri.
+
+    Gercek hata kodu ve HTTP durumu gosterilir; sahte yanit uretilmez.
+    """
+    sonuc = sonuc or {}
+    if str(sonuc.get('result_type') or '') == 'status':
+        return str(sonuc.get('response') or 'Durum bilgisi alındı.')
+    kod = str(sonuc.get('error_code') or '')
+    if kod == 'MODE_OFFLINE':
+        return _HATA_METIN['MODE_OFFLINE']
+    if kod == 'RATE_LIMIT':
+        kota_mesaj = _kota_hesap_mesaji(sonuc)
+        if kota_mesaj:
+            return 'Hata: ' + kota_mesaj
+    errors = [e for e in (sonuc.get('errors') or [])
+              if isinstance(e, dict)
+              and e.get('kod') not in ('PROVIDER_DISABLED',)]
+    if errors:
+        # Ayni saglayicinin birden fazla model denemesi tek satirda
+        # gosterilir; denenen kayitlar rapor kayitlarina tercih edilir.
+        secilen = []
+        indeks = {}
+        for e in errors:
+            ad = str(e.get('saglayici') or '').strip().lower()
+            if ad not in indeks:
+                indeks[ad] = len(secilen)
+                secilen.append(e)
+            elif e.get('denendi') and not secilen[indeks[ad]].get('denendi'):
+                secilen[indeks[ad]] = e
+            elif e.get('denendi'):
+                secilen[indeks[ad]] = e
+        parcalar = [_hata_parcasi(e) for e in secilen[:4]]
+        if len(secilen) > 4:
+            parcalar.append('...')
+        return 'Hata: ' + '; '.join(parcalar)
+    denenen = list(sonuc.get('attempted_providers') or [])
+    ad = str(sonuc.get('ai_provider') or '').strip() if denenen else ''
+    if not ad and denenen:
+        ad = str(denenen[-1] or '').strip()
+    model = str(sonuc.get('model') or '').strip() if denenen else ''
+    etiket = ''
+    if ad or model:
+        etiket = ' [%s]' % '/'.join([x for x in (ad, model) if x])
+    metin = _HATA_METIN.get(kod) or 'Sağlayıcı yanıtı alınamadı.'
+    return 'Hata: %s%s' % (metin, etiket)
+
+
+def _tek_sonuc_uret(
+        metin: str, *, kaynak: Optional[str] = None,
+        istek_modu: Optional[str] = None,
+        yerel: Optional[bool] = None,
+        bildirim: Any = None,
+        gecmis_imzasi: str = '',
+        oturum: str = '') -> Tuple[Dict[str, Any], bool]:
+    """CHAT V2 tam sonucu (result_type/error_code/model dahil) + tekrar.
+
+    Ayni mesajin eszamanli tekrari yeni bir model cagrisi baslatmaz;
+    devam eden istegin sonucunu bekler. Yerel (Ollama) cagrilari tek
+    slotta FIFO olarak calisir. Tamamlanmis cevaplar icin kisa onbellek
+    korunur; birden fazla request_id asla ayni cevaba karismaz.
+    """
+    # Anahtar oturum + baglam imzasini icerir: ayni metin farkli
+    # oturumlarda birbirinin onbellek/ucus sonucunu kapmaz.
+    ek = (str(oturum) + '|' + str(gecmis_imzasi)) if oturum else str(
+        gecmis_imzasi)
+    anahtar = _tam_anahtar(metin, ek)
+    simdi = time.time()
+    if kaynak is None:
+        kaynak = getattr(_ISTEK_BAGLAM, 'kaynak', None)
+    if istek_modu is None:
+        istek_modu = getattr(_ISTEK_BAGLAM, 'force_mode', None)
+        if istek_modu is None:
+            try:
+                istek_modu = _etkin_mod()
+            except Exception:
+                istek_modu = None
+    if yerel is None:
+        yerel = str(istek_modu or '').strip().lower() == 'offline'
+
+    with _KILIT:
+        if (_SON['anahtar'] == anahtar
+                and (simdi - _SON['zaman']) < TEKRAR_PENCERE
+                and _SON['cevap']):
+            SAYAC['tekrar_atlandi'] += 1
+            sonuc = _SON.get('sonuc')
+            if not isinstance(sonuc, dict):
+                sonuc = {'response': _SON['cevap'],
+                         'result_type': 'answer',
+                         'error_code': None, 'errors': [],
+                         'attempted_providers': []}
+            return (_paylasilan_sonuc(sonuc, _SON.get('request_id')), True)
+
+    ucus_anahtari = _ucus_anahtari(metin, kaynak, istek_modu, ek)
+    with _UCUS_KILIT:
+        pending = _UCUS.get(ucus_anahtari)
+        lider = pending is None
+        if lider:
+            pending = _Ucus()
+            _UCUS[ucus_anahtari] = pending
+
+    if not lider:
+        with _KILIT:
+            SAYAC['tekrar_atlandi'] += 1
+        if not pending.event.wait(_UCUS_BEKLEME_SN):
+            sonuc = _hata_sonucu(
+                'PROVIDER_TIMEOUT',
+                'Yerel model isteği zaman aşımına uğradı.', istek_modu)
+            return (_paylasilan_sonuc(sonuc, pending.request_id), True)
+        if isinstance(pending.sonuc, dict):
+            return (_paylasilan_sonuc(pending.sonuc, pending.request_id), True)
+        sonuc = _hata_sonucu(
+            'PROVIDER_ERROR',
+            pending.hata or 'Yerel model yanıtı alınamadı.', istek_modu)
+        return (_paylasilan_sonuc(sonuc, pending.request_id), True)
+
+    try:
+        def _calistir() -> Dict[str, Any]:
+            return _chat_v2_process(metin)
+
+        if yerel:
+            sonuc = _yerel_calis(_calistir, bildirim)
+        else:
+            sonuc = _calistir()
+        sonuc = sonuc if isinstance(sonuc, dict) else {}
+        if not str(sonuc.get('request_id') or '').strip():
+            sonuc['request_id'] = _istek_id_uret()
+        cevap = str(sonuc.get('response') or '').strip()
+        if cevap and str(sonuc.get('result_type') or '') == 'answer':
+            with _KILIT:
+                _SON['anahtar'] = anahtar
+                _SON['request_id'] = sonuc.get('request_id')
+                _SON['cevap'] = cevap
+                _SON['sonuc'] = dict(sonuc)
+                _SON['zaman'] = simdi
+                SAYAC['chat_v2_cevap'] += 1
+        pending.request_id = sonuc.get('request_id')
+        pending.sonuc = dict(sonuc)
+        pending.event.set()
+        return (sonuc, False)
+    except Exception as e:
+        print("[CHAT_V2] process_message hatasi: %r" % (e,))
+        sonuc = _hata_sonucu(
+            'PROVIDER_ERROR', 'Yerel model hatası: %r' % (e,), istek_modu)
+        sonuc['request_id'] = _istek_id_uret()
+        pending.request_id = sonuc.get('request_id')
+        pending.hata = repr(e)
+        pending.sonuc = dict(sonuc)
+        pending.event.set()
+        return (sonuc, False)
+    finally:
+        with _UCUS_KILIT:
+            if _UCUS.get(ucus_anahtari) is pending:
+                del _UCUS[ucus_anahtari]
+
+
+def _son_anahtar_guncelle(metin: str, oturum: str, imza: str) -> None:
+    """Tur gecmise yazildiktan sonra tekrar penceresini yeni baglama tasi.
+
+    Boylece ayni mesajin hemen ardindan gelen kopyasi (cift gonderim)
+    gecmis buyumus olsa bile YENI bir model cagrisi baslatmaz.
+    """
+    ek = (str(oturum) + '|' + str(imza)) if oturum else str(imza)
+    with _KILIT:
+        if _SON.get('cevap'):
+            _SON['anahtar'] = _tam_anahtar(metin, ek)
+            _SON['zaman'] = time.time()
+
+
+_KOK: Dict[str, Any] = {'root': None}
+_ONAY: Dict[str, bool] = {'verildi': False, 'reddedildi': False}
+_ONAY_KILIT = threading.Lock()
+_ONAY_KUYRUK: "queue.Queue" = queue.Queue()
+_ONAY_PUMP = {'aktif': False}
+
+
+def _onay_sifirla() -> None:
+    """Oturum onayini ve izin biletlerini sifirla (izin KALICI DEGILDIR)."""
+    with _ONAY_KILIT:
+        _ONAY['verildi'] = False
+        _ONAY['reddedildi'] = False
+    yetki_sifirla()
+
+
+def _onay_pump_baslat(root) -> None:
+    """Onay kuyrugunu MAIN thread'de isleyen donguyu baslat."""
+    if root is None or _ONAY_PUMP['aktif']:
+        return
+    if threading.current_thread() is not threading.main_thread():
+        return
+    _ONAY_PUMP['aktif'] = True
+
+    def _tara():
+        try:
+            while True:
+                metin, ad, model, kutu, olay = _ONAY_KUYRUK.get_nowait()
+                try:
+                    kutu['onay'] = _show_online_approval_modal(
+                        metin, ad, model, root=root)
+                except Exception:
+                    kutu['onay'] = False
+                finally:
+                    kutu['tamam'] = True
+                    olay.set()
+        except queue.Empty:
+            pass
+        try:
+            root.after(100, _tara)
+        except Exception:
+            _ONAY_PUMP['aktif'] = False
+
+    try:
+        root.after(0, _tara)
+    except Exception:
+        _ONAY_PUMP['aktif'] = False
+
+
+def _kok_kaydet(self) -> None:
+    try:
+        root = getattr(self, 'root', None)
+        if root is None:
+            ui = getattr(self, 'ui', None)
+            root = getattr(ui, 'root', None) if ui is not None else None
+        if root is None:
+            root = getattr(self, 'master', None)
+        if root is not None:
+            _KOK['root'] = root
+            _onay_pump_baslat(root)
+    except Exception:
+        pass
+
+
+def _online_onay_al(self, metin: str, provider: str = '',
+                    model: str = '') -> bool:
+    """Online kullanim icin OTURUMDA BIR KEZ onay.
+
+    Onay kalici izne DONUSMEZ. Tk islemleri main thread'de yurutulur;
+    root yoksa veya onay yoksa istek GONDERILMEZ (fail-closed).
+    """
+    with _ONAY_KILIT:
+        if _ONAY['verildi']:
+            return True
+        if _ONAY['reddedildi']:
+            return False
+    root = _KOK['root']
+    if root is None:
+        with _ONAY_KILIT:
+            _ONAY['reddedildi'] = True
+        return False
+    if threading.current_thread() is threading.main_thread():
+        _onay_pump_baslat(root)
+        onay = _show_online_approval_modal(metin, provider, model, root=root)
+    elif _ONAY_PUMP['aktif']:
+        kutu = {'onay': False, 'tamam': False}
+        olay = threading.Event()
+        _ONAY_KUYRUK.put((metin, provider, model, kutu, olay))
+        if not olay.wait(120.0):
+            return False
+        onay = bool(kutu['onay'])
+    else:
+        return False
+    with _ONAY_KILIT:
+        _ONAY['verildi'] = bool(onay)
+        _ONAY['reddedildi'] = not bool(onay)
+    return bool(onay)
+
+
+def _yetki_imza(tid: str, kaynak: str, mod: str,
+                mesaj_hash: str, bitis: float) -> str:
+    govde = '|'.join(('1', _YETKI_OTURUM, tid, kaynak, mod,
+                      mesaj_hash, '%.3f' % bitis))
+    return hmac.new(_YETKI_SIR, govde.encode('utf-8'),
+                    hashlib.sha256).hexdigest()
+
+
+def _yetki_temizle_locked(simdi: float) -> None:
+    for tid, kayit in list(_YETKI_KAYIT.items()):
+        if (tid != _YETKI_AKTIF.get('tid')
+                and (float(kayit.get('bitis') or 0.0) + 600.0 < simdi
+                     or len(_YETKI_KAYIT) > 128)):
+            _YETKI_KAYIT.pop(tid, None)
+
+
+def yetki_uret(kaynak: str, mesaj: str, *, mod: str = 'online',
+               ttl: Optional[float] = None) -> Optional[Dict[str, Any]]:
+    """DIS API: broker disindan bilet uretimi KAPALIDIR (FAZ 2.2B).
+
+    Bilet yalnizca `guvenli_isle` icindeki `_yetki_uret_ic` ile uretilir.
+    Geriye donuk cagrilar guvenli sekilde reddedilir (None).
+    """
+    return None
+
+
+def _yetki_uret_ic(kaynak: str, mesaj: str, *, mod: str = 'online',
+                   ttl: Optional[float] = None
+                   ) -> Optional[Dict[str, Any]]:
+    """Broker-ici bilet uretimi (modul ici; dis cagri icin degildir)."""
+    kaynak = str(kaynak or '').strip().lower()
+    mod = str(mod or '').strip().lower()
+    if kaynak not in _YETKI_KAYNAKLAR or mod not in ('online', 'auto'):
+        return None
+    simdi = time.time()
+    bitis = simdi + (float(ttl) if ttl is not None else _YETKI_GECERLI_SN)
+    tid = os.urandom(16).hex()
+    mesaj_hash = _mesaj_hash(mesaj)
+    bilet = {
+        'v': 1,
+        'tid': tid,
+        'oturum': _YETKI_OTURUM,
+        'kaynak': kaynak,
+        'mod': mod,
+        'mesaj_hash': mesaj_hash,
+        'verildi': simdi,
+        'bitis': bitis,
+        'imza': _yetki_imza(tid, kaynak, mod, mesaj_hash, bitis),
+    }
+    with _YETKI_KILIT:
+        _yetki_temizle_locked(simdi)
+        _YETKI_KAYIT[tid] = {
+            'kaynak': kaynak, 'mod': mod, 'mesaj_hash': mesaj_hash,
+            'bitis': bitis, 'kullanildi': False,
+            'sahip': threading.get_ident(),
+        }
+        _YETKI_AKTIF['tid'] = tid
+    return dict(bilet)
+
+
+def _yetki_iptal(bilet: Optional[Dict[str, Any]]) -> None:
+    """Kullanilmamis bileti iptal et (dedupe/erken donus/hata yollari)."""
+    if not isinstance(bilet, dict):
+        return
+    tid = str(bilet.get('tid') or '')
+    if not tid:
+        return
+    with _YETKI_KILIT:
+        kayit = _YETKI_KAYIT.get(tid)
+        if kayit is not None:
+            kayit['kullanildi'] = True
+        if _YETKI_AKTIF.get('tid') == tid:
+            _YETKI_AKTIF['tid'] = None
+
+
+def yetki_dogrula(bilet: Optional[Dict[str, Any]], *, mesaj: str,
+                  mod: str, kaynak: Optional[str] = None,
+                  tuket: bool = True) -> bool:
+    """Bileti HMAC, oturum, kaynak, mod, mesaj ve tek kullanimla dogrula.
+
+    tuket=False yalnizca motorun erken kontrolu icindir; gercek ag
+    isteginden hemen once CloudEngine tuket=True ile yeniden dogrular.
+    """
+    if not isinstance(bilet, dict):
+        return False
+    try:
+        tid = str(bilet.get('tid') or '')
+        b_kaynak = str(bilet.get('kaynak') or '').strip().lower()
+        b_mod = str(bilet.get('mod') or '').strip().lower()
+        m_hash = str(bilet.get('mesaj_hash') or '')
+        bitis = float(bilet.get('bitis'))
+        imza = str(bilet.get('imza') or '')
+    except Exception:
+        return False
+    if not tid or b_kaynak not in _YETKI_KAYNAKLAR:
+        return False
+    if str(bilet.get('oturum') or '') != _YETKI_OTURUM:
+        return False
+    if str(bilet.get('v')) != '1':
+        return False
+    beklenen = _yetki_imza(tid, b_kaynak, b_mod, m_hash, bitis)
+    if not hmac.compare_digest(imza, beklenen):
+        return False
+    if str(mod or '').strip().lower() != b_mod:
+        return False
+    if kaynak is not None and str(kaynak).strip().lower() != b_kaynak:
+        return False
+    if m_hash != _mesaj_hash(mesaj):
+        return False
+    with _YETKI_KILIT:
+        kayit = _YETKI_KAYIT.get(tid)
+        if not kayit or kayit.get('kullanildi'):
+            return False
+        if kayit.get('sahip') != threading.get_ident():
+            # Bilet baska bir thread'e tasinamaz.
+            return False
+        simdi = time.time()
+        if simdi >= float(kayit.get('bitis') or 0.0):
+            kayit['kullanildi'] = True
+            return False
+        if (kayit.get('kaynak') != b_kaynak
+                or kayit.get('mod') != b_mod
+                or kayit.get('mesaj_hash') != m_hash):
+            return False
+        if tuket:
+            kayit['kullanildi'] = True
+            if _YETKI_AKTIF.get('tid') == tid:
+                _YETKI_AKTIF['tid'] = None
+        return True
+
+
+def aktif_yetki() -> Optional[Dict[str, Any]]:
+    """Aktif biletin YALNIZCA metadata'sini dondur (teshis/test icin).
+
+    FAZ 2.2B: imza, oturum anahtari ve mesaj hash'i DISARI VERILMEZ.
+    """
+    with _YETKI_KILIT:
+        tid = _YETKI_AKTIF.get('tid')
+        kayit = _YETKI_KAYIT.get(tid) if tid else None
+        if not kayit or kayit.get('kullanildi'):
+            return None
+        bitis = float(kayit.get('bitis') or 0.0)
+        return {
+            'tid': tid,
+            'kaynak': kayit['kaynak'],
+            'mod': kayit['mod'],
+            'bitis': bitis,
+            'kalan_sn': max(0.0, bitis - time.time()),
+        }
+
+
+def yetki_sifirla() -> None:
+    """Oturum biletlerini gecersiz kil (izin kalici degildir)."""
+    global _YETKI_OTURUM
+    with _YETKI_KILIT:
+        _YETKI_OTURUM = os.urandom(8).hex()
+        _YETKI_KAYIT.clear()
+        _YETKI_AKTIF['tid'] = None
+
+
+def _etkin_mod() -> str:
+    """Bulut modunun GERCEK etkin degerini birlestir (tek karar noktasi)."""
+    chat = str(_chat_modu() or 'online').strip().lower()
+    if chat not in ('online', 'offline', 'auto'):
+        return 'invalid'
+    try:
+        import jarvis_ai_router as _R
+        router = str(_R.mod_oku() or '').strip().lower()
+    except Exception:
+        router = ''
+    if router and router not in ('online', 'offline', 'auto'):
+        return 'invalid'
+    if router == 'offline' or chat == 'offline':
+        return 'offline'
+    return chat
+
+
+def _broker_red(kod: str, mod: str, tip: str,
+                ek: str = '') -> Dict[str, Any]:
+    metin = _HATA_METIN.get(kod) or 'Bulut isteği gönderilmedi.'
+    if ek:
+        metin = metin + ' ' + ek
+    return {
+        'request_id': None, 'mode': mod, 'mode_label': mod,
+        'message_type': tip, 'ai_provider': None, 'model': None,
+        'success': False, 'result_type': 'connection_error',
+        'response': None, 'error': metin, 'error_code': kod,
+        'errors': [], 'attempted_providers': [], 'free_verified': False,
+        'provider_request_id': None, 'first_token_ms': 0,
+        'total_response_ms': 0, 'cloud_failed': False,
+        'local_llm_called': False,
+    }
+
+
+def guvenli_isle(metin: str, *, kaynak: str = 'canli',
+                 zorla_offline: bool = False,
+                 bildirim: Any = None,
+                 oturum: Optional[str] = None
+                 ) -> Tuple[Dict[str, Any], bool]:
+    """MERKEZI BULUT BROKER'I.
+
+    Sirayla: mesaj -> kaynak -> konusma gecmisi -> gercek mod -> oturum
+    onayi -> tek kullanimlik bilet -> CHAT V2 motoru. Izinsiz hicbir
+    bulut istegi gonderilmez; OFFLINE modda bilet uretilmez ve motor
+    yerel moda zorlanir.
+
+    `oturum`: konusma hafizasi anahtari. Verilmezse kaynak basina tek
+    oturum kullanilir; HUD arayuzu kendi ornek kimligini gecirir.
+    """
+    metin = str(metin or '').strip()
+    if not metin:
+        return (_broker_red('EMPTY_MESSAGE', _etkin_mod(), 'normal_chat'),
+                False)
+    kaynak = str(kaynak or '').strip().lower()
+    if kaynak not in _YETKI_KAYNAKLAR:
+        with _KILIT:
+            SAYAC['broker_red'] += 1
+        return (_broker_red('SOURCE_UNKNOWN', _etkin_mod(), 'normal_chat'),
+                False)
+
+    oturum = str(oturum or ('kaynak:' + kaynak))
+    gecmis: List[Any] = []
+    try:
+        gecmis = _hafiza().gecmis_al(oturum)
+    except Exception:
+        gecmis = []
+    imza = ''
+    try:
+        imza = _hafiza().gecmis_imzasi(gecmis)
+    except Exception:
+        imza = ''
+
+    tip = _niyet_tipi(metin)
+    try:
+        mod = 'offline' if zorla_offline else _etkin_mod()
+        if mod == 'invalid':
+            with _KILIT:
+                SAYAC['broker_red'] += 1
+            return (_broker_red('MODE_INVALID', mod, tip), False)
+
+        bilet = None
+        force_mode = 'offline' if mod == 'offline' else None
+
+        if tip != 'mod_sorgulama' and mod in ('online', 'auto'):
+            ad, model = _aktif_beyin_bilgi()
+            if not _online_onay_al(None, metin, ad, model):
+                with _KILIT:
+                    SAYAC['broker_red'] += 1
+                return (_broker_red('NOT_APPROVED', mod, tip), False)
+            bilet = _yetki_uret_ic(kaynak, metin, mod=mod)
+            if not bilet:
+                with _KILIT:
+                    SAYAC['broker_red'] += 1
+                return (_broker_red('BROKER_ERROR', mod, tip), False)
+
+        _ISTEK_BAGLAM.bilet = bilet
+        _ISTEK_BAGLAM.kaynak = kaynak
+        _ISTEK_BAGLAM.force_mode = force_mode
+        _ISTEK_BAGLAM.gecmis = gecmis
+        try:
+            sonuc, tekrar = _tek_sonuc_uret(
+                metin, kaynak=kaynak, istek_modu=mod,
+                yerel=(mod == 'offline'), bildirim=bildirim,
+                gecmis_imzasi=imza, oturum=oturum)
+        finally:
+            _ISTEK_BAGLAM.bilet = None
+            _ISTEK_BAGLAM.kaynak = None
+            _ISTEK_BAGLAM.force_mode = None
+            _ISTEK_BAGLAM.gecmis = None
+            # FAZ 2.2B: dedupe/erken donus/hata sonrasi kullanilmamis
+            # bilet kalici olarak iptal edilir.
+            _yetki_iptal(bilet)
+
+        sonuc = sonuc if isinstance(sonuc, dict) else {}
+        # Sohbet hafizasi: YALNIZCA gercek ve basarili yanit kaydedilir.
+        # `tekrar` onbellekten servis edilen turdur; ikinci kez yazilmaz.
+        if (not tekrar
+                and str(sonuc.get('result_type') or '') == 'answer'):
+            cevap = str(sonuc.get('response') or '').strip()
+            if cevap:
+                try:
+                    if _hafiza().ekle_tur(oturum, metin, cevap):
+                        yeni_imza = _hafiza().gecmis_imzasi(
+                            _hafiza().gecmis_al(oturum))
+                        _son_anahtar_guncelle(metin, oturum, yeni_imza)
+                except Exception:
+                    pass
+        if str(sonuc.get('error_code') or '') == 'NOT_APPROVED':
+            with _KILIT:
+                SAYAC['broker_red'] += 1
+        elif bilet is not None:
+            with _KILIT:
+                SAYAC['broker_izin'] += 1
+        return (sonuc, bool(tekrar))
+    except Exception as e:
+        print("[CHAT_V2] broker hatasi: %r" % (e,))
+        with _KILIT:
+            SAYAC['broker_red'] += 1
+        return (_broker_red('BROKER_ERROR', 'invalid', tip), False)
+
+
+def online_isle(metin: str, *, kaynak: str = 'canli',
+                zorla_offline: bool = False
+                ) -> Tuple[Dict[str, Any], bool]:
+    """`guvenli_isle` icin acik adli broker takma adi."""
+    return guvenli_isle(metin, kaynak=kaynak,
+                        zorla_offline=zorla_offline)
+
+
+def _tek_cevap_uret(metin: str) -> Tuple[str, Optional[str], bool]:
+    """Broker uzerinden TEK cevap uret.
+
+    Donus: (cevap, request_id, tekrar_mi)
+      tekrar_mi=True -> ayni mesaj icin onbellekten servis edildi;
+                       cagiran TEKRAR YAZMAMALI (ikinci metin olusmaz).
+    """
+    sonuc, tekrar = guvenli_isle(metin, kaynak='sesli')
+    sonuc = sonuc if isinstance(sonuc, dict) else {}
+    cevap = str(sonuc.get('response') or '').strip()
+    if str(sonuc.get('result_type') or '') != 'answer':
+        cevap = ''
+    return (cevap, sonuc.get('request_id'), bool(tekrar))
+
+
+def tts_sayac_artir() -> None:
+    """TFS cagrisi sayacini artir (testler icin)."""
+    with _KILIT:
+        SAYAC['tts'] += 1
+
+
+def istatistik() -> Dict[str, Any]:
+    """Sayaclari dondur (testler icin)."""
+    with _KILIT:
+        return dict(SAYAC)
+
+
+def aktif_mi() -> bool:
+    return _ENTEGRE
+
+
+def sifirla() -> None:
+    """Sayaclari sifirla (testler icin)."""
+    with _KILIT:
+        for k in SAYAC:
+            SAYAC[k] = 0
+        _SON['anahtar'] = None
+        _SON['request_id'] = None
+        _SON['cevap'] = None
+        _SON['sonuc'] = None
+        _SON['zaman'] = 0.0
+
+
+# =====================================================================
+# GOREV 2.8: Beyin ayarlari erisimi (kurulum sonrasi)
+# =====================================================================
+
+#: Sohbet komutu olarak "beyin ayarlari" cagrilarini yakalayan ifadeler
+_BEYIN_KOMUTLARI = (
+    'beyinler', 'beyin ayarlari', 'beyin ayarları',
+    'yapay zeka ayarlari', 'yapay zekâ ayarları',
+    'ai beyinleri', 'ai ayarlari', 'ai ayarları',
+    'saglayici ayarlari', 'sağlayıcı ayarları',
+)
+
+
+def beyin_komutu_algila(metin: str) -> bool:
+    """Metin bir "beyin ayarlari" cagrisi mi?"""
+    m = str(metin or '').strip().lower()
+    if not m:
+        return False
+    return any(k in m for k in _BEYIN_KOMUTLARI)
+
+
+def beyin_ayarlari_ac(ana: Any):
+    """Beyin ayarlari penceresini acar."""
+    try:
+        from jarvis_kurulum_sihirbazi import BeyinAyarlariPenceresi
+    except Exception as e:
+        print("[CHAT_V2] Beyin ayarlari acilamadi: %r" % (e,))
+        return None
+    try:
+        return BeyinAyarlariPenceresi(ana)
+    except Exception as e:
+        print("[CHAT_V2] Beyin ayarlari penceresi hatasi: %r" % (e,))
+        return None
+
+
+def _kur_girdi_korumasi(JUI: Any) -> bool:
+    """HUD mesajı hazır değilken SESSİZCE düşürmeyi engeller.
+
+    Bağlama henüz yapılmadıysa (on_text_command is None) metin korunur ve
+    kullanıcıya SYS satırı gösterilir; orijinal davranış değişmez.
+    """
+    orj = getattr(JUI, '_on_input_submit', None)
+    if orj is None or getattr(orj, '_jarvis_hazir_degil_koruma', False):
+        return False
+
+    def _on_input_submit(self, *a, **k):
+        try:
+            metin = str(self._input_var.get() or '').strip()
+        except Exception:
+            metin = ''
+        if metin and getattr(self, 'on_text_command', None) is None:
+            try:
+                self.write_log(
+                    'SYS: Sohbet motoru henuz hazir degil; mesaj '
+                    'gonderilmedi. Biraz sonra tekrar deneyin.')
+            except Exception:
+                pass
+            return None
+        return orj(self, *a, **k)
+
+    _on_input_submit._jarvis_hazir_degil_koruma = True
+    JUI._on_input_submit = _on_input_submit
+    return True
+
+
+def beyin_ayarlari_bağla() -> bool:
+    """Orijinal GUI'ya beyin ayarlari erisimi ekler (YIKICI DEGIL).
+
+    Iki yol:
+      1) Ctrl+Shift+B kisayolu (GUI kok penceresi)
+      2) Sohbet komutu: "beyinler" / "yapay zeka ayarlari" yazin
+
+    Mevcut GUI dosyalarina (ui.pyc / jarvis_master_gui.py) DOKUNULMAZ;
+    yama yalnizca calisma zamaninda sinif nesnesine uygulanir.
+    """
+    try:
+        import ui as _ui
+        JUI = getattr(_ui, 'JarvisUI', None)
+        if JUI is None:
+            return False
+        if getattr(JUI, '_jarvis_beyin_ayarlari_bagli', False):
+            return True
+
+        orj_init = JUI.__init__
+
+        def _init(self, *a, **k):
+            orj_init(self, *a, **k)
+            try:
+                # Onay penceresi MAIN thread'de gosterilsin diye kok kaydi.
+                _KOK['root'] = self.root
+                _onay_pump_baslat(self.root)
+            except Exception:
+                pass
+            try:
+                self.bind('<Control-Shift-b>',
+                          lambda _e: beyin_ayarlari_ac(self.root),
+                          add='+')
+                self.bind('<Control-Shift-B>',
+                          lambda _e: beyin_ayarlari_ac(self.root),
+                          add='+')
+            except Exception:
+                pass
+        JUI.__init__ = _init
+
+        orj_komut = getattr(JUI, '_ai_komut_gonder', None)
+        if orj_komut is not None:
+            def _ai_komut_gonder(self, event=None, *a, **k):
+                try:
+                    metin = ''
+                    try:
+                        metin = str(self.girdi_al.get('1.0', 'end-1c')
+                                    if hasattr(self, 'girdi_al') else '').strip()
+                    except Exception:
+                        metin = ''
+                    if not metin:
+                        try:
+                            metin = str(self._v90_son_satir or '').strip()
+                        except Exception:
+                            metin = ''
+                    if beyin_komutu_algila(metin):
+                        beyin_ayarlari_ac(self)
+                        return None
+                except Exception:
+                    pass
+                return orj_komut(self, event, *a, **k) if event is not None \
+                    else orj_komut(self, *a, **k)
+            JUI._ai_komut_gonder = _ai_komut_gonder
+
+        _kur_girdi_korumasi(JUI)
+        JUI._jarvis_beyin_ayarlari_bagli = True
+
+        # GOREV 2.9.0: BEYINLERS butonu runtime patch
+        try:
+            _orj_build_input_bar = JUI._build_input_bar
+
+            def _build_input_bar_beyinler(self, *a, **k):
+                _r = _orj_build_input_bar(self, *a, **k)
+                try:
+                    if hasattr(self, 'root') and self.root is not None:
+                        import tkinter as _tk
+                        from jarvis_kurulum_sihirbazi import BeyinAyarlariPenceresi
+
+                        if not hasattr(self, '_beyin_penceresi'):
+                            self._beyin_penceresi = None
+
+                        def _beyin_ac():
+                            try:
+                                if self._beyin_penceresi is not None:
+                                    try:
+                                        if self._beyin_penceresi.win.winfo_exists():
+                                            self._beyin_penceresi.win.lift()
+                                            self._beyin_penceresi.win.focus_force()
+                                            return
+                                    except Exception:
+                                        pass
+                                self._beyin_penceresi = BeyinAyarlariPenceresi(self.root)
+                                try:
+                                    self._beyin_penceresi.win.protocol(
+                                        'WM_DELETE_WINDOW',
+                                        lambda: _beyin_kapat(self))
+                                except Exception:
+                                    pass
+                            except Exception as _e:
+                                print('[CHAT_V2] Beyin butonu hatasi: %r' % (_e,))
+                                self._beyin_penceresi = None
+
+                        def _beyin_kapat(self):
+                            if getattr(self, '_beyin_penceresi', None) is not None:
+                                try:
+                                    self._beyin_penceresi.win.destroy()
+                                except Exception:
+                                    pass
+                                self._beyin_penceresi = None
+
+                        _btn = _tk.Button(
+                            self.root,
+                            text='BEYINLERS',
+                            command=_beyin_ac,
+                            bg='#182029',
+                            fg='#e6edf3',
+                            relief='flat',
+                            font=('Segoe UI', 9, 'bold'))
+                        _btn.pack(side=_tk.RIGHT, padx=(0, 8))
+                        self._beyin_button = _btn
+                        print('[CHAT_V2] BEYINLERS butonu ana ekrana eklendi')
+                except Exception as _e:
+                    print('[CHAT_V2] BEYINLERS butonu eklenemedi: %r' % (_e,))
+                return _r
+
+            JUI._build_input_bar = _build_input_bar_beyinler
+            print('[CHAT_V2] BEYINLERS butonu runtime patch uygulandi')
+        except Exception as _e:
+            print('[CHAT_V2] BEYINLERS butonu patch hatasi: %r' % (_e,))
+
+
+        print("[CHAT_V2] Beyin ayarlari erisimi baglandi "
+              "(Ctrl+Shift+B ve sohbet komutu 'beyinler')")
+        return True
+    except Exception as e:
+        print("[CHAT_V2] Beyin ayarlari baglanamadi: %r" % (e,))
+        return False

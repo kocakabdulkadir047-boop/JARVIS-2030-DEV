@@ -1,0 +1,92 @@
+[
+  {
+    "task_id": "task_0001",
+    "original_message": "Unity'de oyun yap ve mevcut kodu değiştir",
+    "task_type": "game_development",
+    "priority": "medium",
+    "risk_level": "high",
+    "required_resources": [
+      "manage_camera",
+      "manage_gameobject",
+      "manage_physics",
+      "manage_prefabs",
+      "manage_scene",
+      "manage_script",
+      "opencode_cli",
+      "manage_material",
+      "create_script",
+      "manage_shader",
+      "manage_asset",
+      "manage_components",
+      "manage_graphics",
+      "manage_ui",
+      "validate_script"
+    ],
+    "subtasks": [
+      {
+        "step": 1,
+        "action": "analyze_requirements",
+        "description": "Gereksinimleri analiz et",
+        "tool": "internal"
+      }
+    ],
+    "project_info": {
+      "root": "C:\\Users\\KOAK~1\\AppData\\Local\\Temp\\tmprn140w63\\UnityProject",
+      "detected": true,
+      "has_project_settings": true,
+      "has_assets": true,
+      "script_count": 0
+    },
+    "status": "completed",
+    "created_at": "2026-11-25T01:49:24.026612",
+    "requires_approval": true,
+    "estimated_steps": 10,
+    "backup_path": "C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN\\data\\dev_backups\\task_task_0001\\unity_project_20261125_014924",
+    "report": "=== GÖREV RAPORU: task_0001 ===\nTip: game_development\nDurum: completed\nAdım sayısı: 1\n\nAdım sonuçları:\n  ✅ Adım 1: Gereksinimleri analiz et\n\nTamamlanan: 1, Başarısız: 0\nYedek: C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN\\data\\dev_backups\\task_task_0001\\unity_project_20261125_014924"
+  },
+  {
+    "task_id": "task_0001",
+    "original_message": "Unity'de oyun yap ve mevcut kodu değiştir",
+    "task_type": "game_development",
+    "priority": "medium",
+    "risk_level": "high",
+    "required_resources": [
+      "validate_script",
+      "manage_camera",
+      "manage_physics",
+      "manage_asset",
+      "manage_script",
+      "manage_ui",
+      "manage_shader",
+      "manage_prefabs",
+      "manage_components",
+      "manage_gameobject",
+      "create_script",
+      "manage_material",
+      "opencode_cli",
+      "manage_graphics",
+      "manage_scene"
+    ],
+    "subtasks": [
+      {
+        "step": 1,
+        "action": "analyze_requirements",
+        "description": "Gereksinimleri analiz et",
+        "tool": "internal"
+      }
+    ],
+    "project_info": {
+      "root": "C:\\Users\\KOAK~1\\AppData\\Local\\Temp\\tmpnu9c3hw1\\UnityProject",
+      "detected": true,
+      "has_project_settings": true,
+      "has_assets": true,
+      "script_count": 0
+    },
+    "status": "completed",
+    "created_at": "2026-11-25T01:52:37.733106",
+    "requires_approval": true,
+    "estimated_steps": 10,
+    "backup_path": "C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN\\data\\dev_backups\\task_task_0001\\unity_project_20261125_015237",
+    "report": "=== GÖREV RAPORU: task_0001 ===\nTip: game_development\nDurum: completed\nAdım sayısı: 1\n\nAdım sonuçları:\n  ✅ Adım 1: Gereksinimleri analiz et\n\nTamamlanan: 1, Başarısız: 0\nYedek: C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN\\data\\dev_backups\\task_task_0001\\unity_project_20261125_015237"
+  }
+]

@@ -1,0 +1,167 @@
+{
+  "phase": "FAZ13_1",
+  "project": "C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN",
+  "generated_at": "2026-11-25T07:36:43.330658+00:00",
+  "records": [
+    {
+      "timestamp": "2026-11-25T07:36:16.067183+00:00",
+      "check_id": "P0_SINGLE_WIRING",
+      "status": "PASS",
+      "command": "Tk in-process: router/engine/brain tek örnek; Unity yolu doğrulanıyor",
+      "output": "{\"single_router\": true, \"single_engine\": true, \"injected_modules\": [\"file_analyzer\", \"proactive\", \"voice\", \"web_research\"], \"hardcoded_bad_path_present\": false, \"unity_root_detected\": \"C:\\\\Users\\\\Koçak\\\\Documents\\\\INK_GAME\", \"unity_root_valid_or_none\": true, \"capability_report_entries\": 16, \"activity_stream_attached\": true}",
+      "notes": "Unity yoksa diğer yeteneklerin çalışması gerekir; sabit geçersiz yol yasaktır."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:25.568458+00:00",
+      "check_id": "P1_TYPEWRITER_PANELS",
+      "status": "PASS",
+      "command": "Tk in-process: iki mesaj kuyruğu + panel aç/kapat",
+      "output": "{\"typing_speed_default\": 10, \"runtime_speed\": 10, \"character_delays\": [10], \"first_message_complete\": true, \"second_message_complete\": true, \"sender_prefix_present\": true, \"markdown_markers_removed\": true, \"typing_finished\": true, \"panel_opened\": true, \"panel_present\": true, \"panel_closed\": true, \"missing_panel_safe\": true}",
+      "notes": "Gönderen öneki, Markdown içeriği ve 10 ms karakter hızı korunmalı."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:30.766321+00:00",
+      "check_id": "P0_APPROVAL_CANCEL",
+      "status": "PASS",
+      "command": "Gerçek DevelopmentOrchestrator: pending -> approve -> execute; iptal -> execute engelli",
+      "output": "{\"messages\": 0, \"safe_no_pending\": true, \"pending_id\": \"task_0001\", \"status_before_approval\": \"pending\", \"approval_dialog_implemented\": true, \"approved\": true, \"status_after_approval\": \"completed\", \"state_cleared_after_approval\": true, \"approval_events\": [\"APPROVAL_PENDING\", \"APPROVAL_GRANTED\", \"TASK_RESULT\"], \"cancel\": true, \"cancelled_id\": \"task_0002\", \"cancelled_status\": \"cancelled\", \"resume_blocked\": true, \"state_cleared_after_cancel\": true, \"cancel_events\": [\"TASK_CANCELLED\"], \"other_task_unchanged\": true}",
+      "notes": "Onay/iptal yalnızca doğru görev kimliğine uygulanır."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:30.766427+00:00",
+      "check_id": "CAP_DEVELOPMENT",
+      "status": "PASS",
+      "command": "Gerçek yetenek yürütmesi: development",
+      "output": "{\"messages\": 0, \"safe_no_pending\": true, \"pending_id\": \"task_0001\", \"status_before_approval\": \"pending\", \"approval_dialog_implemented\": true, \"approved\": true, \"status_after_approval\": \"completed\", \"state_cleared_after_approval\": true, \"approval_events\": [\"APPROVAL_PENDING\", \"APPROVAL_GRANTED\", \"TASK_RESULT\"], \"cancel\": true, \"cancelled_id\": \"task_0002\", \"cancelled_status\": \"cancelled\", \"resume_blocked\": true, \"state_cleared_after_cancel\": true, \"cancel_events\": [\"TASK_CANCELLED\"], \"other_task_unchanged\": true}",
+      "notes": "Geliştirme yeteneği plan/onay/iptal/yürütme zinciri ile sınandı."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:30.770353+00:00",
+      "check_id": "P0_ROUTING_16",
+      "status": "PASS",
+      "command": "CommandRouter.route() gerçek yönlendirme, 16 örnek",
+      "output": "{\"routes\": {\"chat\": {\"message\": \"Merhaba, nasılsın?\", \"chosen\": \"chat\", \"confidence\": 0.0}, \"computer_use\": {\"message\": \"Notepad uygulamasını aç\", \"chosen\": \"computer_use\", \"confidence\": 0.75}, \"development\": {\"message\": \"Bu kodu geliştir\", \"chosen\": \"development\", \"confidence\": 0.3333333333333333}, \"unity\": {\"message\": \"Unity sahnesini incele\", \"chosen\": \"unity\", \"confidence\": 0.5}, \"media_center\": {\"message\": \"Videoyu oynat\", \"chosen\": \"media_center\", \"confidence\": 1.0}, \"web_research\": {\"message\": \"Yapay zeka hakkında araştırma yap\", \"chosen\": \"web_research\", \"confidence\": 1.0}, \"file_mgmt\": {\"message\": \"Klasörü incele\", \"chosen\": \"file_mgmt\", \"confidence\": 1.0}, \"system_info\": {\"message\": \"Sistem durumunu göster\", \"chosen\": \"system_info\", \"confidence\": 0.5}, \"memory\": {\"message\": \"Hafızaya kaydet\", \"chosen\": \"memory\", \"confidence\": 1.0}, \"screen\": {\"message\": \"Ekranı analiz et\", \"chosen\": \"screen\", \"confidence\": 1.0}, \"multimodal\": {\"message\": \"rapor.pdf dosyasını analiz et\", \"chosen\": \"multimodal\", \"confidence\": 1.0}, \"voice\": {\"message\": \"Sesli konuş\", \"chosen\": \"voice\", \"confidence\": 1.0}, \"proactive\": {\"message\": \"Bana 10:00 için hatırlatma kur\", \"chosen\": \"proactive\", \"confidence\": 1.0}, \"ocr\": {\"message\": \"Yazıyı oku\", \"chosen\": \"ocr\", \"confidence\": 0.5}, \"obs\": {\"message\": \"OBS bağlantı durumunu kontrol et\", \"chosen\": \"obs\", \"confidence\": 1.0}, \"task_mgmt\": {\"message\": \"iş geçmişi rapor\", \"chosen\": \"task_mgmt\", \"confidence\": 0.6666666666666666}}, \"failures\": []}",
+      "notes": "Her yetenek ayrı örnekle doğrulanır."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:32.699723+00:00",
+      "check_id": "CAP_CHAT",
+      "status": "PASS",
+      "command": "Gerçek yetenek yürütmesi: chat",
+      "output": "{\"provider\": \"openrouter\", \"model\": \"nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free\", \"content_length\": 52, \"content_preview\": \"JARVIS 2030, bir yapay zeka asistanı ve uygulamadır.\", \"error\": \"None\"}",
+      "notes": "Gerçek OpenRouter yanıtı alındı."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:32.718398+00:00",
+      "check_id": "CAP_COMPUTER_USE",
+      "status": "PASS",
+      "command": "Gerçek yetenek yürütmesi: computer_use",
+      "output": "{\"evidence\": {\"active_window\": \"INK_GAME_REBUILD - AvatarPreview - Windows, Mac, Linux - Unity 6.6 (6000.6.7f1) <DX12>\", \"mouse_position\": \"(1854, 11)\", \"screen_size\": \"(1920, 1080)\", \"ocr_available\": \"True\"}, \"error\": \"None\"}",
+      "notes": "Salt okunur gerçek masaüstü durumu; eylemler izne bağlı, izinsiz eylem yapılmadı."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:33.185956+00:00",
+      "check_id": "CAP_UNITY",
+      "status": "PASS",
+      "command": "Gerçek yetenek yürütmesi: unity",
+      "output": "{\"project_root\": \"C:\\\\Users\\\\Koçak\\\\Documents\\\\INK_GAME\", \"version\": \"m_EditorVersion: 6000.6.7f1\\nm_EditorVersionWithRevision: 6000.6.7f1 (b22767f04f04)\", \"scene_count\": 1, \"asset_count\": 50, \"warnings\": []}",
+      "notes": "Salt okunur proje denetimi; Unity MCP'ye yazma yapılmadı."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:33.208396+00:00",
+      "check_id": "CAP_MEDIA_CENTER",
+      "status": "PASS",
+      "command": "Gerçek yetenek yürütmesi: media_center",
+      "output": "{\"stats\": {\"total_videos\": \"0\", \"favorites\": \"0\", \"shorts\": \"0\", \"total_size_bytes\": \"0\", \"total_duration_seconds\": \"0\"}}",
+      "notes": "Salt okunur medya merkezi durumu; OBS kaydı başlatılmadı."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:34.064082+00:00",
+      "check_id": "CAP_WEB_RESEARCH",
+      "status": "BLOCKED",
+      "command": "Gerçek yetenek yürütmesi: web_research",
+      "output": "{\"route\": \"web_research\", \"confidence\": 1.0, \"outer_success\": false, \"task_id\": \"task_0084\", \"error\": \"None\", \"evidence\": {}}",
+      "notes": "Araştırma servisi erişilemiyor."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:34.069520+00:00",
+      "check_id": "CAP_FILE_MGMT",
+      "status": "PASS",
+      "command": "Gerçek yetenek yürütmesi: file_mgmt",
+      "output": "{\"route\": \"file_mgmt\", \"confidence\": 1.0, \"outer_success\": true, \"task_id\": \"task_0084\", \"error\": \"None\", \"evidence\": {\"files\": \"['faz131.txt']\", \"path\": \"C:\\\\Users\\\\KOAK~1\\\\AppData\\\\Local\\\\Temp\\\\tmp7qqnx55b\"}, \"target_file_found\": true}",
+      "notes": "Gerçek geçici dizin salt okunur listelendi."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:34.073070+00:00",
+      "check_id": "CAP_SYSTEM_INFO",
+      "status": "PASS",
+      "command": "Gerçek yetenek yürütmesi: system_info",
+      "output": "{\"route\": \"system_info\", \"confidence\": 0.5, \"outer_success\": true, \"task_id\": \"task_0084\", \"error\": \"None\", \"evidence\": {\"active_window\": \"INK_GAME_REBUILD - AvatarPreview - Windows, Mac, Linux - Unity 6.6 (6000.6.7f1) <DX12>\", \"screen_size\": \"(1920, 1080)\", \"mouse_position\": \"(1811, 19)\", \"ocr_available\": \"True\"}}",
+      "notes": "Gerçek sistem durumu okundu."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:34.100427+00:00",
+      "check_id": "CAP_MEMORY",
+      "status": "PASS",
+      "command": "Gerçek yetenek yürütmesi: memory",
+      "output": "{\"save\": {\"route\": \"memory\", \"confidence\": 1.0, \"outer_success\": true, \"task_id\": \"task_0084\", \"error\": \"None\", \"evidence\": {\"memory_id\": \"1\", \"message\": \"Hafızaya kaydedildi: FAZ131_TEST\"}}, \"search\": {\"route\": \"memory\", \"confidence\": 1.0, \"outer_success\": true, \"task_id\": \"task_0085\", \"error\": \"None\", \"evidence\": {\"results\": \"[{'id': 1, 'content': 'FAZ131_TEST', 'category': 'general', 'importance': 3, 'tags': [], 'source': 'user', 'created_at': '2026-11-25T10:36:34.089283', 'updated_at': '2026-11-25T10:…\", \"count\": \"1\"}}}",
+      "notes": "Gerçek SQLite hafızaya kayıt ve arama; geçici DB kullanıldı."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:36.673301+00:00",
+      "check_id": "CAP_SCREEN",
+      "status": "PASS",
+      "command": "Gerçek yetenek yürütmesi: screen",
+      "output": "{\"success\": true, \"error\": \"None\", \"evidence\": {\"summary\": \"Ekran analizi: - Toplam metin: 266 kelime - Buton benzeri: 145 öğe - Metin öğeleri: 118 - OCR güven: 76.0%  Tespit edilen butonlar:   - 'x' (941, 17)   - 'INK' (995, 11)   - 'GAME'…\", \"ocr_text\": \"x | @ INK GAME REBUİLD - AvatarPreview - Windows, Mac, Linux - Unity 6.6 (6000.6.7F1) <DX12> - ao x = 8 Q QINKcAMEU: Q@iatvisandya: (J JARViSautor — ÇD Greeting B unity mc - a pote…\", \"screenshot_path\": \"C:\\\\Users\\\\Koçak\\\\AppData\\\\Local\\\\Temp\\\\opencode\\\\screenshots\\\\screenshot_20261125_103634.bmp\", \"element_count\": \"266\"}}",
+      "notes": "Gerçek ekran yakalama + OCR."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:36.683423+00:00",
+      "check_id": "CAP_MULTIMODAL",
+      "status": "PASS",
+      "command": "Gerçek yetenek yürütmesi: multimodal",
+      "output": "{\"route\": \"multimodal\", \"confidence\": 1.0, \"outer_success\": true, \"task_id\": \"task_0084\", \"error\": \"None\", \"evidence\": {\"file_type\": \"text\", \"analysis\": \"{'success': True, 'content': 'FAZ 13.1 gerçek dosya analizi\\\\nFAZ 13.1 gerçek dosya analizi\\\\nFAZ 13.1 gerçek dosya analizi\\\\nFAZ 13.1 gerçek dosya analizi\\\\n', 'line_count': 5, 'char_…\"}}",
+      "notes": "Gerçek geçici dosya analiz edildi."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:36.684356+00:00",
+      "check_id": "CAP_VOICE",
+      "status": "BLOCKED",
+      "command": "Gerçek yetenek yürütmesi: voice",
+      "output": "{\"azure_key_set\": false, \"azure_region_set\": false}",
+      "notes": "tr-TR-EmelNeural için Azure anahtarı/bölgesi yok; sesli yanıt PASS sayılmadı."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:36.686708+00:00",
+      "check_id": "CAP_PROACTIVE",
+      "status": "PASS",
+      "command": "Gerçek yetenek yürütmesi: proactive",
+      "output": "{\"task_id\": \"reminder_0001\", \"created\": true, \"listed\": true, \"cancelled\": true, \"status_after_cancel\": \"cancelled\", \"tasks_file_exists\": true}",
+      "notes": "Gerçek hatırlatma oluşturuldu, listelendi ve iptal edildi."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:42.322755+00:00",
+      "check_id": "CAP_OCR",
+      "status": "PASS",
+      "command": "Gerçek yetenek yürütmesi: ocr",
+      "output": "{\"text\": \"JARVIS2030\", \"confidence\": 78.527847, \"word_count\": 1}",
+      "notes": "Gerçek görüntüden metin tanındı."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:43.325906+00:00",
+      "check_id": "CAP_OBS",
+      "status": "BLOCKED",
+      "command": "Gerçek yetenek yürütmesi: obs",
+      "output": "{\"websocket\": \"NOT_REACHABLE\", \"error\": \"timed out\"}",
+      "notes": "OBS çalışmıyor; kayıt PASS sayılmadı ve izinsiz yakalama yapılmadı."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:43.329615+00:00",
+      "check_id": "CAP_TASK_MGMT",
+      "status": "PASS",
+      "command": "Gerçek yetenek yürütmesi: task_mgmt",
+      "output": "{\"route\": \"task_mgmt\", \"confidence\": 0.6666666666666666, \"outer_success\": true, \"task_id\": \"task_0084\", \"error\": \"None\", \"evidence\": {\"status\": \"understanding\", \"task_history\": \"[{'task_id': 'task_0084', 'message': 'iş geçmişi rapor', 'capability': 'task_mgmt', 'status': 'understanding', 'started_at': '2026-11-25T10:36:43.328511', 'steps': []}]\", \"count\": \"1\"}, \"history_count\": 1, \"current_status\": \"completed\", \"cancel_api_exists\": true}",
+      "notes": "Gerçek görev geçmişi ve iptal API'si doğrulandı; iptal senaryosu ayrı testte."
+    }
+  ]
+}

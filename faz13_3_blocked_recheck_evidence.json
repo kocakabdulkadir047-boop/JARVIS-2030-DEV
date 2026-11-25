@@ -1,0 +1,23 @@
+{
+  "phase": "FAZ13_3_RECHECK",
+  "project": "C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN",
+  "generated_at": "2026-11-25T07:37:53.068554+00:00",
+  "records": [
+    {
+      "timestamp": "2026-11-25T07:37:50.677970+00:00",
+      "check_id": "R03_AZURE_SPEECH_RECHECK",
+      "status": "BLOCKED",
+      "command": "Azure Speech REST TTS -> tr-TR-EmelNeural -> MP3 doğrulaması (geçici dosya)",
+      "output": "{\"azure_speech_key\": \"NOT SET\", \"azure_speech_region\": \"NOT SET\", \"voice\": \"tr-TR-EmelNeural\"}",
+      "notes": "Yeniden doğrulamada da anahtar/bölge yok; gerçek istek yapılmadı, anahtar uydurulmadı."
+    },
+    {
+      "timestamp": "2026-11-25T07:37:53.068042+00:00",
+      "check_id": "R04_OBS_WEBSOCKET_RECHECK",
+      "status": "BLOCKED",
+      "command": "OBSController.connect() + GetVersion + GetRecordStatus (salt okunur)",
+      "output": "{\"obs_executable\": \"FOUND\", \"obs_process\": \"NOT RUNNING\", \"obs_websocket_4455\": \"NOT_REACHABLE (ConnectionRefusedError)\", \"password_status\": \"NOT SET\", \"probe_elapsed_ms\": 2026.8}",
+      "notes": "Yeniden doğrulamada da WebSocket erişilemedi; kayıt/yayın yapılmadı."
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "phase": "FAZ13_2",
+  "project": "C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN",
+  "generated_at": "2026-11-25T07:37:50.677308+00:00",
+  "records": [
+    {
+      "timestamp": "2026-11-25T07:36:54.089311+00:00",
+      "check_id": "S01_LONG_SESSION",
+      "status": "PASS",
+      "command": "Tk in-process: 24 mesaj + 10 ms typewriter + ticks/CPU/heap/working set",
+      "output": "{\"messages_sent\": 24, \"messages_delivered\": 24, \"max_latency_ms\": 375.8, \"avg_latency_ms\": 347.0, \"ui_ticker_callbacks\": 12, \"ui_ticker_expected\": 12, \"typing_finished\": true, \"heap_growth_kb\": 82.1, \"heap_peak_kb\": 2526.0, \"working_set_before_kb\": 122388, \"working_set_after_kb\": 122408, \"working_set_growth_kb\": 20, \"cpu_seconds\": 4.0, \"wall_seconds\": 8.33, \"sender_prefix_present\": true}",
+      "notes": "Gerçek AI ağ çağrısı bu testte yok; AI zinciri FAZ 13.1'de ayrı doğrulandı."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:59.397130+00:00",
+      "check_id": "S02_PARALLEL_CANCEL_RESTART",
+      "status": "PASS",
+      "command": "5 eşzamanlı gerçek görev + kimlik bazlı iptal + yeniden başlatma",
+      "output": "{\"parallel_results\": 5, \"unique_task_ids\": 5, \"history_entries\": 7, \"isolation_ok\": true, \"cancel_target\": \"task_0006\", \"cancel_accepted\": true, \"cancelled_status\": \"cancelled\", \"cancelled_result_success\": false, \"restart_task_id\": \"task_0007\", \"restart_success\": true, \"restart_ok\": true}",
+      "notes": "Gecikme, gerçek _execute_system_info çağrısının etrafına test zamanlayıcısı olarak eklendi; sahte sonuç yok."
+    },
+    {
+      "timestamp": "2026-11-25T07:36:59.408591+00:00",
+      "check_id": "S03_TRANSIENT_ERROR",
+      "status": "PASS",
+      "command": "Kontrollü HTTP 503 + URLError; geçici ERROR_LOG",
+      "output": "{\"http_503_classified\": true, \"network_classified\": true, \"secret_in_exception\": false, \"marker_in_exception\": false, \"log_entries\": 2, \"secret_in_log\": false, \"marker_in_log\": false, \"raw_key_pattern_in_log\": false}",
+      "notes": "Sahte başarı yok; yalnızca hata sınıflandırma ve sanitizasyon doğrulandı."
+    },
+    {
+      "timestamp": "2026-11-25T07:37:00.960812+00:00",
+      "check_id": "S04_REAL_RECOVERY",
+      "status": "BLOCKED",
+      "command": "Simülasyon sonrası gerçek AICore().chat()",
+      "output": "{\"attempts\": [1, 2], \"provider\": null, \"content_length\": 0, \"content_preview\": \"\", \"error\": \"Hicbir AI saglayicisi yanit veremedi. openrouter: OpenRouter bos metin yaniti dondurdu (model: nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free).\"}",
+      "notes": "Sağlayıcı boş yanıt döndü; PASS sayılmadı."
+    },
+    {
+      "timestamp": "2026-11-25T07:37:01.001340+00:00",
+      "check_id": "S05_MEMORY_HISTORY_REOPEN",
+      "status": "PASS",
+      "command": "Geçici SQLite + görev geçmişi kapat/aç döngüsü",
+      "output": "{\"memory_results\": 1, \"memory_token_found\": true, \"task_before\": \"task_0001\", \"history_after_reopen\": 1, \"task_history_preserved\": true, \"temp_db_used\": true, \"temp_history_used\": true}",
+      "notes": "Kullanıcı hafızasına/verisine dokunulmadı."
+    },
+    {
+      "timestamp": "2026-11-25T07:37:14.688156+00:00",
+      "check_id": "S06_UI_REOPEN",
+      "status": "PASS",
+      "command": "İki gerçek Tk/JarvisLegacyAI açılış-kapanış döngüsü",
+      "output": "{\"ui_cycles\": 2, \"both_chat_widgets_created\": true, \"first_cycle_closed\": true, \"second_cycle_ready\": true, \"single_engine_per_cycle\": true}",
+      "notes": "İkinci açılışta yeni motor/router örnekleri oluştu; eski pencere kapalı."
+    },
+    {
+      "timestamp": "2026-11-25T07:37:14.702056+00:00",
+      "check_id": "S07_CRITICAL_APPROVAL",
+      "status": "PASS",
+      "command": "SafetyManager.validate_operation('delete_directory')",
+      "output": "{\"allowed\": false, \"reason\": \"CRITICAL: delete_directory on C:\\\\Users\\\\KOAK~1\\\\AppData\\\\Local\\\\Temp\\\\tmpkjfl500d\\\\protected.txt requires explicit user approval\", \"target_still_exists\": true, \"target_content_intact\": true, \"approval_required\": true}",
+      "notes": "Onaysız kritik işlem engellendi; hedef dosyaya dokunulmadı."
+    },
+    {
+      "timestamp": "2026-11-25T07:37:14.865510+00:00",
+      "check_id": "S08_CANCEL_APPROVAL_BINDING",
+      "status": "PASS",
+      "command": "Gerçek orchestrator: onaysız yürütme, onaylı çağrı, iptal ve bayat onay",
+      "output": "{\"pending_id\": \"task_0001\", \"task_id\": \"task_0001\", \"before_approval_success\": false, \"approved\": true, \"after_status\": \"completed\", \"second_task_id\": \"task_0002\", \"calls_after_approval\": 1, \"cancelled\": true, \"stale_approval_processed\": true, \"calls_after_cancel\": 1, \"resume_status\": \"cancelled\", \"resume_success\": false, \"external_calls\": 1, \"cancel_events\": [\"TASK_CANCELLED\"]}",
+      "notes": "Harici adapter MagicMock; onaylanan görev için 1 çağrı, iptal sonrası ek çağrı yok."
+    },
+    {
+      "timestamp": "2026-11-25T07:37:20.678477+00:00",
+      "check_id": "S09_UI_ACTIVITY_PANELS",
+      "status": "PASS",
+      "command": "13 mesaj trafiği + Activity Stream + panel yaşam döngüsü",
+      "output": "{\"stream_is_same\": true, \"events_total\": 5, \"events_sample\": [{\"event_type\": \"FAZ132_UI\", \"status\": \"success\", \"description\": \"UIActivityToken132\", \"session_id\": \"jarvis-desktop-main\"}, {\"event_type\": \"COMMAND_ANALYZE\", \"status\": \"started\", \"description\": \"Komut analiz ediliyor: sistem durumu\", \"session_id\": \"jarvis-desktop-main\"}, {\"event_type\": \"COMMAND_EXECUTE\", \"status\": \"started\", \"description\": \"Yetenek: system_info\", \"session_id\": \"jarvis-desktop-main\"}, {\"event_type\": \"COMMAND_COMPLETE\", \"status\": \"completed\", \"description\": \"Görev task_0001: tamamlandı\", \"session_id\": \"jarvis-desktop-main\"}, {\"event_type\": \"UI_PANEL_CLOSED\", \"status\": \"success\", \"description\": \"Panel kapandı: capability_center\", \"session_id\": \"jarvis-desktop-main\"}], \"typing_finished\": true, \"character_delays\": [10], \"markdown_stripped\": true, \"markdown_content_kept\": true, \"sender_prefixes\": true, \"ui_event_present\": true, \"engine_events_present\": true, \"engine_task_success\": true, \"panel_opened\": true, \"panel_closed\": true, \"missing_panel_safe\": true}",
+      "notes": "10 ms/karakter, Markdown ve gönderen önekleri korundu."
+    },
+    {
+      "timestamp": "2026-11-25T07:37:50.676711+00:00",
+      "check_id": "S10_APP_TEST_REGRESSION",
+      "status": "PASS",
+      "command": "py -m unittest discover -s app\\tests -p \"*.py\"",
+      "output": "{\"command\": \"C:\\\\Users\\\\Koçak\\\\AppData\\\\Local\\\\Python\\\\pythoncore-3.15-64\\\\python.exe -m unittest discover -s app\\\\tests -p *.py\", \"returncode\": 0, \"output_tail\": [\".....................................s....................................................................\", \"----------------------------------------------------------------------\", \"Ran 106 tests in 25.299s\", \"OK (skipped=1)\"], \"ok_marker\": true}",
+      "notes": "FAZ 13.1'in 106 testi dahil tüm birim testleri gerçek alt süreçte çalıştırıldı."
+    }
+  ]
+}

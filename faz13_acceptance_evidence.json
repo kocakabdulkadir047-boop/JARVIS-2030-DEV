@@ -1,0 +1,119 @@
+{
+  "phase": "FAZ13",
+  "project": "C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN",
+  "generated_at": "2026-11-25T07:38:36.833700+00:00",
+  "records": [
+    {
+      "timestamp": "2026-11-25T07:38:04.573958+00:00",
+      "check_id": "A01_STARTUP_TYPEWRITER_PLASMA",
+      "status": "PASS",
+      "command": "Tk in-process: JarvisLegacyAI(root) + add_message()",
+      "output": "{\"moderngl\": \"5.13.0\", \"title\": \"J.A.R.V.I.S 2030\", \"viewable\": true, \"typing_speed_default\": 10, \"runtime_speed\": 10, \"after_delays\": [0, 10], \"elapsed_seconds\": 2.449, \"message_complete\": true, \"typing_active\": false, \"plasma_running\": true, \"plasma_ctx\": true, \"plasma_photo\": true}",
+      "notes": "0 ms yalnızca ilk tetikleme; karakter adımları 10 ms olmalı."
+    },
+    {
+      "timestamp": "2026-11-25T07:38:10.041045+00:00",
+      "check_id": "B01_REAL_AI_RESPONSE",
+      "status": "PASS",
+      "command": "AICore().chat(...) -> ModelRouter -> OpenRouter (gerçek HTTP)",
+      "output": "{\"provider\": \"openrouter\", \"model\": \"nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free\", \"requested_model\": \"nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free\", \"content_length\": 40, \"content_preview\": \"JARVIS 2030, bir yapay zeka asistanıdır.\"}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:38:10.041261+00:00",
+      "check_id": "B02_ERROR_CLASSIFICATION_AND_REDACTION",
+      "status": "PASS",
+      "command": "_status_hint() + _redact() birim doğrulaması",
+      "output": "{\"hints\": {\"401\": \"API anahtarı geçersiz veya eksik.\", \"402\": \"Hesapta kredi yok; ödeme/credit gerekli.\", \"403\": \"API anahtarının kullanım limiti veya erişim izni yetersiz.\", \"404\": \"Model bulunamadı veya artık sunulmuyor.\", \"429\": \"İstek hızı sınırlandırıldı (rate limit).\", \"500\": \"OpenRouter sunucu tarafı hatası (5xx).\", \"503\": \"OpenRouter sunucu tarafı hatası (5xx).\"}, \"fake_key_removed\": true, \"real_key_removed\": true}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:38:10.043286+00:00",
+      "check_id": "C01_LIVE_UI_CAPABILITY_WIRING",
+      "status": "PASS",
+      "command": "grep(live UI sources for core brain/router/task engine imports)",
+      "output": "{\"JarvisBrain\": true, \"UniversalTaskEngine\": true, \"CommandRouter\": true, \"VoiceIntelligence\": true, \"WebResearchEngine\": true, \"ProactiveManager\": true, \"FileAnalyzer\": true, \"DynamicUiController.resolve()\": true}",
+      "notes": "py -m app.ui.jarvis_legacy_ai ile açılan UI'ın 16 yeteneğe erişmesi beklenir."
+    },
+    {
+      "timestamp": "2026-11-25T07:38:10.043450+00:00",
+      "check_id": "C02_APPROVAL_FROM_CHAT",
+      "status": "PASS",
+      "command": "DevelopmentChatIntegration.is_development_request('onayla'/'iptal')",
+      "output": "{\"onayla\": true, \"iptal\": true, \"evet\": true, \"hayır\": true}",
+      "notes": "Onay/iptal mesajı UI'da geliştirme dalına girmediği için AI'ya gidiyor."
+    },
+    {
+      "timestamp": "2026-11-25T07:38:10.068667+00:00",
+      "check_id": "F01_MEMORY_PERSISTENCE",
+      "status": "PASS",
+      "command": "MemoryIntelligence(temp_db).save() -> close() -> reopen().search()",
+      "output": "{\"memory_id\": 1, \"hits\": 1, \"found\": true}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:38:10.091177+00:00",
+      "check_id": "H01_MULTIMODAL_FILE_ANALYSIS",
+      "status": "PASS",
+      "command": "FileAnalyzer().analyze(temp .txt / .json / .py)",
+      "output": "{\"sample.txt\": {\"success\": true, \"file_type\": \"text\", \"error\": null}, \"sample.json\": {\"success\": true, \"file_type\": \"json\", \"error\": null}, \"sample.py\": {\"success\": true, \"file_type\": \"python\", \"error\": null}}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:38:10.091844+00:00",
+      "check_id": "E01_OCR_AND_SCREEN_API",
+      "status": "PASS",
+      "command": "OCREngine().is_available() + ScreenCapture().get_screen_size()",
+      "output": "{\"tesseract_available\": true, \"screen_size\": [1920, 1080]}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:38:10.832894+00:00",
+      "check_id": "G01_TURKISH_VOICE",
+      "status": "BLOCKED",
+      "command": "VoiceIntelligence().get_status() + get_available_voices()",
+      "output": "{\"azure_key_set\": false, \"status\": \"{\\\"speaking\\\": false, \\\"listening\\\": false, \\\"azure_available\\\": false, \\\"tts_voice\\\": \\\"tr-TR-EmelNeural\\\", \\\"sapi_voices\\\": [\\\"Microsoft Zira Desktop - English (United States)\\\"]}\", \"voices\": [\"Microsoft Zira Desktop - English (United States)\"]}",
+      "notes": "AZURE_SPEECH_KEY yok; tr-TR-EmelNeural gerçek sentezi doğrulanamadı."
+    },
+    {
+      "timestamp": "2026-11-25T07:38:10.832948+00:00",
+      "check_id": "G01_TURKISH_VOICE",
+      "status": "FAIL",
+      "command": "VoiceIntelligence().get_status() + get_available_voices()",
+      "output": "SkipTest: BLOCKED: Türkçe TTS için AZURE_SPEECH_KEY tanımlı değil.",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:38:12.337796+00:00",
+      "check_id": "I01_EXTERNAL_SERVICES",
+      "status": "BLOCKED",
+      "command": "TCP probe 127.0.0.1:4455 (OBS), 127.0.0.1:8080 (Unity MCP)",
+      "output": "{\"obs_websocket\": \"NOT_REACHABLE (TimeoutError)\", \"unity_mcp\": \"REACHABLE\"}",
+      "notes": "OBS kapalıyken kayıt testi yapılmadı; Unity MCP'ye yazma çağrısı gönderilmedi."
+    },
+    {
+      "timestamp": "2026-11-25T07:38:12.344420+00:00",
+      "check_id": "L01_DATA_INTEGRITY",
+      "status": "PASS",
+      "command": "SQLite mode=ro: tablo/satır sayıları (veri değiştirilmedi)",
+      "output": "{\"activity_stream.db\": {\"activity_events\": 49}, \"autonomous_work.db\": {\"work_events\": 34, \"work_sessions\": 2, \"work_tasks\": 10}, \"jarvis_memory.db\": {\"conversations\": 44, \"memories\": 2}, \"memory_intelligence.db\": {\"memories\": 8, \"memory_relations\": 0}, \"video_library.db\": {\"categories\": 4, \"videos\": 0, \"watch_history\": 0}}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:38:13.099082+00:00",
+      "check_id": "L02_SECRET_SCAN",
+      "status": "PASS",
+      "command": "OPENROUTER_API_KEY / OPENAI_API_KEY değerlerinin kaynak+log taraması",
+      "output": "{\"secrets_checked\": 2, \"files_with_plaintext_secret\": []}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:38:36.833178+00:00",
+      "check_id": "K01_REGRESSION_106",
+      "status": "PASS",
+      "command": "python -m unittest discover -s app\\tests -p '*.py'",
+      "output": "{\"returncode\": 0, \"tail\": \".....................................s....................................................................\\n----------------------------------------------------------------------\\nRan 106 tests in 23.410s\\n\\nOK (skipped=1)\\n\"}",
+      "notes": ""
+    }
+  ]
+}

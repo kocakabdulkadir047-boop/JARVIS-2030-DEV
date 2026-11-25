@@ -1,0 +1,127 @@
+{
+  "phase": "FAZ14_2",
+  "project": "C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN",
+  "generated_at": "2026-11-25T07:40:09.520158+00:00",
+  "records": [
+    {
+      "timestamp": "2026-11-25T07:38:55.080163+00:00",
+      "check_id": "R01",
+      "status": "PASS",
+      "command": "verify Piper runtime, model hashes and provider priority",
+      "output": "{'checks': {'venv_python': True, 'engine_dir': True, 'espeak_data': True, 'model': True, 'config': True, 'license': True, 'model_hash': True, 'config_hash': True, 'turkish_voice': True, 'provider_order': True, 'auto_order': True, 'piper_order': True, 'windows_order': True, 'azure_order': True}, 'order': ['piper', 'windows', 'azure'], 'auto': ['piper', 'windows', 'azure'], 'forced': {'piper': ['piper', 'windows'], 'windows': ['windows'], 'azure': ['azure', 'windows']}}",
+      "notes": "CC BY-NC-SA 4.0 lisans notu korundu; Azure yalnızca opsiyonel üçüncü motor."
+    },
+    {
+      "timestamp": "2026-11-25T07:38:59.491411+00:00",
+      "check_id": "R02",
+      "status": "PASS",
+      "command": "save settings -> new TTSManager -> disabled/enabled speak",
+      "output": "{'checks': {'saved_enabled': True, 'saved_engine': True, 'saved_rate': True, 'saved_volume': True, 'saved_queue_mode': True, 'disabled_skipped': True, 'no_audio_while_disabled': True, 'reenabled_success': True, 'reenabled_played': True}, 'disabled': {'success': False, 'skipped': 'disabled', 'engine': 'none'}, 'enabled': [{'engine': 'windows', 'status': 'played', 'synthesis_ms': 495.1, 'playback_ms': 1981.9}], 'settings_file': 'C:\\\\Users\\\\KOAK~1\\\\AppData\\\\Local\\\\Temp\\\\jarvis_tts142_0glp61p4\\\\tts_settings.json'}",
+      "notes": "Yeniden başlatma geçici ayar dosyasıyla simüle edildi; gerçek kullanıcı ayarı yazılmadı."
+    },
+    {
+      "timestamp": "2026-11-25T07:39:16.682314+00:00",
+      "check_id": "R03",
+      "status": "PASS",
+      "command": "two chat answers -> TTSManager.speak(wait=True) in order",
+      "output": "{'checks': {'all_success': True, 'order_preserved': True, 'chunk_counts': [1, 1]}, 'seen': ['Birinci sohbet yanıtı sırayla seslendiriliyor.', 'İkinci sohbet yanıtı kuyruk düzenini doğruluyor.'], 'results': [{'success': True, 'attempts': [{'engine': 'piper', 'status': 'played', 'synthesis_ms': 1596.7, 'playback_ms': 6566.8}], 'chunks': 1, 'stopped': False, 'timestamp': 1795592348.1099315}, {'success': True, 'attempts': [{'engine': 'piper', 'status': 'played', 'synthesis_ms': 1618.8, 'playback_ms': 6951.3}], 'chunks': 1, 'stopped': False, 'timestamp': 1795592356.681172}]}",
+      "notes": "Gerçek Piper sentezi ve Windows playback kullanıldı."
+    },
+    {
+      "timestamp": "2026-11-25T07:39:16.682729+00:00",
+      "check_id": "R04",
+      "status": "PASS",
+      "command": "split_for_speech(long_markdown_answer)",
+      "output": "{'chunk_count': 4, 'all_within_320': True, 'no_code_fence': True, 'no_inline_code': True, 'no_url': True, 'no_markdown_bullet': True, 'no_stray_bold_marker': True, 'no_emoji': True, 'link_text_kept': True, 'turkish_preserved': True, 'content_preserved': True}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:39:22.533841+00:00",
+      "check_id": "R05",
+      "status": "PASS",
+      "command": "TTSManager.speak(long_text) -> stop() during playback",
+      "output": "{'checks': {'speaking_observed': True, 'stop_success': True, 'queue_drained': True, 'play_process_cleared': True, 'worker_alive': True}, 'speaking_after_ms': 4685.8, 'stop': {'success': True, 'cleared': 0}}",
+      "notes": "Playback zamanı çıktıysa durum BLOCKED yerine FAIL olarak kaydedilir."
+    },
+    {
+      "timestamp": "2026-11-25T07:39:27.412464+00:00",
+      "check_id": "R06",
+      "status": "PASS",
+      "command": "Piper.synthesize -> forced failure; speak(wait=True)",
+      "output": "{'checks': {'overall_success': True, 'piper_failed': True, 'windows_played': True}, 'attempts': [{'engine': 'piper', 'status': 'failed', 'error': 'Simüle edilen Piper sentez hatası'}, {'engine': 'windows', 'status': 'played', 'synthesis_ms': 486.9, 'playback_ms': 3559.3}]}",
+      "notes": "Gerçek Windows SAPI WAV üretimi ve playback kaydedildi."
+    },
+    {
+      "timestamp": "2026-11-25T07:39:29.807053+00:00",
+      "check_id": "R07",
+      "status": "PASS",
+      "command": "PiperTTSProvider with missing model/config + settings panel status",
+      "output": "{'checks': {'model_error_clear': True, 'model_diagnostic_clear': True, 'config_diagnostic_clear': True, 'panel_shows_diagnostic': True}, 'error': 'Piper Türkçe model dosyası bulunamadı', 'model_diagnostic': 'Piper Türkçe model dosyası bulunamadı', 'config_diagnostic': 'Piper model yapılandırması bulunamadı', 'panel_text': 'Motorlar: piper=hazır, System.Speech / SAPI=hazır, ?=yok · piper: Piper model yapılandırması bulunamadı'}",
+      "notes": "Gerçek model/config dosyaları silinmedi veya değiştirilmedi."
+    },
+    {
+      "timestamp": "2026-11-25T07:39:39.041972+00:00",
+      "check_id": "R08",
+      "status": "PASS",
+      "command": "TTSSettingsPanel controls -> saved settings and live manager",
+      "output": "{'checks': {'engine_options': True, 'model_listed': True, 'disable_persisted': True, 'engine_persisted': True, 'rate_persisted': True, 'volume_persisted': True, 'model_persisted': True, 'model_applied_immediately': True, 'test_queued': True, 'stop_worked': True, 'buttons_present': True}, 'saved': {'enabled': True, 'engine': 'windows', 'model': 'C:\\\\Users\\\\Koçak\\\\.local\\\\share\\\\jarvis\\\\models\\\\piper\\\\tr_TR-dfki-medium.onnx', 'rate': 1.4, 'volume': 40, 'piper_executable': '', 'piper_python': '', 'piper_data_dir': '', 'piper_model': '', 'queue_mode': 'queue'}, 'provider_model': 'C:\\\\Users\\\\Koçak\\\\.local\\\\share\\\\jarvis\\\\models\\\\piper\\\\tr_TR-dfki-medium.onnx', 'queued': {'success': True, 'queued': True, 'chunks': 1, 'engine': 'queued'}, 'stopped': {'success': True, 'cleared': 0}, 'buttons': ['TEST KONUŞMASI', 'KONUŞMAYI DURDUR', 'YENİLE']}",
+      "notes": "Model seçimi kaydedildi ve çalışan sağlayıcıya anında uygulandı."
+    },
+    {
+      "timestamp": "2026-11-25T07:39:47.556160+00:00",
+      "check_id": "R09",
+      "status": "PASS",
+      "command": "manager settings -> Piper flags --length-scale/--volume",
+      "output": "{'checks': {'manager_rate': True, 'manager_volume': True, 'playback_success': True, 'length_flag': True, 'length_value': True, 'volume_flag': True, 'volume_value': True, 'engine_dir_cwd': True}, 'captured': {'rate': 1.5, 'volume': 40, 'command': ['C:\\\\Users\\\\Koçak\\\\.local\\\\share\\\\jarvis\\\\tools\\\\piper-venv\\\\Scripts\\\\python.exe', '-m', 'piper', '--model', 'C:\\\\Users\\\\Koçak\\\\.local\\\\share\\\\jarvis\\\\models\\\\piper\\\\tr_TR-dfki-medium.onnx', '--config', 'C:\\\\Users\\\\Koçak\\\\.local\\\\share\\\\jarvis\\\\models\\\\piper\\\\tr_TR-dfki-medium.onnx.json', '--output_file', 'C:\\\\Users\\\\KOAK~1\\\\AppData\\\\Local\\\\Temp\\\\jarvis_piper_1795592386208987800.wav', '--length_scale', '0.667', '--volume', '0.4'], 'cwd': 'C:\\\\Users\\\\Koçak\\\\.local\\\\share\\\\jarvis\\\\tools\\\\piper'}, 'direct_success': True}",
+      "notes": "1.5x hız -> length-scale 0.667; %40 seviye -> volume 0.4."
+    },
+    {
+      "timestamp": "2026-11-25T07:39:56.367888+00:00",
+      "check_id": "R10",
+      "status": "PASS",
+      "command": "JarvisLegacyAI._request_ai -> _poll_results -> Piper playback",
+      "output": "{'checks': {'chat_request_sent': True, 'real_response_received': True, 'response_added_by_poll': True, 'piper_played': True, 'windows_playback_used': True, 'no_ai_error_activity': True, 'settings_file_isolated': True}, 'result': {'message': 'JARVIS, Türkçe ses testi için kısa ve net bir yanıt ver.', 'response_preview': 'Ses testi yapabilirim; lütfen konuşun.', 'response_length': 38, 'provider': 'openrouter', 'model': 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free', 'last_result': {'success': True, 'attempts': [{'engine': 'piper', 'status': 'played', 'synthesis_ms': 1555.9, 'playback_ms': 4434.9}], 'chunks': 1, 'stopped': False, 'timestamp': 1795592396.026144}, 'activity_events': ['AI_RESPONSE']}}",
+      "notes": "Gerçek AI yanıtı hafızaya yazılmadan üretildi; Windows playback sonucu kaydedildi."
+    },
+    {
+      "timestamp": "2026-11-25T07:39:57.731711+00:00",
+      "check_id": "R11",
+      "status": "PASS",
+      "command": "TTSManager(enabled=False).speak(chat_response)",
+      "output": "{'checks': {'skipped': True, 'no_synthesis': True, 'no_audio_files': True, 'no_playback': True}, 'result': {'success': False, 'skipped': 'disabled', 'engine': 'none'}}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:40:03.963379+00:00",
+      "check_id": "R12",
+      "status": "PASS",
+      "command": "two identical chat answers -> dedupe",
+      "output": "{'checks': {'first_success': True, 'second_skipped': True, 'single_synthesis': True}, 'synthesis_calls': ['Aynı yanıt iki kez gelirse bir kez seslendirilmelidir.']}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:40:09.138006+00:00",
+      "check_id": "R13",
+      "status": "PASS",
+      "command": "queue 3 jobs -> TTSManager.close()",
+      "output": "{'checks': {'worker_stopped': True, 'no_pending_jobs': True, 'temp_dir_removed': True}, 'pending_items': 1}",
+      "notes": "Kapanışta thread sonlandı, bekleyen konuşma kalmadı ve geçici WAV'lar temizlendi."
+    },
+    {
+      "timestamp": "2026-11-25T07:40:09.511974+00:00",
+      "check_id": "R14",
+      "status": "PASS",
+      "command": "verify license/model hashes + FAZ14.1 evidence + protected files",
+      "output": "{'checks': {'license_present': True, 'cc_by_nc_sa': True, 'model_hash_unchanged': True, 'config_hash_unchanged': True, 'faz141_12_pass': True, 'faz141_no_fail': True, 'faz141_no_blocked': True, 'original_tts_and_theme_unchanged': True}, 'faz141_counts': {'PASS': 12, 'FAIL': 0, 'BLOCKED': 0}, 'license_sha256': 'd72a5516a77b9359116a5a69f229e851448cdccfe49149c94ab705f40fa79846', 'unchanged': {'app/voice/voice_intelligence.py': True, 'app/ui/theme_manager.py': True, 'app/data/theme_settings.json': True}}",
+      "notes": "Model, lisans, Azure/SAPI kodu ve tema ayarları değiştirilmedi."
+    },
+    {
+      "timestamp": "2026-11-25T07:40:09.519572+00:00",
+      "check_id": "R15",
+      "status": "PASS",
+      "command": "scan changed sources for API key/token patterns",
+      "output": "{'checks': {'scanned_files': 5, 'hits': 0}, 'hits': []}",
+      "notes": "Azure anahtarı/bölgesi ve diğer gizli değerler kanıta yazılmadı."
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "timestamp": "2026-11-25T01:49:24.035416",
+    "operation": "create_project_backup",
+    "target": "C:\\Users\\KOAK~1\\AppData\\Local\\Temp\\tmprn140w63\\UnityProject",
+    "risk_level": "medium",
+    "approved": true,
+    "details": {
+      "backup_path": "C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN\\data\\dev_backups\\task_task_0001\\unity_project_20261125_014924"
+    }
+  },
+  {
+    "timestamp": "2026-11-25T01:49:24.100099",
+    "operation": "create_project_backup",
+    "target": "C:\\Users\\KOAK~1\\AppData\\Local\\Temp\\tmprn140w63\\UnityProject",
+    "risk_level": "medium",
+    "approved": true,
+    "details": {
+      "backup_path": "C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN\\data\\dev_backups\\task_task_0002\\unity_project_20261125_014924"
+    }
+  },
+  {
+    "timestamp": "2026-11-25T01:52:37.743875",
+    "operation": "create_project_backup",
+    "target": "C:\\Users\\KOAK~1\\AppData\\Local\\Temp\\tmpnu9c3hw1\\UnityProject",
+    "risk_level": "medium",
+    "approved": true,
+    "details": {
+      "backup_path": "C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN\\data\\dev_backups\\task_task_0001\\unity_project_20261125_015237"
+    }
+  },
+  {
+    "timestamp": "2026-11-25T01:52:37.811699",
+    "operation": "create_project_backup",
+    "target": "C:\\Users\\KOAK~1\\AppData\\Local\\Temp\\tmpnu9c3hw1\\UnityProject",
+    "risk_level": "medium",
+    "approved": true,
+    "details": {
+      "backup_path": "C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN\\data\\dev_backups\\task_task_0002\\unity_project_20261125_015237"
+    }
+  }
+]

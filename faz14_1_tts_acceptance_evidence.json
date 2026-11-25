@@ -1,0 +1,103 @@
+{
+  "phase": "FAZ14_1",
+  "project": "C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN",
+  "generated_at": "2026-11-25T07:38:54.092810+00:00",
+  "records": [
+    {
+      "timestamp": "2026-11-25T07:38:36.903774+00:00",
+      "check_id": "P01",
+      "status": "PASS",
+      "command": "verify piper installation paths and model hash",
+      "output": "{'checks': {'engine_dir': True, 'piper_exe': True, 'espeak_data': True, 'venv_python': True, 'model': True, 'config': True, 'license_note': True, 'model_sha256_matches': True, 'turkish_voice': True}, 'model_sha256': '2844717f524ab965d3fe86e60562cbb601d3e456836efcc2196cc3a14112a8fb', 'bridge_patched': True}",
+      "notes": "Resmî GitHub release + resmî Hugging Face piper-voices; CC BY-NC-SA 4.0 (NonCommercial/ShareAlike)."
+    },
+    {
+      "timestamp": "2026-11-25T07:38:37.351234+00:00",
+      "check_id": "P02",
+      "status": "PASS",
+      "command": "PiperTTSProvider().status()",
+      "output": "{'available': True, 'executable': 'piper', 'model': 'C:\\\\Users\\\\Koçak\\\\.local\\\\share\\\\jarvis\\\\models\\\\piper\\\\tr_TR-dfki-medium.onnx', 'model_config': 'C:\\\\Users\\\\Koçak\\\\.local\\\\share\\\\jarvis\\\\models\\\\piper\\\\tr_TR-dfki-medium.onnx.json', 'working_dir': 'C:\\\\Users\\\\Koçak\\\\.local\\\\share\\\\jarvis\\\\tools\\\\piper', 'models_found': 1, 'notes': ['Piper Python modülü doğrulandı'], 'diagnostic': '', 'command_prefix': ['C:\\\\Users\\\\Koçak\\\\.local\\\\share\\\\jarvis\\\\tools\\\\piper-venv\\\\Scripts\\\\python.exe', '-m', 'piper']}",
+      "notes": "Bakımlı Python modülü resmî Windows ikilisinden önce seçilir."
+    },
+    {
+      "timestamp": "2026-11-25T07:38:39.412674+00:00",
+      "check_id": "P03",
+      "status": "PASS",
+      "command": "PiperTTSProvider.synthesize(TTS_TEXT)",
+      "output": "{'success': True, 'engine': 'piper', 'duration_ms': 1613.5, 'error': '', 'wav': {'path': 'C:\\\\Users\\\\KOAK~1\\\\AppData\\\\Local\\\\Temp\\\\jarvis_piper_1795592317789912000.wav', 'size': 567340, 'riff': 'RIFF', 'wave': 'WAVE'}, 'text': 'Merhaba, bu JARVIS 2030 Türkçe ses testidir. Türkçe karakterler: çğıöşü.'}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:38:47.013512+00:00",
+      "check_id": "P04",
+      "status": "PASS",
+      "command": "TTSManager.speak(chat_response, wait=True)",
+      "output": "{'result': {'success': True, 'attempts': [{'engine': 'piper', 'status': 'played', 'synthesis_ms': 1335.2, 'playback_ms': 5464.6}], 'chunks': 1, 'stopped': False, 'timestamp': 1795592326.6645408}, 'speaking_after': False}",
+      "notes": "Gerçek WAV üretildi ve Windows playback tamamlandı."
+    },
+    {
+      "timestamp": "2026-11-25T07:38:47.014887+00:00",
+      "check_id": "P05",
+      "status": "PASS",
+      "command": "inspect JarvisLegacyAI TTS hooks",
+      "output": "{'tts_manager_created': True, 'success_hook': True, 'capability_hook': True, 'close_hook': True, 'settings_button': True, 'typing_speed_10ms': True, 'hook_callable': True}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:38:47.015107+00:00",
+      "check_id": "P06",
+      "status": "PASS",
+      "command": "split_for_speech(long_answer)",
+      "output": "{'chunks': 3, 'all_within_limit': True, 'no_code_fence': True, 'no_url': True, 'turkish_preserved': True}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:38:47.485083+00:00",
+      "check_id": "P07",
+      "status": "PASS",
+      "command": "TTSManager.speak/stop non-blocking",
+      "output": "{'queued': True, 'nonblocking_ms': 0.1, 'duplicate_skipped': True, 'stop_success': True, 'cleared': 1}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:38:51.763755+00:00",
+      "check_id": "P08",
+      "status": "PASS",
+      "command": "TTSManager(engine='windows').speak(short_text, wait=True)",
+      "output": "{'success': True, 'attempts': [{'engine': 'windows', 'status': 'played', 'synthesis_ms': 477.7, 'playback_ms': 3012.3}], 'chunks': 1, 'stopped': False, 'timestamp': 1795592331.7636933}",
+      "notes": "Piper başarısızlığında Windows SAPI yolu kullanılabilir."
+    },
+    {
+      "timestamp": "2026-11-25T07:38:51.770068+00:00",
+      "check_id": "P09",
+      "status": "PASS",
+      "command": "save_settings/load_settings(temp)",
+      "output": "{'enabled': False, 'engine': 'piper', 'model': '', 'rate': 1.4, 'volume': 55, 'piper_executable': '', 'piper_python': '', 'piper_data_dir': '', 'piper_model': 'C:\\\\Users\\\\Koçak\\\\.local\\\\share\\\\jarvis\\\\models\\\\piper\\\\tr_TR-dfki-medium.onnx', 'queue_mode': 'replace'}",
+      "notes": "Ayarlar yalnızca app/data/tts_settings.json şemasını kullanır."
+    },
+    {
+      "timestamp": "2026-11-25T07:38:52.563104+00:00",
+      "check_id": "P10",
+      "status": "PASS",
+      "command": "TTSManager.close()",
+      "output": "{'worker_stopped': True, 'temp_dir_removed': True}",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-11-25T07:38:52.563540+00:00",
+      "check_id": "P11",
+      "status": "PASS",
+      "command": "Azure provider status (optional)",
+      "output": "{'available': False, 'key': 'NOT SET', 'region': 'NOT SET', 'voice': 'tr-TR-EmelNeural'}",
+      "notes": "Piper ve Windows yolları Azure anahtarı olmadan çalışır."
+    },
+    {
+      "timestamp": "2026-11-25T07:38:54.080493+00:00",
+      "check_id": "P12",
+      "status": "PASS",
+      "command": "TTSSettingsPanel(tk.Tk(), TTSManager())",
+      "output": "{'title': 'J.A.R.V.I.S — Ses Ayarları', 'engine_options': ['Otomatik (Piper → Windows → Azure)', 'Piper (yerel)', 'Windows TTS', 'Azure EmelNeural (isteğe bağlı)'], 'model_options': ['', 'C:\\\\Users\\\\Koçak\\\\.local\\\\share\\\\jarvis\\\\models\\\\piper\\\\tr_TR-dfki-medium.onnx'], 'checkbutton': True, 'buttons': ['TEST KONUŞMASI', 'KONUŞMAYI DURDUR', 'YENİLE']}",
+      "notes": "Aç/kapat, motor, model, hız, seviye, test ve durdurma kontrolleri."
+    }
+  ]
+}

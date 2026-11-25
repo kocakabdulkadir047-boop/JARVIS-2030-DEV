@@ -1,0 +1,38 @@
+[
+  {
+    "task_id": "reminder_0001",
+    "type": "reminder",
+    "title": "Hatırlatma",
+    "message": "10:30'da ma yap",
+    "trigger_time": "2026-11-25T10:30:00",
+    "recurring": false,
+    "interval_minutes": 60,
+    "status": "triggered",
+    "created_at": "2026-11-24T23:41:11.962324",
+    "triggered_at": "2026-11-25T10:36:15.112041"
+  },
+  {
+    "task_id": "reminder_0002",
+    "type": "reminder",
+    "title": "Hatırlatma",
+    "message": "10:30'da ma yap",
+    "trigger_time": "2026-11-25T10:30:00",
+    "recurring": false,
+    "interval_minutes": 60,
+    "status": "triggered",
+    "created_at": "2026-11-24T23:41:40.614755",
+    "triggered_at": "2026-11-25T10:36:15.112041"
+  },
+  {
+    "task_id": "reminder_0003",
+    "type": "reminder",
+    "title": "Hatırlatma",
+    "message": "10:30'da ma yap",
+    "trigger_time": "2026-11-25T10:30:00",
+    "recurring": false,
+    "interval_minutes": 60,
+    "status": "triggered",
+    "created_at": "2026-11-24T23:41:57.720922",
+    "triggered_at": "2026-11-25T10:36:15.112041"
+  }
+]

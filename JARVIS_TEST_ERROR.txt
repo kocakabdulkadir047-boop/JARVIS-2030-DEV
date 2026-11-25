@@ -1,0 +1,145 @@
+test_duplicate_events_are_deduplicated (app.tests.test_activity_stream.ActivityStreamEventTests.test_duplicate_events_are_deduplicated) ... ok
+test_event_contains_required_fields (app.tests.test_activity_stream.ActivityStreamEventTests.test_event_contains_required_fields) ... ok
+test_invalid_event_type_is_normalized (app.tests.test_activity_stream.ActivityStreamEventTests.test_invalid_event_type_is_normalized) ... ok
+test_listener_error_does_not_break_publish (app.tests.test_activity_stream.ActivityStreamEventTests.test_listener_error_does_not_break_publish) ... ok
+test_listener_receives_events (app.tests.test_activity_stream.ActivityStreamEventTests.test_listener_receives_events) ... ok
+test_sensitive_metadata_is_redacted (app.tests.test_activity_stream.ActivityStreamEventTests.test_sensitive_metadata_is_redacted) ... ok
+test_clear_removes_session_events (app.tests.test_activity_stream.ActivityStreamPersistenceTests.test_clear_removes_session_events) ... ok
+test_events_survive_restart (app.tests.test_activity_stream.ActivityStreamPersistenceTests.test_events_survive_restart) ... ok
+test_filter_by_session_and_event_type (app.tests.test_activity_stream.ActivityStreamQueryTests.test_filter_by_session_and_event_type) ... ok
+test_history_returns_limited_events (app.tests.test_activity_stream.ActivityStreamQueryTests.test_history_returns_limited_events) ... ok
+test_status_counts_events (app.tests.test_activity_stream.ActivityStreamQueryTests.test_status_counts_events) ... ok
+test_concurrent_publishes_are_thread_safe (app.tests.test_activity_stream.ActivityStreamThreadingTests.test_concurrent_publishes_are_thread_safe) ... ok
+test_analyze_returns_dict (app.tests.test_architecture.TestArchitectureAnalysis.test_analyze_returns_dict)
+analyze() dict döndürmelı. ... ok
+test_architecture_report_sections (app.tests.test_architecture.TestArchitectureAnalysis.test_architecture_report_sections)
+Mimarik raporunun gerekli bölümleri içermesi. ... ok
+test_complexity_score_range (app.tests.test_architecture.TestArchitectureAnalysis.test_complexity_score_range)
+complexity_score 0.0 ile 1.0 arasında olmalı. ... ok
+test_god_classes_detected (app.tests.test_architecture.TestArchitectureAnalysis.test_god_classes_detected)
+God class'lar tespit edilmelı. ... ok
+test_self_dev_engine_end_to_end_with_worker_engine (app.tests.test_autonomous_self_development_integration.TestAutonomousSelfDevelopmentIntegration.test_self_dev_engine_end_to_end_with_worker_engine)
+Self-Development Engine'in olusturdugu envanter autonomous worker ile kullanilabilir. ... ok
+test_task_generation_uses_self_dev_context (app.tests.test_autonomous_self_development_integration.TestAutonomousSelfDevelopmentIntegration.test_task_generation_uses_self_dev_context)
+Gorev uretiminde Self-Development Engine envanteri kullanilmali. ... ok
+test_expired_clock (app.tests.test_autonomous_work.SessionClockTests.test_expired_clock) ... ok
+test_pause_freezes_remaining_time (app.tests.test_autonomous_work.SessionClockTests.test_pause_freezes_remaining_time) ... ok
+test_resume_restarts_countdown (app.tests.test_autonomous_work.SessionClockTests.test_resume_restarts_countdown) ... ok
+test_session_report_persists (app.tests.test_autonomous_work.WorkStoreTests.test_session_report_persists) ... ok
+test_task_queue_claim_and_update (app.tests.test_autonomous_work.WorkStoreTests.test_task_queue_claim_and_update) ... ok
+test_backup_creation (app.tests.test_backup.TestBackup.test_backup_creation)
+Dosya yedeklemeleri oluşturulmalidir. ... ok
+test_backup_path_valid (app.tests.test_backup.TestBackup.test_backup_path_valid)
+Yedek dosya yolu geçerli olmalı. ... ok
+test_multiple_backups (app.tests.test_backup.TestBackup.test_multiple_backups)
+Birden fazla yedekleme desteklenmelidir. ... ok
+test_chat_does_not_save_permanent_memory (app.tests.test_brain_bridge.BrainBridgeTests.test_chat_does_not_save_permanent_memory) ... ok
+test_chat_history_is_session_specific (app.tests.test_brain_bridge.BrainBridgeTests.test_chat_history_is_session_specific) ... ok
+test_chat_returns_ai_response (app.tests.test_brain_bridge.BrainBridgeTests.test_chat_returns_ai_response) ... ok
+test_clear_conversation (app.tests.test_brain_bridge.BrainBridgeTests.test_clear_conversation) ... ok
+test_confirmed_memory_save (app.tests.test_brain_bridge.BrainBridgeTests.test_confirmed_memory_save) ... ok
+test_empty_session_id_is_rejected (app.tests.test_brain_bridge.BrainBridgeTests.test_empty_session_id_is_rejected) ... ok
+test_memory_requires_explicit_confirmation (app.tests.test_brain_bridge.BrainBridgeTests.test_memory_requires_explicit_confirmation) ... ok
+test_ai_failure_falls_back_to_rules (app.tests.test_capability_gap_detection.TestCapabilityGapDetection.test_ai_failure_falls_back_to_rules)
+AI kapaliyken sistem bozulmamali, kural taban calismali. ... ok
+test_ai_gap_has_ai_source (app.tests.test_capability_gap_detection.TestCapabilityGapDetection.test_ai_gap_has_ai_source)
+AI basariliysa gap kaynağı 'ai' olmali. ... ok
+test_gap_source_is_rule_for_unavailable (app.tests.test_capability_gap_detection.TestCapabilityGapDetection.test_gap_source_is_rule_for_unavailable)
+Kural tabanli tespit kaynağı 'rule' olmali. ... ok
+test_registry_status_values (app.tests.test_capability_gap_detection.TestCapabilityGapDetection.test_registry_status_values)
+Registry durumlar AVAILABLE / PARTIAL / UNAVAILABLE / DISABLED / ERROR olmali. ... ok
+test_unavailable_capability_produces_structured_gap (app.tests.test_capability_gap_detection.TestCapabilityGapDetection.test_unavailable_capability_produces_structured_gap)
+Kayitli ve kullanilamaz yetenek icin yapilandirilmis gap donmeli. ... skipped 'lab3d henüz AVAILABLE; gap oluşturulamaz.'
+test_apply_creates_backup (app.tests.test_dev_engine.DevelopmentEngineTests.test_apply_creates_backup) ... ok
+test_data_directory_is_not_accessible (app.tests.test_dev_engine.DevelopmentEngineTests.test_data_directory_is_not_accessible) ... ok
+test_failed_tests_restore_existing_file (app.tests.test_dev_engine.DevelopmentEngineTests.test_failed_tests_restore_existing_file) ... ok
+test_new_file_is_removed_after_failed_tests (app.tests.test_dev_engine.DevelopmentEngineTests.test_new_file_is_removed_after_failed_tests) ... ok
+test_path_traversal_is_rejected (app.tests.test_dev_engine.DevelopmentEngineTests.test_path_traversal_is_rejected) ... ok
+test_plan_requires_explicit_approval (app.tests.test_dev_engine.DevelopmentEngineTests.test_plan_requires_explicit_approval) ... ok
+test_activity_history_data_reads_stream (app.tests.test_dynamic_ui.DynamicUiDataTests.test_activity_history_data_reads_stream) ... ok
+test_capability_center_data_contains_real_statuses (app.tests.test_dynamic_ui.DynamicUiDataTests.test_capability_center_data_contains_real_statuses) ... ok
+test_active_work_request_opens_work_dashboard (app.tests.test_dynamic_ui.DynamicUiResolverTests.test_active_work_request_opens_work_dashboard) ... ok
+test_activity_request_opens_activity_history (app.tests.test_dynamic_ui.DynamicUiResolverTests.test_activity_request_opens_activity_history) ... ok
+test_autonomous_duration_request_opens_work_dashboard (app.tests.test_dynamic_ui.DynamicUiResolverTests.test_autonomous_duration_request_opens_work_dashboard) ... ok
+test_available_lab_opens_lab_panel (app.tests.test_dynamic_ui.DynamicUiResolverTests.test_available_lab_opens_lab_panel) ... ok
+test_capability_request_opens_capability_center (app.tests.test_dynamic_ui.DynamicUiResolverTests.test_capability_request_opens_capability_center) ... ok
+test_normal_chat_opens_no_panel (app.tests.test_dynamic_ui.DynamicUiResolverTests.test_normal_chat_opens_no_panel) ... ok
+test_system_analysis_request_opens_health_and_architecture (app.tests.test_dynamic_ui.DynamicUiResolverTests.test_system_analysis_request_opens_health_and_architecture) ... ok
+test_test_request_opens_test_center (app.tests.test_dynamic_ui.DynamicUiResolverTests.test_test_request_opens_test_center) ... ok
+test_unavailable_lab_does_not_open_fake_panel (app.tests.test_dynamic_ui.DynamicUiResolverTests.test_unavailable_lab_does_not_open_fake_panel) ... ok
+test_unity_request_opens_unity_panel (app.tests.test_dynamic_ui.DynamicUiResolverTests.test_unity_request_opens_unity_panel) ... ok
+test_atom_is_fast (app.tests.test_fast_intent.FastIntentTests.test_atom_is_fast) ... ok
+test_chat_is_fast (app.tests.test_fast_intent.FastIntentTests.test_chat_is_fast) ... ok
+test_development_is_fast (app.tests.test_fast_intent.FastIntentTests.test_development_is_fast) ... ok
+test_tests_are_fast (app.tests.test_fast_intent.FastIntentTests.test_tests_are_fast) ... ok
+test_timer_is_fast (app.tests.test_fast_intent.FastIntentTests.test_timer_is_fast) ... ok
+test_current_message_controls_goal (app.tests.test_intent_context_isolation.IntentContextIsolationTests.test_current_message_controls_goal) ... ok
+test_invalid_json_is_rejected (app.tests.test_intent_context_isolation.IntentContextIsolationTests.test_invalid_json_is_rejected) ... ok
+test_old_conversation_is_not_sent_to_classifier (app.tests.test_intent_context_isolation.IntentContextIsolationTests.test_old_conversation_is_not_sent_to_classifier) ... ok
+test_invalid_json_rejected (app.tests.test_intent_engine.IntentEngineTests.test_invalid_json_rejected) ... ok
+test_json_parse (app.tests.test_intent_engine.IntentEngineTests.test_json_parse) ... ok
+test_json_parse_with_fence (app.tests.test_intent_engine.IntentEngineTests.test_json_parse_with_fence) ... ok
+test_turkish_normalization (app.tests.test_intent_engine.IntentEngineTests.test_turkish_normalization) ... ok
+test_unknown_capability_is_not_claimed (app.tests.test_intent_engine.IntentEngineTests.test_unknown_capability_is_not_claimed) ... ok
+test_extract_returns_dict (app.tests.test_inventory.TestProjectInventory.test_extract_returns_dict)
+extract() dict döndürmelı. ... ok
+test_health_score_calculated (app.tests.test_inventory.TestProjectInventory.test_health_score_calculated)
+health_score 0.0 ile 1.0 arasında olmalı. ... ok
+test_problem_indicators_list (app.tests.test_inventory.TestProjectInventory.test_problem_indicators_list)
+Problem isaretleri listesi döndürmelı. ... ok
+test_total_files_counted (app.tests.test_inventory.TestProjectInventory.test_total_files_counted)
+Toplam dosya sayısı sayılmalı. ... ok
+test_kernel_memory_archive (app.tests.test_kernel.KernelTests.test_kernel_memory_archive) ... ok
+test_kernel_memory_list (app.tests.test_kernel.KernelTests.test_kernel_memory_list) ... ok
+test_kernel_memory_save_and_search (app.tests.test_kernel.KernelTests.test_kernel_memory_save_and_search) ... ok
+test_kernel_starts (app.tests.test_kernel.KernelTests.test_kernel_starts) ... ok
+test_kernel_stop (app.tests.test_kernel.KernelTests.test_kernel_stop) ... ok
+test_memory_registered (app.tests.test_kernel.KernelTests.test_memory_registered) ... ok
+test_archive_memory (app.tests.test_memory.MemoryManagerTests.test_archive_memory) ... ok
+test_data_persistence (app.tests.test_memory.MemoryManagerTests.test_data_persistence) ... ok
+test_database_starts_empty (app.tests.test_memory.MemoryManagerTests.test_database_starts_empty) ... ok
+test_empty_content_rejected (app.tests.test_memory.MemoryManagerTests.test_empty_content_rejected) ... ok
+test_invalid_importance_rejected (app.tests.test_memory.MemoryManagerTests.test_invalid_importance_rejected) ... ok
+test_save_memory (app.tests.test_memory.MemoryManagerTests.test_save_memory) ... ok
+test_search_memory (app.tests.test_memory.MemoryManagerTests.test_search_memory) ... ok
+test_plan_creation (app.tests.test_plan_creation.TestPlanCreation.test_plan_creation)
+Plan olusturulabilir olmalı. ... ok
+test_plan_has_required_fields (app.tests.test_plan_creation.TestPlanCreation.test_plan_has_required_fields)
+Plan gerekli alanlara sahip olmalı. ... ok
+test_plan_steps_generated (app.tests.test_plan_creation.TestPlanCreation.test_plan_steps_generated)
+Plan adimlari uretilmelı. ... ok
+test_restore_backup (app.tests.test_rollback.TestRollback.test_restore_backup)
+Yedekten geri alınabilir olmalı. ... ok
+test_rollback_available (app.tests.test_rollback.TestRollback.test_rollback_available)
+Rollback mekanizması kullanılabilir olmalı. ... ok
+test_rollback_changes_log (app.tests.test_rollback.TestRollback.test_rollback_changes_log)
+Rollback değişiklik loguna kaydedilmelidir. ... ok
+test_run_all_available (app.tests.test_runner_integration.TestRunnerIntegration.test_run_all_available)
+run_all modülü kullanılabilir olmalı. ... ok
+test_suite_discovery (app.tests.test_runner_integration.TestRunnerIntegration.test_suite_discovery)
+Test suite keşfedilebilir olmalı. ... ok
+test_all_classes_importable (app.tests.test_self_development_import.TestSelfDevelopmentImport.test_all_classes_importable)
+Tüm ana sınıflar import edilebilir olmalı. ... ok
+test_architecture_analyzer_creation (app.tests.test_self_development_import.TestSelfDevelopmentImport.test_architecture_analyzer_creation)
+ArchitectureAnalyzer oluşturulabilir olmalı. ... ok
+test_project_inventory_creation (app.tests.test_self_development_import.TestSelfDevelopmentImport.test_project_inventory_creation)
+ProjectInventory oluşturulabilir olmalı. ... ok
+test_safe_file_modifier_creation (app.tests.test_self_development_import.TestSelfDevelopmentImport.test_safe_file_modifier_creation)
+SafeFileModifier oluşturulabilir olmalı. ... ok
+test_self_development_engine_creation (app.tests.test_self_development_import.TestSelfDevelopmentImport.test_self_development_engine_creation)
+SelfDevelopmentEngine oluşturulabilir olmalı. ... ok
+test_approval_required_for_changes (app.tests.test_unapproved_block.TestUnapprovedBlock.test_approval_required_for_changes)
+Onaysız değişiklikler engellenmelidir. ... ok
+test_backup_before_modification (app.tests.test_unapproved_block.TestUnapprovedBlock.test_backup_before_modification)
+Değişiklik öncesinde yedeklemeler yapilmalidir. ... ok
+test_modified_files_tracking (app.tests.test_unapproved_block.TestUnapprovedBlock.test_modified_files_tracking)
+Değişiklikler takip edilmelidir. ... ok
+test_only_fixed_test_suite_is_present (app.tests.test_visible_powershell.VisiblePowerShellTests.test_only_fixed_test_suite_is_present) ... ok
+test_path_quoting (app.tests.test_visible_powershell.VisiblePowerShellTests.test_path_quoting) ... ok
+test_python_runner_uses_visible_windows_console (app.tests.test_visible_powershell.VisiblePowerShellTests.test_python_runner_uses_visible_windows_console) ... ok
+test_script_contains_visible_compile_command (app.tests.test_visible_powershell.VisiblePowerShellTests.test_script_contains_visible_compile_command) ... ok
+
+----------------------------------------------------------------------
+Ran 106 tests in 19.236s
+
+OK (skipped=1)

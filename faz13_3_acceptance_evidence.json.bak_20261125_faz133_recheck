@@ -1,0 +1,39 @@
+{
+  "phase": "FAZ13_3",
+  "project": "C:\\Users\\Koçak\\Documents\\jatvis\\JARVIS_2030_CLEAN",
+  "generated_at": "2026-11-25T05:59:47.539320+00:00",
+  "records": [
+    {
+      "timestamp": "2026-11-25T05:59:43.474726+00:00",
+      "check_id": "D01_OPENROUTER_REAL",
+      "status": "PASS",
+      "command": "AICore().chat(provider='openrouter') -> gerçek HTTPS POST (HTTP durum + süre + içerik)",
+      "output": "{\"http_status\": 200, \"elapsed_ms\": 1257.1, \"empty_content\": false, \"content_length\": 46, \"content_preview\": \"JARVIS, bir yapay zeka asistanı (uygulama)dır.\", \"provider\": \"openrouter\", \"model\": \"nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free\", \"api_key_status\": \"SET\", \"error_log_writes\": 0}",
+      "notes": "Gerçek HTTPS yanıtı; hata logu geçici dizine yönlendirildi, kullanıcı verisine yazılmadı."
+    },
+    {
+      "timestamp": "2026-11-25T05:59:45.100698+00:00",
+      "check_id": "D02_WEB_RESEARCH_REAL",
+      "status": "PASS",
+      "command": "WebResearchEngine().search(...) -> gerçek DuckDuckGo Instant Answer API",
+      "output": "{\"elapsed_ms_total\": 1625.8, \"searches\": [{\"query\": \"Turkiye\", \"success\": true, \"count\": 2, \"title\": \"Republic of Türkiye A transcontinental country located mainly on the Anatolian P\", \"url\": \"https://duckduckgo.com/Turkey\"}, {\"query\": \"Python programming language\", \"success\": true, \"count\": 3, \"title\": \"Python (programming language)\", \"url\": \"https://en.wikipedia.org/wiki/Python_(programming_language)\"}], \"distinct_source_urls\": true, \"fixed_results\": false}",
+      "notes": "İki farklı sorgu, farklı gerçek kaynak adresleri döndürdü; sabit/fake sonuç yok."
+    },
+    {
+      "timestamp": "2026-11-25T05:59:45.101003+00:00",
+      "check_id": "D03_AZURE_SPEECH_REAL",
+      "status": "BLOCKED",
+      "command": "Azure Speech REST TTS -> tr-TR-EmelNeural -> MP3 doğrulaması (geçici dosya)",
+      "output": "{\"azure_speech_key\": \"NOT SET\", \"azure_speech_region\": \"NOT SET\", \"voice\": \"tr-TR-EmelNeural\"}",
+      "notes": "Azure anahtarı/bölgesi kullanıcı tarafından tanımlanmalı; anahtar uydurulmadı."
+    },
+    {
+      "timestamp": "2026-11-25T05:59:47.538251+00:00",
+      "check_id": "D04_OBS_WEBSOCKET_REAL",
+      "status": "BLOCKED",
+      "command": "OBSController.connect() + GetVersion + GetRecordStatus (salt okunur)",
+      "output": "{\"obs_executable\": \"FOUND\", \"obs_process\": \"NOT RUNNING\", \"obs_websocket_4455\": \"NOT_REACHABLE (ConnectionRefusedError)\", \"password_status\": \"NOT SET\", \"probe_elapsed_ms\": 2031.8}",
+      "notes": "OBS çalışmıyor veya WebSocket kapalı; kayıt/yayın işlemi yapılmadı."
+    }
+  ]
+}
